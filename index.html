@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>Racecourse360 - Global Horse Racing Map</title>
+
+<!-- ================================================================
+     COOKIEYES CMP (Google-hitelesített, IAB TCF-kompatibilis)
+     ================================================================
+     STÁTUSZ: már beállítva és aktív (lásd lent, a valódi script).
+     A USE_COOKIEYES kapcsoló (a fő JS blokkban) true-ra van állítva,
+     ezért a saját, egyszerű bannerünk automatikusan nem fut - a
+     CookieYes hitelesített felülete kezeli a hozzájárulást.
+
+     HA MÁSIK DOMAINRE KÖLTÖZTÖK: jelentkezz be az app.cookieyes.com
+     fiókodba, add hozzá az új domaint, és a onnan kapott új
+     azonosítóval cseréld le a lenti script "src" attribútumát.
+     ================================================================ -->
+<!-- Start cookieyes banner -->
+<script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/3de8775ee16f2ba8c335048e4eb116f3/script.js"></script>
+<!-- End cookieyes banner -->
+
+<!-- Globe.gl 3D könyvtár -->
+<script src="https://unpkg.com/globe.gl"></script>
+
+<!-- Leaflet 2D térkép könyvtár -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
+    body, html { width: 100%; height: 100%; overflow: hidden; background-color: #030712; }
+
+    /* ============ FEJLÉC ============ */
+    header {
+        position: absolute; top: 0; left: 0; right: 0; height: 65px;
+        background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(12px);
+        color: white; display: flex; align-items: center; justify-content: space-between;
+        padding: 0 25px; z-index: 500; border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .logo-img { height: 34px; width: auto; display: block; }
+
+    .filter-container {
+        display: flex; gap: 8px; background: rgba(0, 0, 0, 0.4);
+        padding: 4px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1);
+    }
+    .filter-btn {
+        background: none; border: none; color: #94a3b8; padding: 8px 16px;
+        font-size: 0.85rem; font-weight: 600; border-radius: 20px; cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .filter-btn.active { background: #38bdf8; color: #0f172a; }
+    .filter-btn.btn-gallop.active { background: #ef4444; color: #ffffff; }
+    .filter-btn.btn-trot.active { background: #38bdf8; color: #0f172a; }
+
+    /* ================================================================
+       LEGÖRDÜLŐ MENÜK (nyelvválasztó + hamburger)
+       ================================================================ */
+    .dropdown-wrap { position: relative; }
+    #langBtn, #hamburgerBtn {
+        width: 32px; height: 32px; border-radius: 50%;
+        background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
+        color: #94a3b8; font-size: 0.95rem; cursor: pointer; transition: all 0.2s ease;
+    }
+    #langBtn:hover, #hamburgerBtn:hover { color: #f59e0b; border-color: #f59e0b; background: rgba(245,158,11,0.1); }
+    .dropdown-menu {
+        display: none; position: absolute; top: 42px; right: 0; z-index: 700;
+        background: rgba(15, 23, 42, 0.97); backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.15); border-radius: 12px;
+        min-width: 160px; padding: 6px; box-shadow: 0 12px 30px -8px rgba(0,0,0,0.7);
+        max-height: 320px; overflow-y: auto;
+    }
+    .dropdown-menu.open { display: block; }
+    .dropdown-menu button {
+        display: block; width: 100%; text-align: left; background: none; border: none;
+        color: #e2e8f0; padding: 9px 12px; font-size: 0.85rem; border-radius: 8px;
+        cursor: pointer; white-space: nowrap;
+    }
+    .dropdown-menu button:hover { background: rgba(56, 189, 248, 0.15); }
+    .dd-flag { display: inline-block; width: 22px; }
+    .filter-btn:hover:not(.active) { color: #ffffff; }
+    .filter-container.disabled { opacity: 0.35; pointer-events: none; }
+
+    .back-btn {
+        display: none;
+        background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; color: #f59e0b;
+        padding: 8px 18px; font-size: 0.85rem; font-weight: 600; border-radius: 20px;
+        cursor: pointer; transition: all 0.2s ease;
+    }
+    .back-btn:hover { background: #f59e0b; color: #0f172a; }
+    .back-btn.visible { display: inline-block; }
+
+    /* Kompakt, kör alakú jogi info gomb a fejlécben - mindig látható,
+       minimális helyet foglal, nem versenyez a többi gombbal */
+    #legalInfoBtn {
+        flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
+        background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
+        color: #94a3b8; font-size: 0.95rem; cursor: pointer; transition: all 0.2s ease;
+    }
+    #legalInfoBtn:hover { color: #f59e0b; border-color: #f59e0b; background: rgba(245,158,11,0.1); }
+
+    /* Szűrőgombok emoji/felirat része - mobilon csak az emoji marad */
+    .btn-label { }
+    .btn-icon { height: 1.1em; width: auto; vertical-align: middle; display: inline-block; }
+
+    /* ============ ALSÓ INFÓSÁV ============ */
+    .instruction-bar {
+        position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+        background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
+        color: #e2e8f0; padding: 12px 24px; border-radius: 30px; font-size: 0.9rem;
+        border: 1px solid rgba(255,255,255,0.1); z-index: 400; pointer-events: none;
+        max-width: 90%; text-align: center;
+        transition: opacity 0.3s ease;
+    }
+
+    /* ============ 3D FÖLDGÖMB RÉTEG ============ */
+    #globeLayer {
+        position: absolute; inset: 0; z-index: 10;
+        opacity: 1; transition: opacity 0.6s ease;
+    }
+    #globeLayer.hidden { opacity: 0; pointer-events: none; }
+    #globeViz { width: 100%; height: 100vh; }
+
+    /* ============ 2D TÉRKÉP RÉTEG ============ */
+    #mapLayer {
+        position: absolute; inset: 0; z-index: 20;
+        opacity: 0; pointer-events: none; transition: opacity 0.6s ease;
+    }
+    #mapLayer.visible { opacity: 1; pointer-events: auto; }
+    #mapViz { width: 100%; height: 100vh; background: #0f172a; }
+
+    .layer-toggle {
+        position: absolute; top: 85px; left: 20px; z-index: 450;
+        background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 14px; padding: 4px; display: none; gap: 4px;
+        backdrop-filter: blur(8px);
+    }
+    .layer-toggle.visible { display: flex; }
+    .layer-toggle button {
+        background: none; border: none; color: #94a3b8; padding: 7px 14px;
+        font-size: 0.8rem; font-weight: 600; border-radius: 10px; cursor: pointer;
+    }
+    .layer-toggle button.active { background: #38bdf8; color: #0f172a; }
+
+    /* ============ ORSZÁG-PANEL (pálya lista) ============ */
+    .country-panel {
+        position: absolute; top: 85px; right: 20px; width: 320px; max-height: calc(100vh - 140px);
+        overflow-y: auto; background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 18px;
+        color: #e2e8f0; z-index: 450; display: none;
+        box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6);
+    }
+    .country-panel.visible { display: block; }
+    .country-panel h2 { font-size: 1.1rem; color: #f59e0b; margin-bottom: 4px; }
+    .country-panel .sub { font-size: 0.75rem; color: #64748b; margin-bottom: 14px; }
+    .track-item {
+        padding: 10px 12px; border-radius: 10px; margin-bottom: 8px;
+        background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+        cursor: pointer; transition: background 0.2s ease;
+    }
+    .track-item:hover { background: rgba(56, 189, 248, 0.12); border-color: #38bdf8; }
+    .track-item .t-name { font-weight: 700; font-size: 0.9rem; color: #ffffff; }
+    .track-item .t-meta { font-size: 0.75rem; color: #94a3b8; margin-top: 2px; }
+    .track-item .t-note { font-size: 0.78rem; color: #cbd5e1; margin-top: 4px; line-height: 1.3; }
+    .country-panel::-webkit-scrollbar { width: 6px; }
+    .country-panel::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+
+    .drag-handle { display: none; }
+
+    /* ============ EGYEDI LEAFLET MARKER ============ */
+    .track-marker {
+        width: 16px; height: 16px; border-radius: 50%;
+        background: #38bdf8; border: 2px solid #0f172a;
+        box-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
+    }
+
+    /* ============ EGYEDI LEAFLET POPUP STÍLUS ============ */
+    .leaflet-popup-content-wrapper {
+        background: #0f172a; color: #e2e8f0; border-radius: 12px;
+        border: 1px solid #334155; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.6);
+    }
+    .leaflet-popup-tip { background: #0f172a; }
+    .popup-card { min-width: 220px; max-width: 260px; position: relative; }
+    .popup-flag { position: absolute; top: 0; right: 0; font-size: 1.4rem; line-height: 1; }
+    .popup-status {
+        position: absolute; top: 2px; left: 0; width: 12px; height: 12px; border-radius: 50%;
+        border: 2px solid #0f172a; cursor: help;
+    }
+    .popup-status.active { background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,0.7); }
+    .popup-status.inactive { background: #eab308; box-shadow: 0 0 6px rgba(234,179,8,0.7); }
+    .popup-status.closed { background: #ef4444; box-shadow: 0 0 6px rgba(239,68,68,0.7); }
+    .popup-title { font-weight: 700; color: #ffffff; font-size: 0.95rem; margin-bottom: 8px; padding-right: 28px; padding-left: 18px; }
+    .popup-tabs { display: flex; gap: 4px; margin-bottom: 8px; border-bottom: 1px solid #334155; }
+    .popup-tab-btn {
+        background: none; border: none; color: #64748b; font-size: 0.72rem; font-weight: 700;
+        padding: 5px 8px; cursor: pointer; border-bottom: 2px solid transparent;
+    }
+    .popup-tab-btn.active { color: #38bdf8; border-bottom-color: #38bdf8; }
+    .popup-tab-content { display: none; font-size: 0.8rem; color: #cbd5e1; line-height: 1.4; }
+    .popup-tab-content.active { display: block; }
+    .popup-row { margin-bottom: 4px; }
+    .popup-row b { color: #e2e8f0; }
+    .popup-row a { color: #38bdf8; text-decoration: none; }
+    .popup-row a:hover { text-decoration: underline; }
+
+    /* ================================================================
+       MOBIL OPTIMALIZÁCIÓ
+       ================================================================ */
+    @media (max-width: 768px) {
+        #siteFooter { display: none; } /* kis képernyőn elrejtjük, a jogi linkek a modal-on keresztül is elérhetők maradnak */
+        #cookieBanner { padding: 12px 14px; flex-direction: column; align-items: stretch; }
+        .cookie-text { max-width: 100%; font-size: 0.78rem; }
+        .cookie-buttons { justify-content: stretch; }
+        .cookie-btn { flex: 1; }
+        .legal-box { padding: 20px; max-height: 85vh; }
+        header { height: 56px; padding: 0 10px; padding-top: env(safe-area-inset-top, 0); }
+        .logo-img { height: 26px; }
+        .filter-container { gap: 2px; padding: 3px; }
+        .filter-btn { padding: 8px 10px; font-size: 0.72rem; min-height: 40px; }
+        .btn-label { display: none; } /* csak az emoji marad a Galopp/Ügető gombokon */
+        .back-btn { padding: 8px 12px; font-size: 0.75rem; min-height: 40px; }
+        #legalInfoBtn { width: 40px; height: 40px; } /* nagyobb érintési célpont mobilon */
+        .instruction-bar { bottom: 16px; font-size: 0.78rem; padding: 10px 16px; }
+
+        .layer-toggle { top: 68px; bottom: auto; left: 50%; transform: translateX(-50%); right: auto; }
+        .layer-toggle button { padding: 7px 12px; font-size: 0.72rem; min-height: 34px; }
+
+        .country-panel {
+            top: auto; left: 0; right: 0; bottom: 0; width: 100%;
+            max-height: 42vh; border-radius: 20px 20px 0 0;
+            padding: 10px 16px 16px;
+            padding-bottom: calc(16px + env(safe-area-inset-bottom, 0));
+            box-shadow: 0 -10px 30px -5px rgba(0,0,0,0.6);
+        }
+        .drag-handle {
+            display: block; width: 40px; height: 4px; border-radius: 2px;
+            background: #475569; margin: 0 auto 10px; cursor: pointer;
+        }
+        .country-panel h2 { font-size: 1rem; }
+        .track-item { padding: 12px; min-height: 44px; }
+        .country-panel.collapsed { max-height: 76px; overflow: hidden; }
+        .country-panel.collapsed .sub,
+        .country-panel.collapsed #panelTracks { display: none; }
+
+        .leaflet-control-zoom a { width: 40px !important; height: 40px !important; line-height: 40px !important; font-size: 1.1rem !important; }
+        .leaflet-popup-content { margin: 10px 14px; max-width: 260px; }
+    }
+
+    @media (max-width: 380px) {
+        .logo-img { height: 22px; }
+        .filter-btn { padding: 7px 7px; font-size: 0.68rem; }
+        .back-btn span.full-text { display: none; }
+    }
+    /* ================================================================
+       COOKIE-BANNER
+       ================================================================ */
+    #cookieBanner {
+        position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
+        background: rgba(15, 23, 42, 0.97); backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(255,255,255,0.15);
+        padding: 16px 20px; display: none;
+        box-shadow: 0 -10px 30px -5px rgba(0,0,0,0.7);
+    }
+    #cookieBanner.visible { display: flex; }
+    #cookieBanner {
+        flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px;
+    }
+    .cookie-text { color: #cbd5e1; font-size: 0.85rem; max-width: 640px; line-height: 1.4; }
+    .cookie-text a { color: #38bdf8; text-decoration: underline; cursor: pointer; }
+    .cookie-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+    .cookie-btn {
+        border: none; border-radius: 20px; padding: 10px 18px; font-size: 0.82rem;
+        font-weight: 700; cursor: pointer; white-space: nowrap;
+    }
+    .cookie-btn.reject { background: #475569; color: #ffffff; border: 2px solid #475569; }
+    .cookie-btn.reject:hover { background: #334155; border-color: #334155; }
+    .cookie-btn.accept { background: #38bdf8; color: #0f172a; border: 2px solid #38bdf8; }
+    .cookie-btn.accept:hover { background: #0ea5e9; border-color: #0ea5e9; }
+
+    /* ================================================================
+       LÁBLÉC
+       ================================================================ */
+    #siteFooter {
+        position: fixed; bottom: 0; left: 0; right: 0; z-index: 300;
+        text-align: center; padding: 6px; font-size: 0.7rem; color: #64748b;
+        pointer-events: none;
+    }
+    #siteFooter a { color: #94a3b8; pointer-events: auto; cursor: pointer; text-decoration: underline; margin: 0 6px; }
+
+    /* ================================================================
+       JOGI MODAL (Adatvédelem / Impresszum)
+       ================================================================ */
+    #legalModal, #infoModal {
+        position: fixed; inset: 0; z-index: 1000; display: none;
+        background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+        align-items: center; justify-content: center; padding: 20px;
+    }
+    #legalModal.visible, #infoModal.visible { display: flex; }
+    .legal-box {
+        background: #0f172a; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+        max-width: 640px; width: 100%; max-height: 80vh; overflow-y: auto;
+        padding: 28px; color: #e2e8f0; position: relative;
+        box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8);
+    }
+    .legal-box h2 { color: #f59e0b; margin-bottom: 12px; font-size: 1.2rem; }
+    .legal-box h3 { color: #38bdf8; margin: 18px 0 6px; font-size: 1rem; }
+    .legal-box p, .legal-box li { font-size: 0.85rem; line-height: 1.55; color: #cbd5e1; margin-bottom: 8px; }
+    .legal-box ul { padding-left: 20px; }
+    .legal-close {
+        position: absolute; top: 16px; right: 16px; background: none; border: none;
+        color: #94a3b8; font-size: 1.4rem; cursor: pointer; line-height: 1;
+    }
+    .legal-close:hover { color: #fff; }
+    .legal-tabs { display: flex; gap: 6px; margin-bottom: 16px; border-bottom: 1px solid #334155; }
+    .legal-tab-btn {
+        background: none; border: none; color: #64748b; font-weight: 700; font-size: 0.85rem;
+        padding: 8px 12px; cursor: pointer; border-bottom: 2px solid transparent;
+    }
+    .legal-tab-btn.active { color: #f59e0b; border-bottom-color: #f59e0b; }
+    .legal-tab-content { display: none; }
+    .legal-tab-content.active { display: block; }
+</style>
+</head>
+<body>
+
+<header>
+    <img class="logo-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAAsCAYAAACTzEp8AAA1uElEQVR42u2deZxkZ1nvv897TlXvs2eyTSYJSSbLhCSEBDEIGlnkuuCGQdGrrOJylasXREVNckVRceNeXIAomywGEFAWEQwGkISQBLJnkkwm6yyZSfd0V/VSVee8z/3jPO/U22dO9fQKeq3386l0p6fOOe953+d9lt+zCf2xpkNVxX7dCrwF+C7gEJABA0AKOGAQmAU+BXwcuF1EGst43jbg+cAPA+cCHbu/t98zYCNwGHg9cB2AiGh/t/pjGfTmRMSr6qXA3wN1o7e20VtuP3102Ubg7SLye+H6/kr2R3+sfEh/Cb45Ql1EVFVT4DXAq4FhYMYY4IDthbO/TwMPAV8DHgDuBPaVGGMC1IBNwJnAGcA5wA5jmGrCO7Xvd+z3IeDzwJtF5IEwt/4u9ccq0PnTge3ABuBCYBswCqwvKa9iv/+MiNyoqomI5P0V7I/+6Av0/1RC3X4/26zj55pgnrO9SEwIe2N89cjCyeyDMcOaMcnEhLe3+8za76n9G6YkjAG7gT8Tkb+Prav+7vTHGtP+VqPB1Og80PFhEZnoK5X90R99gf6flbkdsUZU9blmsT/bhHPThHJun3bJIk+jn2L/lkUCP97XGrDOGOk+4APA34jIIVV1AH1h3h+rTNsu4ikKaF9Q90d/9AX6fwXGd0SgquplwE8C303ha/fAlFnbQahLJMxdJNCD8A8w5hCFP74F3AP8E/APIvJEWaHoj/74JtG79OA1fYHfH/3RF+j/Xwl2jaD44yiC5p4NXEDhHx+mG2gU/OxlS6hl1v0ksAu4DfhX4I7o3gng+wy0P/qjP/qjL9D7Y20Fu8SWs6oOmrV+HkVw0XHACRS+cDEhfsA+4ybId4vIVOnefUHeH/3RH/3RF+j98U0W7MECZ7mwuN0joYDj+5Bmf/RHf/RHX6D3x38A4Q5deF2jT9g7Kf9bX4D3R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0R3/0xwpHzzz0KA965Q/5JuVGl+f8zXjuaq3Tcuf6rXz+t5JGVvLs1Vzr1aCxpd73P+LZ/K98DvqjP/5LDVVNrATpWt3fhYYn5b+vhQC356XfwvV0qpquJmNf4vuv6X4u4tluNejxW7F+/0HP57Jo6VtJh/8Rnr/y+SOqyy/utdLrV2P+V16JW/Ea9Aucra2FbgxzZAELvrJzUsXfPDAnIllgyKutAcc9vVV1lKKRCcCsiMyu1bOiv41QdDk75uULrKEAjWOVew2MK15Dq/lei+630N702k8vIo1FPNuV6s2H7m5LPdRKt8KdAJmITC/x2XWKlrNxJ6/yfSWam4/osR3fezE0aWditLSOx1y3xSgXdt94j3IRaS5wzSBFRz0fvS/H2OOqMe85i+3EF7qnxWdBVYejcyBLpIV47u1jndse52DAzr4sgj8t/xxcieMk5imzd+0t7rdzp/0/sHOC3jS1A5XLJevNNo8tBEXChVKsx7+RcF8xjyPzOWlxN79rL7JzJ3AXmVyNX9rzbQ5XaspJvfc9zAmAnbDzOLxc3m35rCCynMXoj96CORxoVX0B8OfAhDFErWCScccvz9ElSZ39/UngTuDTInLdagr2IGBV9SLgVcCFpogkFM1L3gv8JatQErXUx/zbgO8ALgaeQtERLWYccVtTIsYbd0xLoo8Hvk9EHqlSGioUl50UrVZ3AqfSbdjimF8SltK+pdHeKUUP9RHgZhH5yV77Ev9dVcfs2ZcA51M0jBmI7umjZxIJHM/RpWuVounMX4jIn1QJlNKz1wEvBC4DzgLWRwI73Du8X2qKTplOx4HbgS8A/yQiWa81L52JHwGuomhrmwIbgS+JyKsWuv5Y9KSqPwz8np01oehh/wUR+aXyfSN6f6utw3j0XkQ0kEY0JiXajNe/DTwMfAX4gIjsP9bZLO3H6cD3A88ETjMlIz4DvkSP5S6B5e+OAa8Tkc/0Ui4qzsFzgXOB040e0ui9NTqH8f4k0fcC3a4DvmLnoOd+Tr97+Ok+k3Uq4sWpoDhyEknUpQ6XZUaPSo7gk5r4zKPkkCaQeQQyknTTXK75lLZm9q57TfPQkvnRtdQnJwZOqQ1v3OQ6jbE81zopqEqO4MkBh+KLdU5EfBZdnyZoliM10STPs7rUhurDJz//enn+hyePFtjzCEgEVK/8znTm7P1bdfbAcW54eCSffnIIlzoUxaFpgmYdHB5Jayp5hzR1uFwKZUyR3Ll6M3EyPj3Lo5teMzHZF8crH70sy4uBzdGBLDNjrbAIXcUnAY4HLgJeqqofAV4HZFpQja5UwKrqM0xwDwBz0VyGgd8GbgVuWEkfcDvguapeCvwK8DR7Xsy0YoaZGRMpM1DH/J7makzwwYg56wKKywkmVJ5Lt+d5y57nKxQ1qVAgpKRkDAGPRuu2kEB9mSlOJ9j17ZIQLQtXjRh2WZEMCl94/yoFM372q4BXU3Sey+n2is9LdOlK71tWPtcBZwMvBl6mqr8qIrsXIZQvtmtzu98mM8aI3mU545lGS8M2380UfeyrLEk16/QppqyMML+WP5HilpSQk/IZDojDicBzgFeo6htF5BMLKJUiImrIzK8ALwc2AB37+JKAjgVpWZktK3yBp9xdUlKqzsGJ0TkYMDqIabFMe77CQk+jcxjo4uCCyOW1JM2GbMRRyDuN1AOPZoV41y7OAlmOIGiWQO6RVNUhSdLpHB5OHVup85SJa4Yf3vDozG2LsY4BZt9/1lOmpx/fUUvcYN6eFJRcQDUXL4miThQKgZ2maKooqEiO4BAEyRVyB+IRqSXeqW+z8cGZAvnobSkL6PT7ztzW7Nx8rmvJiLgcnW3lIkmG01y9gDfFxSOSqGtnpGmiLg9r7VDpaOK1vU69rq/XZPvcB0/dM/jSx+5RzfuW+ioK9EBQ51P019boEGrpkJaZSFK6Xx4x20k78C82aPmNoRf4MgWsAF5VTwbeZsytaT81YvgO+H4R+Yrq8mgkUhxeBvy63b8JTEdCoxYJlDxapyqYz0XrlxlDultEmj0g/cDEngH8lQm0cbMUfQl27YWUlIVOeHZQBr6yELRp8Pb/sf0Lzw77m5Q+ZYjbl6z2mJ4EOATcV2bikfAYBv4C+EHgsNFSvL5lhu2jOUhEi/G6Ttrfzgf+VlVfAhwoW6cRnSVmBWpE4x3gfpaLm3bnc7oJo/jvdy4gzLabEJ4qKTCyAGLmSwpmOK9q75EZDf+5qu4TkZvKCnBECzXg7cD3mADcV6EwVqFURN+jAjkZAB43RG8hNG4ncA1wstHDdIkHVQnzvIfCS3RNBnx1IYi5McHGJPGjirTsLgLkingV8fjoGXpk5RXAbFfUiYoqiYhXpY2S10VPmzp1rAmN+3tZx8FXPv3e4Yt8a/+2DJlLnE47xDmH5BkudZAJIrkmKpKl4MkgU5urQ1CcUMS/1ByqiCeDjrYbg5fcki0EsyMw/Z7hi2g/foZT2op0cKIIHo/XXHzxloYOCEKGG0jRTEXFq09S8Vmn2BtFMkU8Ds3a42fM/d1WlZ/cd+9CCEF/LFKgRwx0PXCm/dtYyT+bR9an7yHQXcTYp02whgN8APgxVX2fiNy7TKjyiD9VVd8CnGJCpl7BPDrAxao6LCIzS4X6I8v8JcDvAk/YewcmMGqWlVRAfHmFq6JsnbfNytrXw0J1ZpWdDrwjsiLCnqy33+dKFhIl1KRmz5WIwWf2fAH29hBM4Z3+GLjC5plGaz0avWsafcqCpbwWMf09BjxQ8XynhRb2Z8CL7Nm16H2CtdyOaDKmxTLc7oAGMBN976C5LH5VRH6tQskUEyJbzL1BBCsfBG7pZU0ei4btrJ1sZ01tzgOm4OxZwO97qiEkTft+WnrPKmXKl+ZZs08jundQUH8WuKmKFmwtrjSY/dHo2UPGK2LFIa+A3cuKn0ZKxSZzYTSrXA12DraaC22T8ZJ6BJcPllwPseIaPlo6h2mk6KYRHVbv2/Bpm7XzxHrvtVl3aC4IiorXTCmg7swXcLMJ+/JpSr13qXM+VxU1eNorMlN3btuVqrsrkREKATf3t2NnQX5i7nUycaSpILkn9eoGJcW1fS6JonhyhIyEDMHTwRnHcpJoiielUDAUR0fQmmiyT0CrhGnxfKeN9550ftI+dLYT18xRJ04dHsGRkpKRFW4G0iOQfyJOkxxqzpFkoOBUkjxTL7M2B/CI4meyfPJU/RMeFmG2L5pXKNAjQdcCXmbEP1BhdZXbeJbhNOyAnw+8xKyJWXuWt8N3KXAvy4tuDEL2tQYVHjDm1DIBMxu9Ww6cBzzVtO+jIOWFhLkxkacAvxP5TsOBWw/cBnwZuMMYoq+wCqrancZMtwY8YntQnpsa4/8dW7fDtidqPtyvA58EbqxAVFyJkfZi+p3AyEpMNPbxvgTYb/ua2TrPAR8BPmdCuey3rfLdasTsw5rMihQWTwSvh2f/lAnzx4xh5yY45oBrgS/a2mULICLe9uoS4PvMsmtGisEkcNkxlL6zDQqfsvvWDVXYv8xzF+jwNDsfh20ug8ADIvKozcNXWPS3mXUclJaEo9vrHgtJ2wpcDvxQ5K4RW9dzVXVQROYqrOMLgP9uysyIXTtme/C2Eh1qSZlKKnzo8XmpR9b5UUq3nYPfNoXmQKRUbrCYiM8ANxsfiF0tvodLqowWeONJR53DIODWnXHpI5N3ffagpuIDk9kgwDqnExOwcbigmyqIYTPAgMrcXH1T3mmcI15TRbKEwredZ1q76hPnjFwNjThA7IjP+tPPWDd94M4disyJ0zQVfK46oOQdX9/ysB8Y3c+hx3VsCD2cwIa2U4ZFnwQ2JzAxY4GEdS8bBA7bCmvbqdS9HJbJuSq4PTz/8DtP2kTeOFdTmcm9JkZxSe4S77zf4zvu0Yxaxw+LBufh5k3Fc6XuRWYRHULH6uulOfvkyaK6DY+3lRcEEa8Dc2MDJ0BrT99KXyUfuh3ke1fh3l9W1c8CH7LDHwcqnbBC+PsS4H8YY3HGiNYD76QI2NoeQa/DwH/rBactNIyJ/A87j4eMiQQh/PvAe0IE/2qPiIl+G/Ase37NLNINwB8A/2e5cQGLgYRVdQj4eRNkgemNGlLxChG5dQ3eW2yPh4CfsfdWY9TrzL/8qyJyxxJv/SVVfY/RyDmRS0ZNKJ0C7GJ+1Hh454uM+QcrbwT4utFHsoI9uLAk6IYi63xe9HpQMkRkKvLdr2R8TlUfM1/4VGS1D9s6z0XKTRDCL2Z+JPs6W7OXiMj4atFAye0RzsF5hgw0bJ069vy/Av5kqUjfsuZ12YdnI4NhuWOy8YGtMzLXeBYdsjxRB+LV5Urj4NEGjq3+zP57zxZ0IBHy3ONbiqsPbWk8tum8m3d87z+31uyl7fkih85OcpOwKUqeJ8nwtrnhLT/7FXn+ry8hoG0SYGL6mqFxhIvAxHoCkjAgSW0AWlx11VHZG/2xSEuhUpiswicVkT3A7gimFGMaB5fD6E3IHEcRgR8EaWYC7noRebP5g4cigd4GvstSffxiclaDdWRQ6+VmdYSUmC3AO0Tkb+x+aciNXsGnak7hbz8cWRIdY7gfF5E/i56/or3qoUwo8Azz8TZK1tQrReRWVa2tBq30oMlnmZCdi6yrceBnReQOe/ZS1r1uQudv6Ublp5GlW+/BzqCIqJ8xWuqYZXhflZtkiWOnKSoxWnPrQveN6iCs5FOzuIDPRXBzSjfQcypSaIOClRrKMRe5nAaAvxKRcVUdWIV5yQI86vmmTIZ92wDcJiJvMSRt1c9BL1+ysszPlThVZFRbbTRxUtMUSLxqCoM52z46YxuvMdS+50oGyTsnJI7M51oHaiJan5tu3Lnje/+5Fe575LOMufVWrlD99AsHEqlt9k6mFck1lw4kdDrTt8jzf31Sr8Qd8xnx3K7Ejbxqdq9z9aZ4HZJEayKuTu7qnbyo73FVXzavjoVehl5XYGVl5o/fSjcaOfjq7l2GMA9Q+58Ygw0Wc90guDfY9/4V+OkIcpsGdgBPE5EbjJHli1B0copo9q0GiQrdiOx32H10LSz0iIkOU0RB58bsw7yvNQbk1gghCAf8OXTT6uYoUsw+ISK3mMLWWUPafKbRp0bIwHtFZI+q1pb6bFXNjD4ejKzhALvOGT0dEeIlpOA8uoGAgabuKEHhS93bEeAMUxYzm8c03UC7hazXlaZghjiKs00oZ5FAPxDD7dHYGCFfwaUyDtxkZ6G9RlXWAs1fEqEqYqjKh+1dkrVCyqoE3LLX/ari+ulr0iGRllMvImgqHknqrWm5/PKsyjrecsHz1+XjN9SyzLdSVSc1rde1PjH0qolJC5bTqut6WtyLfJcjsHdz3xZJcF5lFkEErYlsODT20/ufsO/4RXMUWweuBnV5S5RUCyXZDlOn+P0qlKuXj27GbqgyXS6zMmMcX9MzDTr6Lgshd6UMnqPqOizhPTVSvFe/kloQiPawbfZpRRbzg3TTchb7AkGYv54i2nnKLNUBgz9/S0QCQ76JIsirTjfwC4oUl6WOC+xnSItJKAJ3plZD8VkE+Z9J4WcN0eR1QzceCcRqFtuSP4tAQpxZkHHqYg58wb6ja8MwjxyCC8warkUIxZciYbSMW4sCJ5kwD1bpkOGAT/TYg5NMkWlFCNOUIU8sYx3i+24zIRXWeO8yzgYrWIuLIsVGjb5uCe6t0nxPpxv4ppH7oWN7thT6c4up1BcFDwaXyGw0p5ahJBIhF6t2DtYAue76hOvtU1RlTpFcE8nTGvXc1yaCEC1fW3vyxg3O+XbdSVudZJKRZjJ4MAjlyg89PtF3wrx6zdlgb1qN3es1z4tEtCK/XnI3Nb5cFiBSBN/lmgwqdFByOrmS+DazA4dWgnsFF42I5PZTy3stIlr+HON+Gt3PLyTMo+/mi3Ur2TV+KfQYvafG90tLX0pWCCFqxDByVX1e8MdF0N69IjK5hApdwW/+7cBrjfGmxlCOA94iItcZJKgiMqeqXwZ+0qBiMQb8TFUdEJHWIp7tIx9nDInmwI3fBEYQM9ERs9xCMNbjIvJ4yXpZbW6vqrqZIlWrE9HJYbq+41UX6BED30IR/JRHAr0D7F7Bs8OaXmTr2Ixg4/uMxmK6CN+/2JTHw5FlfwfQXCYdSAS3jxkyECz/R4Ji2sOqSHrbW8eyi7q2m6FnNeB5kZDM7Jze0uMeIec9BB92DLF6o6r+XxG5fxl8gmNkugTF8SyKehaztgbDpvyEqPA195+vwoHWPe9icIuOnNXJ842JuBkxlA1AO519va7MhseGaR/uAHlSRNG1XCLDzXetv8jRGiGnSJsr0sdUnfhg8tY8SlIUmFERr9rJa2OnzXYae5vrXtk8uFDO99WWF99CxhKhQwYhj122XPIkXL88xQaUDzPoOu3RTiJzaWHTJoknX3d+YzJ2OyyDf3gLZP5+499jwV1qfCMESebML/jlgF+OiytF8Rtb7X4XG1IYF62KU7oTVc1NRn1KRD7TSxCr6i8DP0BRUGoM+KiIXLOYzK9SwPLP27kYA/4x7WEdrQZz/iHgl8z3OGSCsW5+uxjWPpYWkqvqRuAPS7DnRopAt7eYNZlH/rZ/oQjgCX+bMdj9QrPge1qY0WYORRZUyPedpYhCXhOBVjEuoZsrHqySk1X1fcyPHI6zDMq52XHEsYuY81Ui8rUKAgprczpFMGAjsmYfM3RgOZbpopAYupkJW+imUg0ZsvPECp4d+8PjAigpXb91CHyLxw66qXhBAbjDDmW6Aqj3mXTTCUMe9h29hJwJ+GyVzua6AvTkLLoFjZwJyS+VlNqwbnsi5TbQ1DRFxP1zVPXRyGr3FcwyjBZFCuLXKOJeHl9AwZZoD4YixbZt6/WeKNUwTk8L18YV4eLU0sDUh4HfC664Y5deLqzs6b8aOpmUkxE8rpijeE0zT1qrJUmWk6A4HBosj7RIaXO51zSxrA51IoqM1IZG7hl++YFD5chuEfQLV2qqWWsjiM8UhxfFyay0p44X0STzIkkR0aAmzDMgrxW/d1fHg9RUxKeSNx6rJaqu8Y6RpqrcvlClOlVc8z1+WHPJERLx6iTVZHj/ndMrsaQbnRNHEtdI09x3VMRLquJl4DCXT+fLuWkkKF9FETA9ytGZWmlE2zndgkhDFG7gwxX3+17gzSZvZpmfmpuU7heQ3AuAF6nqB4DfoigpXD5Pl1Nkgs2YMN6iqh8EFkyvLhVU+wO68Wmbjwj0SIg9hyICOOTFamnCcW4pzE/FCvnJA8asvjNiAEIRxPII8KnFQIrBF2Fy82pj8JMREzxEEe3cDrCIqoZ73kCRJ3scXf9MiHa/6RhkGA79abZIrcg6PrDGAq0sfE41IsqjeY0CT2d+Xm+cDpRzdLGVuJJb3Yiu13uEyO6L6ea7J0Z0D4pIZy1q8pcY+Nl2yKYiV80uSytbclR5yR9+Nt0UQ8xSv7e8FvZ9R5Fi2YnWwld9fwnDG5p0bgRzh8Iu95f2IH6HYVNSh5mfpuZLexynmcZnNtDQ8SaEzzAGlhiNnQS8U0SeLK2x2jo8bOfqOynS9QJyMmNn/vxoTeJCLuWCQ2HePwQcssyDv4j9gRXn4LLS2Wzb8y+KaD+2vGK6j2s/CPODOzM700vay2xgZNjp7LoE6eRoUtisiKura3c0TRxOUJfniE/BedQLKk46iUg7RHWrr7Xr6zbdPvDiPffPg+Sjdz3/aZcNufGvjyrSRlEVURJUc5lRERGH09yK/oh4HLnm4s1UOpIPL6mKZpLgcCLaUcSp8+sSx7ePv50vbnoNk1X11Pe/74KhUf9QKklRB09Ua5lPM9Y92VqWPA+mxVxjK0JyJLnYI27ATQiiS01Zi4Tcf6eoDrqf+amIMxG9ughp6hgtjQFfNHQ3+L+9ocLX2Plo2vX3U2QmxkpiOGchzmTSztZPmdL6mZK/+zi66bO5ybLtwPOsUmNlnFdk4J4OvNXmPxvxkBvSqALUAPDGyCosw++9hDrRwQ1MJYuYBaZFDJtV2FgkU04MGny1QRP77X5tg/F/Q0Tuiu8VpRHNqOpXKNKexu1Ad4AXqOof2sYdyyrYZvOetOuHKQKGDq+hQCtH2D/FYNDY+u7Y/pSZOFRXZouLeYT73EOPilwRY3tKZHGF4iH3LWDJrsbIIwaukcWurE6q1kaKIMdpusVwDgHfiJXMaH832zpg76+2H99YjkCPtP7NFPERrUhBzYGHyspuZK0/naJaXytiIuWKhEkkwMoV22IFYNbORcgCOQG4Dni7MR5fcr8Ehf9K4D3GjBqRsp7Z/1fV7I/5SGwghEDA3wAGReSPKwr7hDKzZ0VoSlAYgougSlnQBdCpMMe67f3ji93LIGQSZsYSJ1nH24uZ8NRMcpeSqy+e56SIPk9tJ7KiZGxdneQiKjq2Zd/gix+4vwpiVpOu6dRdW/BJHfU5CQiak0OuDKZOXZ7jXKjZruQouYiqhdCKVYhzkmuCQ1UlK4rRIi6RuSzTWm1k43aYuCMOpgtCdd3c/Rs1kQHyIo7HK4NSS56QK6Rd0MXyDJskcaNkHUGkqF+n6EBHG8vkl7kJyV+JIOzbKVKL76NbFrhX4x4pIVJidPe66BzNAb8G/HtV8yCj3Trwo0bTAdm9mKJGgoto98xIoBPd/0dU9R+pLv8tdh5GjA+sixSVEKB6X0q3AtQ2s2h3RxZ3ualC2f+gJb+elA7xIEV+eBN4vYh8LmgZi2B8meVgv8GYxaBtzGbgY8DHrCRpXmrlmRgc/lWKWtO1yOd+BkUq1hcXAfk/raTlD9PNEV50gZplWqkheGsb3Ypg4blbeljgR8UxMD81KzDq48xfk5Uh41KK0g4TfHE1r5WUOl2s717oBgLWone7eQXPDvt1vu3jRGQdP2L/X/X9i2y9gnZeM1h6/wrX4RS6xXlCytxhuiVftQIxudAO7WR0iPOSkl1W4uIqj2XB7oyuNgP/BvyCiMxWKashYMcyDF4K/E+KtMLNJUizzDDLFRRbdEvWBuE8DrxcVT8kIo9V+C+3m1LViRSfgBiVqy+6HsZHOS4iKGu7FhlT0z1cd/5Yffqmzx6Xa5Yk4hPzKjuAXFH1kiUOzT2Sog5ICmsDkQ4ddZKJqiiSucYjp069Z1TX/UzznrJVWgSkiQ67gdFMGiKORFVUEk197mbqZPfDgLgAIqsobs5r3n2PVqpCBxGQgXSdqJs7nnZri/q0bdzdO+dmk3Y2pteSiBzN05KBrWPt7Imac6KSq3OJJtppTa8oIO5akmYzX++KPU1ErcnNpoEJ+85yzvblhj6NG6//X1GsEUs4r0EenmLCuGG09hoR+deFSMMMxQ+YIbmd6lRYTA7V7TwMRVb6xcBZInJfqQmRRPP6c+MFDeNlAbK/F5iMy3Sea/8wEfkahuyitCS4Q+WlDt1ayrFGHJpN7AP+iSJX9cFFOvyDJrKOouxnLZrPKHCriLzB/r/dy8ozC32KbtpVgG6fZwL9WHD3eRHjCRHmt7L2I+zHpbYf7Yj57jf3Q5vqpiflpjmxtRbWph4Jx15KyQa62Qnh0ByOrlv1IKSINs4w7TVOpWqY/365QjSm8VpEDwPALabcxKhR+P45RseNyN2xy1Amt4wsh3DfC+z3Dt0UrIfsOeWAuBD9ek6EigThtSkS+HmEqBApsVkptiIEs3lT0P6BokBSZ6F3ioTsY8DrzCI6z+Ixhjm61G7VXp0LvIBu1b+gcGw0q+WxiEGH+5xIt0pioIcnKKo35syvUJhUCPS85CLUKI5k15Ipae4NOjJ4/TemW00hNwUiRciKAunqimclDqbbIpKoDAMimmQufYrih10RwCYqtbZTd4p++oUPiswvDnP11XjFSyM/cVNisUAiilc35Ia23Tz00l17u8dzMeMgwO7Gu4/f6fPGdoe0aVPUYVdNuIt5MG9QLrw+eVwCIJokDu0o6gY27e8CG8sYo2em0tibqkqbnETQmjppMbavvYwzHujkqfZzHfAvFpuRLtbwqgiGvYRuVc5Hga9GtQoqkV1zD29mfuvxPSX5CPBtJoiHgX80nneqydvvB/60dI4CWv0mc1XNUlT3PGgusDpFYK+Pg+KewdFdwB6wT1I6EEHr3WrwaBwpO0gR3PM24C4R2V9i2MfUuMxK/AN70SdL2v+Aqv5uScGID+5eg0RDw5bhiBEeBr4jRLsvAHcfZxYqdOtlz0aQ6DcjIO5C5ge8jVG0+/zgalrEPbTdpxkSMBWt+yMsoyDQMg7mmcbgxyOo/15g7wpcHT7SjNslWr53Aej/20wAukhIPtjLz72Edzw1otngP78ldDILqElEj0NGjzN0A8AGKQJMnywJUB8pchcZ2tGK5jsGvNsYyTfKzzoGvfjIWjjIMsKcVfVfKOqxe+a3uh1aACmL5zUKXCciH1vDc9D7u5dc0on87ksa+97L+Gh75BkkONRoKtdaY+LBMaB1lO/4C5K4PQODKklL0ASH4HNtjo9PqSJchXDVInnRVYhcjR899YW7m498/ETN8mywjuaqznekw84Kn+0XvjOd2XPT+oA45B6ck7nh1twky3CgH3m/iekxHKoiuahKrgwmkjwhl0u2FBg/qnfiKGJjZuxc3BMMw2Xwi1j5D2d/lxmuskCbZYmyg7YYn5kqIYshHmW7yZMRipiyM8zdPWlu4b8GZqP6K5mq/jhFt8nDxi/eaOj1oJ33BwKDCt2knhoEZmRlv0lEblgoGAH4vDHhEJGsZuF9yQLWUuZH+S0muOElFDW890f+79Cu83TzqQnz61gH1KBBEbyzx4T7aXSbkLTM+nu6qt4QlIcKuDvkz4c0mUE7xPetpUCPcsDrEQOPBcwttubpCnzYssB+xEFpo5GPZ8CUs9YyLdOljHOZ37JXsPSk5XToi4Rizazc6cgdMROhLlq2RunGMBAhQsuC/m1vgzvjqUaLMRS9awH3y2kG/WcR3e8HXrbQXqjq04CPM79ufx0YEpGbLT83MXrQJQg/jQtoLIXuKCo5HjS/fR6t5USP686mW50vuEluXeNzcEzBtMxnzkz9rZtx6teJV0FIJNV6T8HHD46SflE0a3fI8SipJEMTW3eeNydyfWHxXb3oOcPVMDXx1ZGkoy4BzTIQSNK6b8gV5OG54Wdz382bE2Ewzw0KcIjowGFeeajJq4TltjmdajU3Jp6EpODriaBefGMFbHXEXJQzRpM32xlezr1CMOyZJpBHKFKt9RjVBOO02NT4xl6ixlvGh062uYa4k90mV14XIcPPFpHPWnXLtqo+05DZQ2bsvMquu5Ruxsc3gjUc/ElnR5DsiL3MvVYAIpQ3jT91E4YBFg8Hbtru9drIt7AUYX4+Raj/wYgJZRGkppGADy1AZ+25U/ZvoTrdnpJwCP637+5RcSu2EgdLvugWML2WAXERw9xMN2gidBNrGiTpgSwUL1jGJ1tgP+KAOJhfGnViGUx8SXzSfu6I3jl0kXsyqv601JFEMPe2SLkbMBRgnj88yi0/yeC7WbpxI3PAg8ts/RvWbbsd2lZJmH21wp3hIiaxgfk54beZYK1VnM3Equl9Hfhg5GvL7Z1/RFUvKxelWCqdLoXuIuF9ijGlOBbnEFFKYhTLUTdabEXugw7drof5Gp2DY/qBl/pBgA9Tq6GDaVgLQfI8Z6y2aTqGucM4fP8/b8w7rRSPVycZDhXJxuXyL2ZLVSpCkZiB8ce34LK0hSYtNMlTTVRcZdXFxOeDquSq0tZE2oBX12oVwm25So1QE91qeK5TlRzSzujwqftWiOptMHqaoLpb4WKVf7Xzsp1u/ZSvLWEu50WK553BPRd9bztFXJmYRX5ARB41IzS40H7CrulYbNtf0I3Gf5OIfNqQqwG6XSP3BYaNWb3rIuvlSF5eHOXaQ5P5JPAF0xZCIZdDNqn3A/uOZdVFkfbrKPLN00iIB+Z7IIJL48jWUA1uzuY/Zwv1JPBRY+RbIuukDTxXVf/cWjVWvduWkgLQMgZ/hgUs1FlhUFyPwMBgkQ3ZXOdKUGqwHtMVpsH3UrI0gjXzyBrMgAtCLnQo4rMGz8cOU8v2KzRlOdm022SJz5Yo6O/1zA+eWg98viLrIuzB5siKDwJ8GDhNRO5W1boVkVjSPFT1DdE7BiTsduChCtg7vOf59r0a3biO+0M9hCpa0mIIRd+Dy01B7URK8i+r6o2RANVjIHErHakhPBdSBC8diJTG+4BHIzQlMMdNFD70uG9DHgwRo4e1osOVWuNHwd0Kox38sENaFH3RVXANuLFdqQG6el3yrIZIq4hLx6OZGlmILs3TrFcDHedPdl7TmjCIR/Oc1Gda3VgnH9KE1lynEOaS5ZCIDIXe6Etam6uKErH6iZ3Hz0w8tBWlJWiRDKd+lom7G8uA8YMb6XzjWdMUGTz7FuNCWmBsj2RGe5Gu1txQwJ1Gp3W67Xjjt7o4Qj13RYr9+yniSw7beT3D3HvvsHNQAz4iIn9pcvf8aD63WfbVkRjJkNccB2DduphuUnYA/xR4H/Nrjm+lyBN/3SIaHwS/+W+aAJ6IfGrrgV816DBYMFWBN0civ0ttQD9ucEYI9gs1rL9dVT9PdcT64QgZCMx8HfBbqvo6EXmCtR1xnrFEqMRLVPX6HrW2V+u50O1wFvyxc8ClqvpLFAGOa1k3uxm5T0IP82eq6o+KyEeX4cbYTtHr4VlGAwORUPyHBS6NywYH9KkJ/IKq3ikijyxxHuvM7/Uium1w54zOPxFlF8Q+7dyE28URkwgC+aYKi758LhOrfHUNRSrNePTc7wCuEJEPHau/wSoVnMpV9Szg1+kWmQrNhm6xoLyqebjo3IrtwU+p6r+LyD7W+iCuTgtPffztDM9Nj1yQqDoSTTUXj+KkPnxQrpjO5/nPrdPYQE1dnpGo08Q6h+eas1U/ftmYyA2NpcaONa7d8dSk8fAWTWVOvNZJIEE6IxubU1Xvqk581iKnVvCBJJWOEz/W+puxHYM0d7E0YEen/mb0uOnxB58GtHE4PDjVAXG1PfIaOpW92EvKZIkWw3fPoduTYH/EO5ZKt8F4udhQpKbdb8FaBZF822gWOiYHvxFdF1vwISD3tlCgiiJQ+zZDG+oUbYoHKeJ4pu28/0aEZG+3c5TS7SshQaCfFjGwgP/fvgizw5v1/TVV/RzwvXQD0aaBH1fVD1hnrkorPZrgD1H03Z6gGwV7IkWL0A8ug5EHeP6zBv8PRJtcA37Q0uiqClncE8HdgamMm1D4iKr+G0Xk41yFQCynkMWpQvHfP2nWYWwdhZ/j9llHN2d2lqLj1CdV9YsUhT5Cjno5NSnOBS73oh4C7hGRGxdATu6h21ksXDtritHzVPUmijDXFkenyZXzjuN+1IGQd9vzq0qt7jI6IlKmFPh9Vf0Binz0Q8wvxxs/K8xhzOD7F5hyOU63n/tWirzrL1ekUYb5PGLW+Wh031k7cNeq6vVGAzPML7AU77mP4LtnGRI2ESm9G02L/4fgY6/Yi60UQXSd6N0mF2k1BGv3/Xa2tkfISwa83loc9yzFbGjUd9l6uoo9hqN7scepYom5CM4wZSauuBUY6Ifid4nSF5+0vd4R3b9tTPFaVb3O9qnN0YVllPkFlcp56IPA7SLy9Z686dofS9g2dMJMqy7iaqI177XT9Ph0vtDJWzqat7SZDAjAaJ4qyYCwYczN3vX3NZ8f2oLWTvLq6+Lo4BnIM7K0pm54MHvoKBvOGpOodtokLreVTPAgorXpxu7nNN65/tHWph3jA6M72qP5IW0mQzI6OkJzNpPR9mHPUKrMZjI9dHySPXzdSN0fPEmnHt+qyBw5CQm5qA6n4vbIFbQrhSlzOXVTJYr/Juqlk0t23sy71x+fZ53xNBlt6pk/6DXznk7TD9cGPO0pTz6rDZpIcpokk18Z9M39W7LcbxWRXArbPsHhEpKkzWkPwW1HWedBqV2EormTbk2CVoTmuWO4+HpZ8Scan+oAjVCqHOtXsIAsfD7dYOJ5bY5Nxo1Gru2MbtyMs5S3jwO/aUrEFcb3Jw1S/1lLK3WGBFxo71yniEsB0NTail5ANwAr5IYuNUXpbRQpYSEvNVh3b7AIvUrNJqp889tmjWGCYhPwZeBNkXBeRPGHI37BYN3cD9xtfsiZSGF5lpWUjQvFBEZyj11zDt3WqRgzXg+8lOrKXLFwLVel8pFvZYJuxbx5c7c1mVDVL1FUGgp90MslbON0nKq821AjII0+QZi9GbiRoyO1w+//Avyy7WXb5qxGXOcavZRLGcY572WhnkUK4ybgyuj5eek+nzcFLG7KEvzX32UCOq72lJXWOM6/r9maTUTvv9kOyG9E1eCq9qChqrdSNAPab2vgbB4jJiCTiveNFbm4FOqMnatgmY7aNW+wQkhloRLW5qmm2IWMg1FjFAePVUu+VGjpHcD/pRsl2zL/9M+LyO+XreMImbuIoud4J1rTOEXNlxRJXxEHENYoxLmEdKKTgT8SkXur3t+s9n81d14zchHOmGLw0yVlsCofP+1BS8dRxOp8vXwOjgi39Yc3z+767LNz71uJILmiiUquEtxfiCaoeHTaUWyGR6btp+ylyAN3qagjQ+kgJCi5c7JRlbvkiqJjWrnkK8DgcGvv9PTwWSZMQXGJ4PPWRE3S5Kyhxt2eybv9DOJF8NNazGHaW0EZc2iIR7w4j/NNvKSA95kO1GuuWT88vatsnYffR7bNHGzuHsmtGI6KaoriVKRD3tqaiJ6g2pT8/vfjXBEnMYPkBa6pkgD427QjuU8cWSLSwkNSF8laeFK/IR85/faNV9x2uLwGUdT4bxvP69j5+bWoLkIcnNk2mr5UVZ8pIjcuIW6nylLPjeZ2qOoPiMg/LWChi6o+19CnKfPnf0xEnijxl5NMqQ8lYm+LaBJzX7/Cnt8wA2QQ+EURORQyYCywbptd0zDD4oj/6kTT3AO8XLMv7F2kczBY6busys0r6KaaPQk8G/g+EflkDN9H+eZDFGks620xQsWdfRTJ/O0VRFaHkP8vUOQV5pGltY2ipep1gZlFzLylqm8G3hX5ZmImO8X8ghax5h9D5VKCz3MTBl+LOrb1qgr0lxQlOrfRLYQSSm02SoxTKyylcmGZmPn+WxVBR+9/wNwob7F3jbtczZQUFy3NJU5FciV3SMif//fy8yM6utvKgf6a0UArel6D+cGRPlIWqt49iZh5KHv6CEV0+O6F6Mr24A+Bb7frDjG/fnOzJNSoUOri/HCiw7vJ1vQXe9TTj4XUqZFlGoTTI6aMJIvo6hSUlo8Br6RbPzo1uvppVX2fiDzaYx7nGDMNyFlcy1qZn+9dVWq4innWbE0/BPxRjyBDH52DF5oVdiAyFHx0Lii54+IAyvgMELksOqZU9jRaWo/dsEU1nxF1s5qocwKaoOpFUVRzq3HmUDJEVN0RtTEFPYLvFVNRL4k4FfG6Pkllz9DLpm/XV/QscypyBbOH35k/UEvcuWrtgnNIIPHqJUO8J8drEoRoUepVUhW8vX8HdYnkmkswPbzzfsiJtFokNwy+tiJdLkzgcrLxa/IHBiS9VMhbqkYbgtdcmoqAUxFAcyVxaB6qRygOj+DQpKhh54Myk3VwUtM01eSOwSvu2LWAMN9K0WRrvRkXN5fcqaH40H0UQWLjprC/S1UfiBDW2KByEf1sBP5aRD4SGY0BnZMIgf1jqxE/08OQGStB6U3gzyKFO65rMWLXPEy3ZXPgfY+ZEfEjdo9B4OcsIyWe3yWmNLQoot1DSq9PKRLTN5r15cwaCClKi66bbZN/G0WZ1sFoMWcsAOdzQDuyhkMAzP82P8GBCBIdoKgs9/hyandXjM8BP1fyZ6hZe9ct4EZ4uSEHZxqZtiPBGn9iq6xXZapAVENYRbCqd4ue/7Cq/gTwR2ahCPPruse5+Y6j67mX61lL5A/f1UtDjZ7/QVVtA79IEZkszA9KjFMGywhBuWpYWKNhumVHe5CROuBNRo8/Rzens1zuNhzUNIJa8xL8H/KbQ8vTa4A/MG13oSIqwQJ41Pbgd+0Qha5vWvH+WUmpSUtKlIt8wB8H3moBlr3ou9wHnOi5Sy2IImbtvgX4u1hmGbP8BfOxV1kvoYlMWMcqgZ4xv1ZFVY8BiSyffYYSvbtX0G3090nbg6spWiDXIiXOl1CaWg+3j0TPDyjZDAu2wBV8bWiDbzcHRLR7njJEnIWDFW/jUdv3Qog5BCeZOhyqXnxQ58SpUy+Zz93Xx17ZvIuXH4ulIiKtB2bfPaBocpZHa5a/ruLM8hN8obIZMokKWSFIQwc2q8QmuUcSwae1+qP17RfdI5dfP7dQnEDx/LmH9V3rZUbkAlEdwuVZptJOanhLopQ8J0lSxKs6EVNyPGKRD4oiOOpSFKPPnCbjQ8P6gFzRPCjVzw+G01lGn+MUaY5fKblpwx7/tfHI0PvCmR884ejyx3F58g0UWVqxEukoiqG9yILTGnbmL2R+dcZyP5Pc+NsBiip1d0cKR0CWnkG3tsY9sYyNWry+lW521i4R+ccIyU4jxSAYKo8HFwOQp7YIc8yvura7IjrvWFZ6YgzwbRbE1owggdOB77HJJUapuaq+APgJusX0Q+ebD4jIp1bYzSr2sdxhEPp59q6BCZynqoPl2u4lof6jZilfZnDzSZGPv6rcZdmXGBNAqAx23yJRj3tU9UXA9xlx7aQbfV22wl3JMiwrFkF7vJ1ugRg9hkD7qKr+sxH3Jfb+x0cBKFqhtMQWqZb+LVTn2lsVhVpKJXyrqn6Mojby0yPttmqt85JADVXYDlBEin4D+IyI7Ik1+0XA1U5E7rNgxO8xgXKh0UCtQqjFvts0YigTtudfp6hidU8vha7sOjIXSSMSmhORz2zR58DW+/Oq+ilT4icipOG7VfU0EXkoWhs1X92JzE+fLDdboWJPMuZXewtuvLsNnfmEiEzG1tgCeyAishd4tap+B0WDpZCCmEZrnzO/GUusUCnzg2kHbC6HewXC6bWaTDemNyUJqGqqIpmJJh+aq+Dx1IrWpWkRf66SK8RCzaFuaHPDd/yU6JMTjx8++cCO1z7QWty+FWdh6GWt3Y+/nX2b66Pb/cDwRj/X3CCqdcQ80ebcxSMW7unNms4VydRJ29XGmgO+2RwYOmWvXHF3E66nqhnLUesAIi+ffEiv/bG9U51bTk07s+tq0hnJO7MD1Ivu6IlTJ7kWPKjruPGqkpswzx31hs+0oZLtG3l144DGro3eYxvd3hWzkU9aSnzqAVW9wtDhZ9l1eQm50ZJ1rWYlHwlcC7nr5m57OfAai1vaTrf/Q1YRq5GbVf814IMBao94TFA+TqFb8fDu8rtE8Uv3lNAKX1Lyd9j5HYlc4wD8P2B5vo6JiJB+AAAAAElFTkSuQmCC" alt="Racecourse360.com">
+
+    <div class="filter-container" id="filterContainer">
+                <button class="filter-btn btn-gallop" onclick="setFilter('gallop', this)"><img class="btn-icon" src="data:image/png;base64,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" alt="Galopp"><span class="btn-label"> Galopp</span></button>
+        <button class="filter-btn btn-trot" onclick="setFilter('trot', this)"><img class="btn-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABaCAYAAAD99hnWAAAsH0lEQVR42u1deXycZbV+zswkbbo3pUBbhNIWEAoisojsuAOiwlUEFcQFr7jhwnXhXlFQEUVRUVEBEVQQF5RVQa2CoOyUQmkp0g3a0r1pkzZpkplz/3ifw3fy5vtmJumkDXTm95tf0nSW73vf85zlOcsL1B/1xyB9qGpOVS9U1T3477yq5rbmNeTq21B/DFJw5EWkBKARwA2qepSIFEWktLVBUn/UH9vKOuRoFeJnTlUbVFVU9VRVXaWq81X1ClWdbu+vr2L9UQeS6p6qukhV56rqs6r6hKqexP8rqKoM5PdLfQvqj20g9E0A9gEwlM+RAPIAugGs57MVwAoRaVXV7wH4LwDP8fWjAHxcRO5w7lhxIK61UN+u+mMrgUIY8wqAIQD2AnAigMMJkA0AugCUACiAIoANqvocgH8AmAdgdwBtfM3XVHUVgDki0m6WRES0bkHqjxcLIOxZShNcvuYwAKcBOJKgsNiigUAaRYvyXQBnE0xtfF0JwHIA14vI1fadDO7rAKk/BmfwTSEtRn/fGcCefE4HsAuA8ZTBRgIhTfuX+H9PAZgB4GQAw91rGwGMBXA9gHPJctXM5aoDpP4YKKAMAbA/gNcAeBVdqvEAmviSbgCbnaCXnHul/F1oSdr5vhUAOgBM5HvyzkqNB3AngE+IyBpVLYhIdx0g9cdgcqlGERBvBXAwgB3pCnUA2EjBFyfYOQcQcfJYopXYDGARgHEESoGvMVcs51yyIoBmAE8SJHNUNbel7lYdIPVHrcABAMcQHBMo4MZMDaGGz/FvBhDvUpnlyAHYAcBsAI8AeDWAnRnAayS3sfx2AxiDwIB9S0SuVdV8VgxUB0j9sVVjj1hbq+pEAEcAeAMtS8lpfImeXXSjBMDvaXVOYHyxOUVWNXLPDCDzAQyjBbtIRL67Je5WHSD1x5ZajpwPiFV1LEFxvNP+RQTmSZ0wi3OzSnzdXADfAHAsgJMAbOJ7vUvmZddTwo0AngBwOsF2O4CDAJwhIn/qL0ik0s3HF1RLCq3+eFEzVTBZUNUGAIcSFK8BMNkF1518Wy7S+B4skwD8EcAlAL4K4GgE+jYffXUuQ25LBEkBwEICZQSAt/HvHxGRO/oDEslYgEyabKASMvXHi8NaeH9eVV+GkOw7AcAeFNDNdHV8YtDLmslNF3+OAPAtAuS3CBn2Ffws70ZVI2/K2GcYwbnJBfLnisgtqloAUKxWfiVtIUREyVsfC2AqzdfzAP4tIrP86+qis12C5dUI+YgjyRx1U+BzFOxcilCLswJFhJKREoCzAMwBcDPdrFZaH0SfoSlBvf/sXGSdfGyjjG8uEJHraQG1GvmVtEBLVc/ihY/nDRvz0AngTwDOI9dcB8n2Yz3GMth+L92podTSmxHKRDodOCRDiI25GsP3nEbFexuB1kZwaIZ3U4o+VzIYrVL03UYONAO4VES+XS1IJAUcnwXwWQCr3QfnHErHArgPwBm8obq79RIGBr2JsQya96McbCbLtJwysBeA11PwixkKWAiiZsrW2/naPwMYjVBOkkdvKjeXYj1KKUwYMgAS//94AJeLyJerAYlE4DiAfqCZuUKkDZRaY0cAPxSRbw5kJWX9MbiAkvL3AwF8mKzVUPTMVSDS7l0IdVSLAZxKsNwBYCeCI5cSZ8SJxFJKPOO/QzNiFW+9uqjkfyUi51Wq34pZgXciSfDkI3/PvriBN3Qc2Yt6h9d2EJz7vgtVPUpVr2Xc8DbGqF2RMOYicIxhrHESLdBvKahr0ZPG9R5LyTFU6yl78euAnmUqEl2DRFYlD2AVgHer6vcBFMp1KRpdZxZgT95MQxRoafSeIpF/jIhonfp9aQKD3oFSPkRV30hg/ASBzl0NYCWDdE1hlODcqkcZcxQB/BqBCt5IcEkZd8kC+kUAniGoiimymWa5NEV+8wzYW3k916jqCCtyzLIg3nfbnBLk+C8uIJQONAG4WlWvYteX1C3JS+dhwFDVYar6LgC3ALgaIUdhhYYNFLhSxrMDoY7qEQb3XQTHvnTVh0SASHORjBx6JYB/A3iWIOnkdXSjd14lDRzequX43WsAvBbAL1R1R95vD4DGDVPD+UHdkW/nTZYi1MpcAeBXfM0y+qj1YL02Lk2m0G6la8jRm7Acx17c+3Y+G1MshaI3vTqeluN9BNQNAA6k5SmksFKaInPmajUDeBzALwFcjFBK0kgA5ZxstvEaY+ClsVzm2r0WwI2q+kEA//FlM4UoCLsMwP8xmCqlUHbmDyqAJ0XkybpI90noJYO+VGNTKoHA+i2y3l+DaxyBUK7xJirCdrKW6/k9+/E1aTSrukC4GcBfAXySQnsVAj1sScBihgDHCrnE67hcRG7ha05T1dcgFEfuhCQxqAAOQSiWXO9AkE+RY4tnPgPgzSQOTjLiycBbMM1Ef/NOVT2OC/Q8LUnOBezqzOsBqno9Qi1Odx0EmuZDq4j4SlKt4nPy6JlPMKErikhXuXgvAs8LFr2qhFiSHW8HcC2An1psqqpDAbwRwCnU2t1OJvw1Wg/HeIQGpv+hb/8jvn8lkjxHGsuUFn8MAzALwDd8iYuI3EfgxmuwI4CPkwwYzWvt4E8DxRD0rB5eR6v2ULxPnpnI0wd7NYB30eebwoXYyJv3DSqfYH1LbnsK0lOAUJGkYHnDOG7YrhSgCQg1SKMZz41gMJqjEDY4i91Fn3sTN7MVwDKEIQaLASwB8HyZ8qByJR8eJMUUYXs7gbE3r2NTCiCGUJAbeW0/FZFvEeyX8TPWZIADGRYRFOqxAD5E5Z13oM2l0b3u//dkvHQYZXlnXnseIX+zA5LekiYAN4vIx2N5NherICLdqjqZJmcWb6yAkAB6IzdwLS/4SoLjJZsDyQJCVqylqiMo9BMQynMmU8FMoLsxjgAQugMb6QYsp7VeQUHbG6EdtTsKNM2SF9zvOVrzNgDLVHUhgKcRBhwsJYBaRaSzynvOA3gZQhXsYQjVuLsSGOtc0JxHkicr8V4eZRD9BxF5WlV3APAdhOz7aiTlI1KG8YoJo2EIfSEzGAYUHZhL5fZNRJ7mWlypqrsxlvooQlNXG4CfAngPkt6VlS6ATwBCIe8m4i5FKBY7gi98jFz3LTRZhxNxD7yUGKto4oYiKcjTDBM+kUHsXvw5mVbBSI5OAC0U/KcJgmUIlaar+O9WEWnnZ76KWnYf5gvaUnx8sySa4rsXCMqXUxC6CcL1CJNBVlCzr0GS/bbPKhAUuyFMDdmVgrmZGncVNewYAlx5b08CeIDPh0VkHe+lUVVPpZuza5WWQyPwWGA+HMAtlM98FLeUcxXVWZiSiCwGcLmqbkSoGJ5Keb4UwKdpTe52wOx5gap6LIAfIGmP3ESN9jy1w4MicqOqTqF2u+fFWF7iAtFcllvhXjuc9zoFwAEIgwam0oI2UAg3co0WEwgLHAjWVNLcqnoMgI9QITXw8zrQO2MsUSBbLWNolmYIelZGdCEZseMD4i4Xdza4PMYa0quzADwM4BERWePuY28Gx/vT+uxOgLVH8SsqsEv+/vJcizeLyPNbUvdHsNjze6SZmwD8AcAvAOwkIo+mfYdwMPCt1A5tXMR1TmOtYZLmHqJZXwwl732JFWgVptFXPYDadEeuCaiJV1BrzqELswzAynIgYOyRi66hk4rmfwC8ztGn3mKkCY6maNy00owYVKWUnIBnI/O8z2EERSfvbS6tw0MAZotIl7uvKXS/DiarNYWfUUTSA5JHzzqqrHtKo3aLtFg3iMhnax3nUvl1RveUCkBR1a8iFB5ucFqjwZl1+3eOQLlCRK4zZA50gF4NGKsFAzXJBPr50+mSTKPLNIIaayn93ocQ2jcXEAjlfF7zy0t+0TNefxKAC+kLtzgtX0oJVtOAkdV6msugkjUFEE10X3IE/3MITUYP062eE3UJ7kHlcQjChJJJ/AwlGLqc1ctlXEManYvovv19jmCMcC+irsVaylKlWixR1TvoKxYjPzy+uRwvehj57XNFZKnnjGtlUTJaOXPRIr+wwBmFdA2MDfailtuXpr+Z97KClmAWAbEQwNIsAU/psOzFnPB1TXTNxtG3HU2h3Mx45UznyqQ1BcWCIxnuVK4CdawuqC44irOdccgciyFEZG50r80ExNF0/yY5a7qZoCihZ10UyrhOcXBertXbejeeBvAWAN219lT64gEVqFF95J42OcKAs4nB3hEArlPVD4jIgogFKTdFDxk+ZxrdaHTdJABdIrIyi/VQ1ZEEw74Ew8vpJg3j9S6kJbiNoFjsfegyQIhzCZ5i9JTiblyTQwnICQRGg1tb8/tbndBmWQetAA6kKDGvwYcgyTJvJg38OIAHCYh50T1PplXdn+s3jQm4Aq1qBz0MRc/MNcq4glJlnJSmkEcCuF1EuqoNzvvy6AvgRFUfceYy7YbTfOIOWpOFNIMjADxrCUNX9NWvDC/7D05GqBSdTGDOAXANtd7u9HtfTq08gQLRwmByJuOFRSLSWkstE3Hxh9I9PYqA6OLaFDMCT40SbFKB6swCRSmyEI3U8A1cq2cJiPsAPCQiz7jrbyRbdghC2ccejLeaHHtkFi6ODbSM+xd7G1qGpUrzBPz9CIDXi8iz2zrPJqp6KwXOl5bkMrS7v5lOLup8muDlzJ7+TkTaUgSukX7vcG7oGLohowiwXbhRw6nFptIdaONmDeXmd7gNLSGMpHyS8dFqJEVsje45xGlsE7ASX9tJgbYmoI3Uluv5cw0D6xeaa+iTf4oc/xC+r8ttujo/uisKlFEmaVdOoCyOsGmDQ3lPXQyqHwfwL1oID4jRdJeOAPAKKpYdXFDd6UCt0f4L0uukslyprCalckD3NX7Wq3GziHxiMCShRVWvRihd7nB+aq+8QIbGs6Fg3XRnhtN3/B03bzfmB4ZxQwwgQ5ypLqBnD0CeQNjozLgVTzYiVIMu52s6XSbXBKbbvb/Vcf5F9+x0gLDxl0XeZzdCWUcpw2qcDeAc3kdLRGqY9hValIe4BmOQ9EsgAlKWQHlQFagQrMzjeQbT9yPMCZjnrnUXMkwHuaRjM5LMfKdbj5jcyBJ2zRDyNKuS9rc0q2MZ7G63v13cx9OYeJTBAJAL6Ca0Rubf+5hDnaYx1kUzwNPk8gTeKplw+vLkotPmOaeNRyKpoyk6lujrInLZVqaLrQRnZ4SZTccjGdWfj4Sh263b1/mab/Ce8ik5jLTJghYbDkUyx3Ytadd/MaE1043cmUoFdzBdp4m0yuIsZHeGdagU5GsZ4GR5F+X+Ls6N2kiQH877XM89vw+htGVQpBEK1HLvR8/2WluIBrotz9KteZkL3Iro3cFlLElrtCEebN2RIJi70MXv2Zsu0y/pH4/jYv5ORO5nfFNOS2kVm6nVBGwOHAcijKaZTO09BL3bQYsEdiuAs0TkPlX9m9PWacV9GrlNTfzsLgbW9yNMNP+XiLQ4QLyX1awGiGHOTewkoNI69GILJRWsRda6VstIZYGwm2DYHcAPEcaV7kN5uM6KZ2sdnPfXguyEMIVulLsgiTKxC8lHt/BGDmPcYaxMh+Pic0hvuBLnQpmV2YDQJfZPBtbvIlg+FbFW2Fp5lxRwvA3ARc5HHpJC9xadT3+6iDyoqu8B8E2EGp/GFGZMXHykTMg+BuDvAO4VkUUOEIdzzacjFN01RYAoRkAoJ8D90cppLmFa3CQVWCpxclKkm7oAwOcQekamESzdgyUJbaUmVzGra5l0pFgSJUX6ZyaVJiLU47+KQd8QZ9atXCLv4gMhIBYw7zAToWThKdKMXwLwhIh8j9dUiIRpq7T2+sSRqr6P17XRxQIx719y2vgDIvIAP+PXDIxXIamXGobkuLHVdJvu5tNOSppEd+lwxhGT+b4uJGN2SijfploNEyYV8hYok9vQMolMpFjXtN+ttGUU49aTeZ8rB4t75QHybgDfRtJAX0pZnJLb4IUAfoMwDW8pGacj6Qu/goF5J4VgPpmmpwisZ6LE2mcQBtRdRLdkm5WxREzVuQgFd+ud5dMUoeyku/ApEbmJnzGWQt/shGUDmbaZCGU7jyCU9OxAlulQUq+7U7MWqWjSknJapYtTScilj4DSKuSpXJIw7e823+DPInL6YGufMICMB/A3p6myJuLZxgyjULTS9bpYRB53Sbs9zI+2Ks/YTVLV3RGqKdcC+IyIrK/VoSdb6FIJXaMz6PbkUnIPHhzjAFwtIl/hoTGdCBnoP1IzPoRwxt6D1I6jEOq9XkeF8jIkU0E6HC2cFjtIRpwl1e410rP2adpfI8HWMsk9VGGVpAzwSlzHd4vI3wdTG4U4wfg6QmP9uojuLcdgNFBbLkBo0Vyf0nRTcAGxJRLfiHDe3NUicmvk3vSY/7qVXCor+d8B4Sy8N9L6xV19Psi0Pum5SIagKbO/O3NdnmG8sB+t5MG0ts38XKOZu1MSZ2kD06QC7VqOUcoKmLMAVinRhz6Aspyls5zaWAA/p6IZVAAxjT4NwI2OXYoDvqwmlzwD9gtE5JIKwjgWwH8zELuAGnpX/vfjUYIrP5BxR1zvpaqHk5KdFlmOnIs/TMuPRUgCbgRwgojMcZ87hMm4gxAy7AcwsLayj3YkWep8GeGshlItFzRnaf9qLE9Wxrw/lgsptHIuhdUaBeBOETlrMLlZLwzNEpFnVPUvTNK0RLFHGlh84P4DAHfRvdqFAmGtpeP477FI2kzXIXSbjXAL3aaqsxDqpWZ4FquWYIkOmSwy03w2qe68i8M8jT2aPx+i9n+EccRfRWQ5lcsBDKwP4X03IklIrnZxjCVHy5VcSEocWI21qEbja5WBu6S4WtXEFdWCOe27Bt1sA/HBKTXfn50LEU/J89TvfArJCgr/VIRiQaMhrTSi6EBmmdyC+73krNZIAm8J+f+bAdzvBgr4LjGt0kqkVv6q6iiErrLTed+tkRAPcRTsMoRzKx7h2rQxX3MUXSezEm10uYY5siMfrV1Mm+ZSBKWUIrC2Zt1IL2pElTGClgnYK1kO6ae7JRVcLzs67XIRuWhQuVgpwfPnAHyMmrQxJRYx7bqa/28HLPpSjm5Hf3pQSYoQ+DGTBqYGWpcSQpHibQD+ZLmBLbEqrKM6ESEjviuSU4wse19AKGWZyfzMAwTsBDJ1B5B12pWvXYWQ2PwXcxhLECbgj0dSxlJOqHJVaPgmWnVz77oygFVNFa2k5GMqWalq45lqAvIYnHYfYwCcJiL/GKwAscVtouaezA1OO4nU3ASjIjUCQZoPHSfKsgYP+8XNk/Is0FLdw2v7l4hsigJ7deUXduLqUIQKgJ2YrzkIoRzdigjFWbvnHeM0i3+bSkbqGFoZs3DzEAYU/AOhOPA5t47jSPE2IakV8yxYuZL2NELE6svuIBGSR/oQ5/jzKjFNmvHdpQqviz+rVMFCVAKHcI8XIQwI2Tzo8iApVuS1CKUe69B7oFclX9jXaPmhAvFAbPs7qMW7Iitjm2IWKYekJHsxgL8AuE1EZsd0LV+7L0L22ZqlLCdhU0DWEAiPM6/TRitxEJ/WEyH8vybmMi4A8DdPXxOQpjB2o5tq2eJY8CrFFXG8NxLAj2i99kJSD5dG92oG29Xfsvpq8yzFKly9+P/yTrFOBHCOiPxssE3KkTL5gK+7XEAjssufrcG/Eb0L8rz22Uw/fwN/bkbSOLQH3ZsW9Kxb0uhpsYxVBW+k1r8DwF2+eSstMEfSwJSjdZmAkNg8jMH1bvyODfz/p/i+PRAShh8UkYejz1RHdJRYt3Wdu798htCVyrgqtmYTEMbTNDFeanF7US7gzjpeuZKm1zJCndVC24mkojuXwlyleQfqlNX9CKNrL3RpAd2aVH9fAWKHpgxlsmtv9Jx16ovs4NiH9U4zL+PvbQ4MLbRIBQemDpcr+BLzD1aSstlpmtiCWbxiBX6N/P75CNn6P4nIPSmWZRqBcARCs9WO1NDDCLZ1/KwmUr6rEeqw5gD4rIjMzzrjzrUeH44wtzjtxKVq/HxTJuMZyzxMq9WCaGZTBhMUg8Sqgq1mzmfkswBSTTxRJDAe5RruSU+gkOLqlcoAuYt5tL8BuElElsdrui2BUsjQuI28qYsRJnrHh5tYAN7KYN4sQ9EFXDvS17ecQaOLUxr4HEJhmIEwsG4aQh/y0QgZ5hx69gv4oWUGsjb6rwv5fBLAalUdwzjKWklfyZhilOPeO/jeRylIb2fQfRY37mtMHF5Bq5ovk+nP8TWKpDq5UvFeWq7AjguYiVDE9zUCuC2KacoFzLZfIwiw/yA0dzUjmbpezABZNY1O6tin6QijcybRqm+O3pMGDl+d0IikoesjqjoDoXj2XpsYM9A5sb4E6aDw/Yw33kHXJ4fsrrdGJ/zd6Dk9o8G93mb6bkbSPGTHKOyO0GI5wyUUj+SmHs7cSpFafgmBMJfB8hIKtU0s2QuhhGN/AjXv4hsbyr0AwF0EZjtBeQqF6UKC8xAAvxCRpT4+y1Ao5paORJi7dCyvNZ8SNGedvWcxyyje3ykisoIW60MIA86KznJqhtD6Dr0JAL4iIt9V1YkIU8xPJGFhPT6bXAxRSGHV0uhn//exjOOuReiBaS2TAM1KZJacLDVRRuYCuIlWZdW2AkpWkH4CLcdGLiCQfnKQ1yx+Up/1NZhG3IikCtVGzjQ6F+DnAD7vchVxucornMayCtBmCrKN7tkFofBvDAWohS5SkZq0DcmUyFm0cB9G6KnfBOASEfk1M+E7GjNVKWh04JgK4PsUvnUoX+6R9u/NtBRrAbyT/dgvuBiqegTCONhmKi5kCKwPnMchjNu8JSoQ3ZMa+0gSGDuhZz1YN3qftRGD0BdwTqQH0I1Q9LocPZvJssiC2M0rue+2KvAV3LNfi8jCiLkccPcrLQYxkLwdoZhwE3oPrvY0nWm/kdyUxRRAG6eznBp+MzdhJwr2K+kC/VtEfhNdw0S+bjKFe2cCYCpN+Rj0Pm7Y2K411GhmhTYwlvqxiCzgOYynkKlaRi11u/WdO6q47AGPUeXvcYxVRnK9GpA9Cyqt1dZ67lcCOFNE5kVtvjY7eR+yi6Odu5WWLPSC9jYRWewGaZSiuVCTmNs5BEnP+jgklQDd6H1QTRyEWwfpIQDOo8Vbgt4dl2muXFzvFvf1D+W6riNQfmmFsVsDLFJBK76FLkMpCtR9/7id9vN3hKENM7yfzoy1zYZqB7DBZtK61zQwQH8PgWCJwqHcqPgw0SIXbCXdpbV0tx7itbyTn/UogO+IyGNOGCbSos0Xkc3xPXuiohwj5ip/z6H27HDMVTl2KgZINwXyOYRmq3lpVktVG1gI+X6ErP66KIaMrUcTwsjYU+P7KVeR4KZMTkUyU2A0n2NopUc5BrLgrNXPEUap3oBQvr8mI0Pvh2+nsW+xl2LMpnkC95PAuNdc4Er7VlOARFrrSFKNllwrOHapgFDufqmI/Jvv24fCfjBji2Ho2X8OJI1T9wL4p+ueO4YuwYGOydpIK/QsA+rnuPDPA1jlwaaq/4VwAFAHfe87nUD0mgiepVVTtJMJkx/ksDe/60gkRxjnMnISKPPv8bS2HxKRRVkunfnfTFpeieQkYknJyBfpQn5RRK4q5yZGc8Cy1uFwKsIWx7LBubxmWbrI9I2mYn0Ftf8I9DyU045zKGZUFmTleQwoNsRuDVnLGQgt2Z21LnQsmwRyIDkMwBcotMt4YS0AFojIX/na4xDK5Q/iogDRpBCncfIublmN0CtxjYg8xM96PQVgCUIJfVuF6zyCbM9ujAN+yOvuAQxXLQD0b15XnnTmOxBOJBqBnsMuUCYxWIpyOSMYi/0R4aCZDRUE2az6sSRRNiC9LcF8+zYAbxKR1X3RrJFSMILjHMaIS+kFtNCVXMvf2531nCkif3Kusk2Mt8LUfagAd3XKswM9h0tomaDeDwrxbOjdAM7mOtYMJFLFguUqnGp0MIBzqS18PKJ0gRZSw1pH4k5I5l9ZqYoNPbsTwNdEZEkZLWe+fzep3C8jVOLeAuB/qw2uqxAS8HpPZAw0hQlDn9TsyvCzJcoXwCX4ChSG2Qj9MLdVuc4GkBMQTpldF1kQe3TSDfqaiFxeo3UYjTAJfYpLDOadsgOSkT3/ZFITZdzURrpw05AM/9uZzzGUn9gixr0zhciKjeeavk9EVtbK3ZIqF8rTvEa1FVX1HIT+DjOdDUz83UX36T8isjZFC4+jJjma1ONEJBWdawB8XkRu90m5lP6NkwF8kdrrAkcRb3FyyREVlzCW2RyxdcWUDHlWpnwk3zOLoJrHpNjDvK9cNdbMAeTdCB2PayNrbFbKZpO9lcKsNVqL6SQ0DISIgnZ/KtRbeGRBPlXosl3IZkfIjKMytRh2V/e3Mdz3TVFc10yQnE72C1tqSaSfi9VEhustdJFG88IuZ5DeFWkhcYsTxwHjEKaZnMUF2ERNdJGIXOHeb4zRFGa5DyDtebk7CF63VGs4QTwc4RTf9RGDl0sJuBU9q5dtimQDQrnK1xF6RzLHmPbhur6A0L9iFiR240YgVMXeXytXw333idzjdejdBmHfP57x1G1l4qk+H2PH91m/0SF0+3YhQ2pupSVZ/yEi76tFC3eur+aWeYJrKNQ2BvTH5O7vsIHDqpozM8ejy0oUZLFD6rmAa0TkcoQ5vHcRbG0ALuBAh0Y7+kxVP0zt2wDgRBH5oR0AHx2W2V9BkPBD88xiN0ZMmk/8FV1sZaAYw2B2I7PBHwbwBhH5i1lBW5ssTVpFFntv9JxI6TPwI0mD3m9rUhM/PKkiuJUx3iiX7PWlK1bp8IYKn2cyUeTTy0XOZMM/+b5WEZkrItfS9b2dCmGEc19XAXiNqp5BN7ywVSyI0yKXIBQxttAX/ZiI3N5fv9/3hPPfXyKT1cAA+GBalh8wO/4lEbmiVu5Uxj2+jX7+WvSsBbMaMEti2ZC3tcz/PEYK8iERWVFtHFfNGhFgdvTEJPSuj2sk23cCrZ7U+NCZF1xcVb0C4ejk9fxez9A10U0+hoM4pMbHYth1mLwcSXLoWO6HtUuPBXC+iFy7JZakUOWF5Zz/ewrZjOEMiO52sUKxH9pJAXjG6auquokZ3guZ0ziHFO/RnKNls6uKNRYAZd7mHEcsGJtjdUNDGGfN4/MJ+vxLUs4z6UUPb4GlLyKU7u+MpIzFK7oxCKNZWwaiZJwALXGdPkv3Zm8kBYoGgnYCeH8G7DnUaEKiOzey5MZD3QPgHlXdC8BXmH9Zy+v6NvNHVw1YGb25Sqo6WVXn8rlMVU9xSb5afdcL7oeqTlfV36nqIlW9g8wHttRkVqBwoaqfVtWlqjpLVeeo6pOq+oSqPq+qT6nqqTzCK+v68479qdke8Of3VfUZVX2M12XXZ/vyMnNTMEAPdy1TVPV+fu8TvJa5qjpbVVeq6hcHcr8i+bS9a1LVn1I+56jq0/z9/f29llx1wBWl1hhN03WjiPyWpqurlu4NwqSVLyJ07L2SCcKpzDsA/RudWa2FnEb3rsMlo4bSxZsN4B0icoOIbIx8ZYu3zKfWGl9biRryeDJqBRcUm9u3AUBb1um8NbQkFvMtQMiaFx17VXJW5LXmWQwkQCyW4TW1c/9+z9h4E93O/1PVD9lpuX1RYLk+CM7RZC+WAriQX1KslUbi9+yNcKDoFwCczyB3V274mao6zJV41NK1EmqhbyOZUWzTTOYi9KqcKCKzVbVAMPQIMgewaM726BgCtYj0urjxCLVr1ea3JAqEc30QShPIx0i1j0HPdoaNVGr7+D0eYKAU+T0lEfkkQvXHWAK3BcD5qvopX05UCwtiH3IqkgrdX7H8OFcjStUYjLMRsqFjGeB9X0T+QT+2yAV/s8vF1Ophlut/SQjYITxjEWqL3ioiPxORDiqMrT1Y2bTyI7y24ejZz2ElLqNpYSoChOuuDuDFvsZJFMgCma0vcL3sWmyoxPFcK9kaC+ULTUXkfxEqDuz0sXZakot475qVp+kzrauqd9Knm8VYZIv8XHNJ+Ps0Vf29qrap6ndUdYT7XlHV4+lLPsvDfmqmkcwnVdXTVHWhqs5U1Uf5XZc4TVuodVzRz73YV1VvYFw2m/HHPK7Pc6o6Q1WH+vUts+6NqvoGVf2eqn6Do2DR1/t0a/g5VV3j4pDZqnovDwTdKlYkto78/WJVXc34cS5jyR+zCqP/1+WCsf0YFM5T1ev7uoie+/ecNv/vDH7uo6r65ijYtY3cQVUfptA+YAHylgqs29g3U8AeV9VHVHWxql4WC9S2frj9yKnqRxisL6Xi+o+q/l1Vz4hJhxhk/P0dqnqbqi7guq7j+4e7vSq4Pcu5PEWcqygYUaOqV3H9nqAyXaKq56Vdz1YCiV33tbzPmdzjZ1T1r6q6fyVZylXhXu3LRIwdtlNtcO+TQkXvs9MKXYOQjb8bwHEicocBwwJd/r4aofLXWkin9DWHk6JFcwzYjkFIfBlHPol5jHON9h0042d6Vgv8hHT7U3StNiAkCf9bVb+lqpMsTojAdaCq/h7AJQj1T+1873Jz3dxedbs9K5lbkpLk62ZyeB+6M1b+Yf0kJ6jq0FrHjlVSwvbz41wrK5bdhNB5+gvOUc4ESTW011QkJxg93RcEU8ibyXZMRxjVU0SovB0K4Dyf9EvhqY1DfxKhU6+AUIvzRH8AYsE1f387wqlRxrTsxO/5yECUTdfYxy6IyKOq+laEkvt3IFQfNCLUjr1eVc8zpeNYrWkIzWp2nqOdV2gFf+9V1Xu47u9EqI629uRFSBq7mhlzTCIxsCcZxxH8zDySKScvxEtbW9lQqRREpFVVf4PQR7OGsXQrAX0sO0lTT7SqBiATkJRXrO5r/IJkplMHwqjO4QiJtk9avZAFfWU+chmSSuHmPrgkLzQFOcAejXBC7cHczHZe07MA3iMi6wYjOKKN7+Y1bgTwRVV9DKGqeQRCkmwkgMtU9Zsi8jMXuP5GVW9EqKE7nUJtxZQNCInZjVy3Zvf7mUjOSbdmthFIasE6kExNMZmy/vo/WPnRNpp3ZezWTWRFJ/FeOgmW96jq78DkYwzicgCxF1r7qM21qiYXIe4MkEMRKittcZ9BaAPd0MdFG+ao16pyB7E/zr6WXxFsLUiK3NYDeL9VoA6mwWUVtKOVXfxGVZ9GGAi+FxUKAJxHiv58CmkD81Y3AbiJfTSm/Y9CcrxcG90uz6KNRFJuY+cgAr2napYoV1NI2f/E6NdttE6mHNeo6kfpXg5BaAko0TP5koh8mfFUjzxWNRakiJ5Dp6tU4CpEqJmyFnL1txIcDVUkGc2NstonVMq9mBvFPpURCG2ZXUY4EGjP0x0p8t9nMsfxogBH5Gcb3TqTNWRfRSh1b6EF+BCAvVT1o5xE30CrWhSRexHaEqwd+XiEItSpSAZD2CGr1phkbcI2NqmdPzv4/438/dd0oYsD0QrbH2UiIo+wn2YoQinMxbyfM1R1sYhc7cODSgAx4VzJxcgzIVQxQLY+BxFZpaqfpvkfRc11KTVKNcVjtqg78/WFcm6eKzb8NEITlwC4VlUvQhgf9Cb3/i6EeqKLODB5m51uVSOXKy8irQA+parrEAaQr6eSOgzAjar6SQpJztGbRkYsBXClql5HkJ2EZJTTKj6X8PPm898rkAzk6EAyAmqT9QFta3CkyGQ7QX2Xqn4eIaHYCuArVBLfAdChquVjJueWnEEa9D+q+n7PMfeFUuWsq/7y/9eSmrOpJGk0Zt7RtstJHz9FGvRe3oPVC81X1VWq+kfmAwYNnVsLapO/n8OaqKdJ088l9XpmBvUrvlZJVV/FtdyPVcT9znUNwjUy6rqZ1O8iykubqv7Iy5NU8uPpqlxNE/t3EfloX4LYaJRO1Qd0RizYzWRN1iCc6NTmNVPUInszkkFzBceGDaGWewph8MMchMFwrYNFy9VKAJCUpZ+BUOHa4tajGWECzedpTTWaeJK5RymKMaubUgfzejpP4zIA73bxVDu9pI+LyK2qmq8mSH+SPvsuAA7hgZ+rqwWJCyb7SvMZxXsUqclOAE8SHPF351zH23QGmOYejKFg3AHgKoReje4YiHiJPKK45Be0KOchmde1gRTuJhH5WExvphxWpCbwVcZnL6a1XMyfNmPM5kKfr6ozASzNVeGzbUIYydlEkJzMRexrsrCvC2evP43xzyhqPiC91RMIs3WN6RpLbTkPoW/lgyJyn1GkLin5kgFHCr2ZF5FrECqRxyE5t34lQrXtOFfk10uxbYVCzG31MHn5OULx7VgkQ9VtZOsFFe/b+bMHs9bnOZZ7jBhIH9PFE4cy7lioqg+yJzn2ne0ad+Nr56vqP1X1UlU9mVPqEQWm28XDlICqHqeq61lu8RzjkcWq+sPteG1Mbk5Q1V+q6t2Mc1fy2aaq51Y99ofsxuuIvktF5NsDwfy4ET85hAl9e9JN+iqHOOSjzj2LVSYgzFt6CsCzNhnc+5zYDh9u/z6I0CuxCCFHYbTt9SLy5e1xnaI4dhjCdJ2JCOmIMagmdxMVLS5iUd/jqvpqY6hqzDBYEeH5tAazVPV2dotVbbUGqrvvRRy4wxV67sdivSfIcl25LapuB4sC2eJ7diD5KIX2AT6n1wokUYnyJ0jDPkGz9+oMFiWLvtvuQVFmD+3nVCqf2WxLtSTaVq+8HSxKJG2iSp+Elx/wI+ZEjFc/cEuRGJXAf4J5jKdYhv2x7XXTBkgIbB8PpfVYwL1cxN/3q693/xdXGKD/kbX+86jlT+uLJvdodX8bzeaWBUzerGMGvL5Ztd1Hc2HP5RrPJkBmMpE6g1T+dudupT36O1mxGSFF/xqEcoPhCEMWfioiD6SY9h4Hp0SFhI0IZQ1nM0BqRSgtuVJEvlKriYn1R689nIQweG04QoKsG8nwuUcBfIAFjrI9r71swQI3IpRHvwMhCTWMzMiDCDVX/yablDZ6cgiZlKMRchf7IlSQ2smnF4vIdXVwDBhILJN8FsIMsBKSat0uhDzA7xH6eDoHc+n/oANICj32BoTz86YjOREoh5DNXoSQrWxHcq7DKFoIO2G2iGSU5gyC4+nB3pPxUnCZSY+P5l5MQkJvgsruBhFZuz1bEdmSBUbS9zEcwPsAfAChzr4dvQ/5bHAWoo0/rY12IcIQ6pu9hquL8dYBSX0lsh//DzthZX3UycTaAAAAAElFTkSuQmCC" alt="Ügető"><span class="btn-label"> Ügető</span></button>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+        <button class="back-btn" id="backBtn" onclick="resetToGlobe()">← <span class="full-text">Vissza a földgömbhöz</span></button>
+        <button id="legalInfoBtn" onclick="openLegal('privacy')" title="Adatvédelem / Impresszum">ⓘ</button>
+
+        <div class="dropdown-wrap">
+            <button id="langBtn" onclick="toggleDropdown('langMenu')" title="Nyelv / Language">🌐</button>
+            <div class="dropdown-menu" id="langMenu">
+                <button onclick="setLanguage('en', this)"><span class="dd-flag">🇬🇧</span> English</button>
+                <button onclick="setLanguage('de', this)"><span class="dd-flag">🇩🇪</span> Deutsch</button>
+                <button onclick="setLanguage('fr', this)"><span class="dd-flag">🇫🇷</span> Français</button>
+                <button onclick="setLanguage('sv', this)"><span class="dd-flag">🇸🇪</span> Svenska</button>
+                <button onclick="setLanguage('es', this)"><span class="dd-flag">🇪🇸</span> Español</button>
+                <button onclick="setLanguage('it', this)"><span class="dd-flag">🇮🇹</span> Italiano</button>
+                <button onclick="setLanguage('ja', this)"><span class="dd-flag">🇯🇵</span> 日本語</button>
+                <button onclick="setLanguage('zh', this)"><span class="dd-flag">🇨🇳</span> 中文</button>
+                <button onclick="setLanguage('ar', this)"><span class="dd-flag">🇸🇦</span> العربية</button>
+                <button onclick="setLanguage('hu', this)"><span class="dd-flag">🇭🇺</span> Magyar</button>
+            </div>
+        </div>
+
+        <div class="dropdown-wrap">
+            <button id="hamburgerBtn" onclick="toggleDropdown('hamburgerMenu')" title="Menü">☰</button>
+            <div class="dropdown-menu" id="hamburgerMenu">
+                <button onclick="openInfo('about')" data-i18n="menuAbout">Rólunk</button>
+                <button onclick="openInfo('contact')" data-i18n="menuContact">Kontakt</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Rólunk / Kontakt modal -->
+<div id="infoModal">
+    <div class="legal-box">
+        <button class="legal-close" onclick="closeInfo()">✕</button>
+        <div class="legal-tabs">
+            <button class="legal-tab-btn active" id="infoTabAbout" onclick="switchInfoTab('about')">Rólunk</button>
+            <button class="legal-tab-btn" id="infoTabContact" onclick="switchInfoTab('contact')">Kontakt</button>
+        </div>
+
+        <div class="legal-tab-content active" data-info="about">
+            <h2>Rólunk</h2>
+            <p>A Racecourse360 egy független, hobbi- és tájékoztató célú projekt, amelynek célja, hogy egyetlen, könnyen áttekinthető térképen mutassa be a nemzetközi ügető- és galoppversenypályákat, azok történetét és alapadatait.</p>
+            <p>Az oldalon szereplő adatokat nyilvánosan elérhető forrásokból (hivatalos szövetségi honlapok, sajtóanyagok, közhiteles nyilvántartások) gyűjtöttük össze és dolgoztuk fel saját szerkesztésben.</p>
+            <p style="margin-top:16px;font-size:0.72rem;color:#64748b;">⚠️ Ez egy minta "Rólunk" szöveg – éles publikálás előtt érdemes a tényleges projekt/csapat bemutatására cserélni.</p>
+        </div>
+
+        <div class="legal-tab-content" data-info="contact">
+            <h2>Kontakt</h2>
+            <p><b>E-mail:</b> <i>[ide kerül a kapcsolattartási e-mail cím]</i></p>
+            <p><b>Közösségi média:</b> <i>[ide kerülnek a linkek, ha vannak]</i></p>
+            <p style="margin-top:16px;font-size:0.72rem;color:#64748b;">⚠️ Ez egy minta kontakt-oldal – töltsd ki a tényleges elérhetőségekkel.</p>
+        </div>
+    </div>
+</div>
+
+<div id="globeLayer">
+    <div id="globeViz"></div>
+</div>
+
+<div id="mapLayer">
+    <div id="mapViz"></div>
+</div>
+
+<div class="layer-toggle" id="layerToggle">
+    <button class="active" id="btnSatellite" onclick="setBaseLayer('satellite')">🛰️ Műhold</button>
+    <button id="btnStreet" onclick="setBaseLayer('street')">🗺️ Térkép</button>
+</div>
+
+<div class="country-panel" id="countryPanel">
+    <div class="drag-handle" id="dragHandle" onclick="togglePanelCollapse()"></div>
+    <h2 id="panelTitle"></h2>
+    <div class="sub" id="panelSub"></div>
+    <div id="panelTracks"></div>
+</div>
+
+<div class="instruction-bar" id="instructionBar">
+    💡 Válassz egy színezett országot a versenypályák megtekintéséhez!
+</div>
+
+<script>
+// ================================================================
+// 1) PÁLYA-ADATBÁZIS
+// ================================================================
+const trackDatabase = {
+    SWE: [
+        { name: "Jägersro", city: "Malmö", lat: 55.5699, lng: 13.0697, founded: 1907, status: "active", length: 1000, org: "Skånska Travsällskapet / Svensk Travsport", ownSite: "https://www.travsport.se/travbanor/jagersro/", operatorSite: null, operatorName: null, note: "Svédország legrégebbi pályája; egyetlen kombinált ügető-galopp aréna" },
+        { name: "Solvalla", city: "Stockholm", lat: 59.3666, lng: 17.9397, founded: 1927, status: "active", length: 1000, org: "Stockholms Travsällskap / Svensk Travsport", ownSite: "https://www.solvalla.se/", operatorSite: null, operatorName: null, note: "Skandinávia legnagyobb pályája; az Elitloppet otthona" },
+        { name: "Åbytravet", city: "Mölndal", lat: 57.6500, lng: 12.0017, founded: 1936, status: "active", length: 1000, org: "Svensk Travsport", ownSite: null, operatorSite: null, operatorName: null, note: "Svédország 2. legnagyobb pályája" },
+        { name: "Färjestad", city: "Karlstad", lat: 59.4085, lng: 13.5006, founded: 1936, status: "active", length: 1000, org: "Svensk Travsport", ownSite: null, operatorSite: null, operatorName: null, note: "Unionstravet – közös svéd-norvég futam" },
+        { name: "Bergsåkers travbana", city: "Sundsvall", lat: 62.4151, lng: 17.2269, founded: 1932, status: "active", length: 1000, org: "Norrlands Travsällskap / Svensk Travsport", ownSite: null, operatorSite: null, operatorName: null, note: "Svédország 3. legrégebbi pályája" },
+        { name: "Axevalla travbana", city: "Axvall", lat: 58.4006, lng: 13.5642, founded: 1956, status: "active", length: 1000, org: "Svensk Travsport", ownSite: null, operatorSite: null, operatorName: null, note: "Az ország leghosszabb célegyenese" },
+        { name: "Sundbyholms travbana", city: "Eskilstuna", lat: 59.4388, lng: 16.6138, founded: 1955, status: "active", length: 1000, org: "Sörmlands Travsällskap", ownSite: "https://www.sundbyholm.com/", operatorSite: null, operatorName: null, note: "A Breeders' Crown döntőinek helyszíne 2008 óta" },
+        { name: "Bodentravet", city: "Boden", lat: 65.8133, lng: 21.7057, founded: 1944, status: "active", length: 1000, org: "Norrbottens Travsällskap", ownSite: null, operatorSite: null, operatorName: null, note: "Svédország legészakibb travbanája" },
+        { name: "Gävletravet", city: "Gävle", lat: 60.6885, lng: 17.1384, founded: 1938, status: "active", length: 1000, org: "Gefle-Dala Travsällskap", ownSite: null, operatorSite: null, operatorName: null, note: "\"Sveriges snabbaste bana\" – az ország leggyorsabb pályája" },
+        { name: "Hagmyren", city: "Hudiksvall", lat: 61.7729, lng: 17.1145, founded: 1956, status: "active", length: 1000, org: "Norra Hälsinglands Travsällskap", ownSite: null, operatorSite: null, operatorName: null, note: "A legendás Nordin fivérek szülőföldje" },
+        { name: "Halmstadtravet", city: "Halmstad", lat: 56.6905, lng: 12.9277, founded: 1969, status: "active", length: 1000, org: "Hallands Travsällskap", ownSite: null, operatorSite: null, operatorName: null, note: "Sprintermästaren futam helyszíne" },
+        { name: "Hotingtravet", city: "Hoting", lat: 64.0875, lng: 16.2358, founded: 1967, status: "active", length: 800, org: "Västra Ångermanlands Travsällskap", ownSite: null, operatorSite: null, operatorName: null, note: "Évi mindössze 3 versenynap" },
+        { name: "Kalmartravet", city: "Kalmar", lat: 56.6680, lng: 16.2717, founded: 1965, status: "active", length: 1000, org: "Sydöstra Sveriges Travsällskap", ownSite: null, operatorSite: null, operatorName: null, note: "Sibylla svéd hercegnő nyitotta meg" },
+        { name: "Karlshamnstravet", city: "Asarum", lat: 56.2228, lng: 14.8313, founded: 1993, status: "active", length: 800, org: "Blekinge Travsällskap", ownSite: null, operatorSite: null, operatorName: null, note: "A nézők a pálya belső terében állnak" },
+        { name: "Fornaboda travbana", city: "Lindesberg", lat: 59.6295, lng: 15.1741, founded: 1951, status: "active", length: 1000, org: "Lindes Travklubb", ownSite: null, operatorSite: null, operatorName: null, note: "Korábban a befagyott Lindessjön tavon versenyeztek" },
+        { name: "Lyckseletravet", city: "Lycksele", lat: 64.5521, lng: 18.7160, founded: 1955, status: "active", length: 1000, org: "Lycksele Travsällskap", ownSite: null, operatorSite: null, operatorName: null, note: "Nyári lóhét a helyi közösségi élet csúcspontja" },
+        { name: "Mantorp Hästsportarena", city: "Mantorp", lat: 58.3695, lng: 15.2837, founded: 1965, status: "active", length: 1000, org: "Östergötlands Travsällskap", ownSite: null, operatorSite: null, operatorName: null, note: "A legendás Ina Scot nevű ló itt van eltemetve" },
+        { name: "Ovallatravet", city: "Oviken", lat: 62.9978, lng: 14.3773, founded: 1971, status: "active", length: 800, org: "Ovikens Travklubb", ownSite: null, operatorSite: null, operatorName: null, note: "800 m-es kispálya" },
+        { name: "Romme travbana", city: "Borlänge", lat: 60.4529, lng: 15.5005, founded: 1955, status: "active", length: 1000, org: "Svensk Travsport", ownSite: null, operatorSite: null, operatorName: null, note: "Rommeheatet – melegvérűek futama" },
+        { name: "Rättviks travbana", city: "Rättvik", lat: 60.9021, lng: 15.1156, founded: 1955, status: "active", length: 1000, org: "Siljans Travsällskap", ownSite: null, operatorSite: null, operatorName: null, note: "Itt indult Olle Goop, Svédország legsikeresebb hajtójának pályafutása" },
+        { name: "Skellefteåtravet", city: "Skellefteå", lat: 64.7325, lng: 20.9492, founded: 1952, status: "active", length: 1000, org: "Skellefteortens Travsällskap", ownSite: null, operatorSite: null, operatorName: null, note: "Az egyik két svéd pálya \"open stretch\" előzősávval" },
+        { name: "Solänget", city: "Örnsköldsvik", lat: 63.2861, lng: 18.6352, founded: 1952, status: "active", length: 1004, org: "Svensk Travsport", ownSite: null, operatorSite: null, operatorName: null, note: "Mellanbana kategóriájú pálya" },
+        { name: "Tingsrydtravet", city: "Tingsryd", lat: 56.5118, lng: 14.9960, founded: 2003, status: "active", length: 1609, org: "Svensk Travsport", ownSite: null, operatorSite: null, operatorName: null, note: "Svédország egyetlen \"mile\" (1609 m) pályája" },
+        { name: "Umåkers travbana", city: "Umeå", lat: 63.8209, lng: 20.1779, founded: 1944, status: "active", length: 1000, org: "Svensk Travsport", ownSite: null, operatorSite: null, operatorName: null, note: "Egész évben rendeznek itt versenyt" },
+        { name: "Vaggerydstravet", city: "Vaggeryd", lat: 57.5226, lng: 14.1117, founded: 1995, status: "active", length: 1000, org: "Jönköping-Vaggeryds Travsällskap", ownSite: null, operatorSite: null, operatorName: null, note: "SmålandsMästaren futam helyszíne" },
+        { name: "Visbytravet", city: "Gotland", lat: 57.6175, lng: 18.3288, founded: 1948, status: "active", length: 1000, org: "Gotlands Travsällskap", ownSite: null, operatorSite: null, operatorName: null, note: "Szigeti pálya, csak nyáron üzemel" },
+        { name: "Åmålstravet", city: "Åmål", lat: 59.0335, lng: 12.7051, founded: 1953, status: "active", length: 800, org: "Dalslands Travsällskap", ownSite: null, operatorSite: null, operatorName: null, note: "Az egyetlen pálya, ahol jobbkéz irányban versenyeznek" },
+        { name: "Årjängstravet", city: "Årjäng", lat: 59.3900, lng: 12.1557, founded: 1936, status: "active", length: 1000, org: "Nordmarkens Travsällskap", ownSite: null, operatorSite: null, operatorName: null, note: "Sokak szerint Svédország legszebb ügetőpályája" },
+        { name: "Örebrotravet", city: "Örebro", lat: 59.2191, lng: 15.1611, founded: 1954, status: "active", length: 1000, org: "Örebro Travsällskap", ownSite: null, operatorSite: null, operatorName: null, note: "Örebro Int'l – 3140 m-es stayer-futam" },
+        { name: "Östersundstravet", city: "Östersund", lat: 63.1643, lng: 14.6730, founded: 1936, status: "active", length: 1000, org: "Jämtlands Travsällskap", ownSite: null, operatorSite: null, operatorName: null, note: "Az ország 2. leghosszabb célegyenese" },
+        { name: "Bollnästravet", city: "Bollnäs", lat: 61.3403, lng: 16.3356, founded: 1955, status: "active", length: 1000, org: "Svensk Travsport", ownSite: null, operatorSite: null, operatorName: null, note: "Hälsingland régió egyik pályája" },
+        { name: "Dannero travbana", city: "Kramfors", lat: 63.0207, lng: 17.8045, founded: 1958, status: "active", length: 1000, org: "Ådalens Travsällskap", ownSite: null, operatorSite: null, operatorName: null, note: "2005-ös tűz után teljesen megújult" },
+        { name: "Arvika travbana", city: "Arvika", lat: 59.6574, lng: 12.6221, founded: 1954, status: "active", length: 800, org: "Wermlands Trafvarsällskap (1882)", ownSite: null, operatorSite: null, operatorName: null, note: "A Wermlands Trafvarsällskap (1882) Svédország legrégebbi ügető-egyesülete" }
+    ],
+    FRA: [
+        { name: "Hippodrome de Vincennes", city: "Párizs", lat: 48.8212, lng: 2.4517, founded: 1863, status: "active", length: 1975, org: "SETF (Société d'Encouragement à l'Elevage du Trotteur Français)", ownSite: "https://www.vincennes-hippodrome.com/fr/", operatorSite: null, operatorName: null, note: "A trot \"temploma\" – itt rendezik a Prix d'Amérique-et" },
+        { name: "Hippodrome d'Enghien-Soisy", city: "Soisy-sous-Montmorency", lat: 48.9805, lng: 2.2917, founded: 1879, status: "active", length: 1300, org: "SECF (Société d'Encouragement du Cheval Français)", ownSite: "https://www.hippodrome-enghien.com/", operatorSite: null, operatorName: null, note: "Franciaország 2. legnagyobb ügetőpályája" },
+        { name: "Hippodrome de Rambouillet", city: "Rambouillet", lat: 48.6366, lng: 1.8508, founded: 1880, status: "active", length: null, org: "France Trot / Cheval Français", ownSite: null, operatorSite: null, operatorName: null, note: "Családias, erdőszéli pálya" },
+        { name: "Hippodrome de Caen (la Prairie)", city: "Caen", lat: 49.1748, lng: -0.3641, founded: 1839, status: "active", length: 1955, org: "SECF (Société d'Encouragement du Cheval Français)", ownSite: null, operatorSite: null, operatorName: null, note: "Az egyik legelső kizárólag ügető célú francia pálya" },
+        { name: "Hippodrome de Cabourg", city: "Cabourg", lat: 49.2801, lng: -0.1211, founded: 1928, status: "active", length: 1275, org: "SECF (Société d'Encouragement du Cheval Français)", ownSite: "https://www.hippodrome-cabourg.com/", operatorSite: null, operatorName: null, note: "\"A normandiai kis Vincennes\"" },
+        { name: "Hippodrome de Bellevue-la-Forêt", city: "Laval", lat: 48.0384, lng: -0.7953, founded: 1921, status: "active", length: 1250, org: "Société des courses de Laval", ownSite: null, operatorSite: null, operatorName: null, note: "Nyugat-franciaországi regionális referenciapálya" },
+        { name: "Hippodrome de Nantes", city: "Nantes", lat: 47.2457, lng: -1.5626, founded: 1875, status: "active", length: null, org: "Société des Courses de Nantes", ownSite: "https://www.hippodrome-nantes.fr/historique", operatorSite: null, operatorName: null, note: "A Grand National du Trot egyik állomása" },
+        { name: "Hippodrome de Châteaubriant", city: "Châteaubriant", lat: 47.7376, lng: -1.3922, founded: 1980, status: "active", length: null, org: "Association des Courses Hippiques de Châteaubriant", ownSite: "https://www.hippodrome-chateaubriant.fr/", operatorSite: null, operatorName: null, note: "Első kategóriás, mindhárom diszciplínát befogadó pólus" },
+        { name: "Hippodrome de Pontchâteau", city: "Pontchâteau", lat: 47.4459, lng: -2.1315, founded: 1889, status: "active", length: 1225, org: "Société des Courses de Pontchâteau", ownSite: null, operatorSite: null, operatorName: null, note: "Vincennes fontos \"előszoba\" pályája" },
+        { name: "Hippodrome d'Angers-Écouflant", city: "Écouflant", lat: 47.4978, lng: -0.5078, founded: 1847, status: "active", length: null, org: "Société des Courses d'Angers", ownSite: "https://hippodrome-angers.com/hippodrome", operatorSite: null, operatorName: null, note: "\"Equures\" lójólléti minősítés (2024)" },
+        { name: "Hippodrome de la Côte d'Azur", city: "Cagnes-sur-Mer", lat: 43.6485, lng: 7.1462, founded: 1952, status: "active", length: 1288, org: "Société des Courses de Cagnes-sur-Mer", ownSite: "http://www.hippodrome-cotedazur.fr/fr/", operatorSite: null, operatorName: null, note: "A francia téli lóversenyzés egyik központja" },
+        { name: "Hippodrome de Vichy-Bellerive", city: "Bellerive-sur-Allier", lat: 46.1305, lng: 3.4072, founded: 1875, status: "active", length: null, org: "France Trot / Cheval Français", ownSite: null, operatorSite: null, operatorName: null, note: "Az Allier folyó partján, márciustól szeptemberig" },
+        { name: "Hippodrome de Divonne-les-Bains", city: "Divonne-les-Bains", lat: 46.3503, lng: 6.1563, founded: 1965, status: "active", length: 1220, org: "Société des Courses de Divonne-les-Bains", ownSite: null, operatorSite: null, operatorName: null, note: "Az egyetlen francia pálya a Genfi-tó medencéjében" },
+        { name: "Hippodrome d'Agen-La Garenne", city: "Agen", lat: 44.1762, lng: 0.5978, founded: 1850, status: "active", length: 1190, org: "Société des Courses d'Agen", ownSite: "https://hippodrome-agen.fr/", operatorSite: null, operatorName: null, note: "1975-ben itt rendezték az első kizárólag nőknek szóló futamot" }
+    ],
+    ITA: [
+        { name: "Ippodromo di Agnano", city: "Napoli", lat: 40.8371, lng: 14.1671, founded: 1935, status: "active", length: 1000, org: "New Agnano Arena & Races Srl", ownSite: "https://www.ippodromoagnano.it/", operatorSite: null, operatorName: null, note: "Dél-Olaszország ügetősportjának központja; 1947 óta itt rendezik a Gran Premio Lotteria di Agnano-t; itt futotta 2002-ben Varenne, minden idők legjobb olasz ügetője, a máig megdöntetlen pályarekordot" },
+        { name: "Ippodromo Snai San Siro (trotto)", city: "Milánó", lat: 45.4810, lng: 9.1373, founded: null, status: "active", length: null, org: "Snaitech S.p.A.", ownSite: null, operatorSite: "https://www.ippodromisnai.it/", operatorName: "Snaitech (Ippodromi Snai hálózat)", note: "Az 1920-as években épült nagy milánói lósport-komplexum ügetőrésze; koncertek és nagyrendezvények helyszíneként is ismert" },
+        { name: "Ippodromo dell'Arcoveggio", city: "Bologna", lat: 44.5179, lng: 11.3451, founded: null, status: "active", length: null, org: "HippoGroup Cesenate S.p.A.", ownSite: null, operatorSite: "https://www.hippogroupcesenate.it/", operatorName: "HippoGroup Cesenate S.p.A.", note: "Ugyanaz a társaság (HippoGroup Cesenate) üzemelteti, mint a cesenai Savio-t; nyáron szabadtéri moziként is funkcionál a pálya belső területén" },
+        { name: "Ippodromo delle Capannelle", city: "Róma", lat: 41.8256, lng: 12.5630, founded: 1881, status: "active", length: null, org: "Roma Capitale (tulajdonos) / HippoGroup Roma Capannelle Srl (üzemeltető)", ownSite: null, operatorSite: "https://www.hippogroup.it/", operatorName: "HippoGroup (országos hálózat)", note: "Olaszország legrégebbi versenypályája (1881); 1926-ig kizárólag galopp, 2014 óta a galopppálya belsejében kialakított külön pályán ügetőversenyeket is rendeznek a bezárt Tor di Valle pálya öröksége nyomán" },
+        { name: "Ippodromo del Mediterraneo", city: "Siracusa", lat: 37.0014, lng: 15.1922, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: null, operatorName: null, note: "Szicília egyetlen jelentős versenypályája, festői környezetben" },
+        { name: "Ippodromo di Stupinigi", city: "Vinovo (Torino)", lat: 44.9785, lng: 7.6121, founded: null, status: "active", length: null, org: "HippoGroup Torinese S.p.A.", ownSite: "http://www.ippodromovinovo.it/", operatorSite: "https://www.hippogroup.it/", operatorName: "HippoGroup (országos hálózat)", note: "Piemont vezető ügetőpályája, a Stupinigi-i vadászkastély közelében" },
+        { name: "Ippodromo San Paolo", city: "Montegiorgio", lat: 43.1168, lng: 13.5743, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: "http://www.sanpaolo.ippodromo.it/", operatorSite: null, operatorName: null, note: "Márche régió referenciapályája, itt rendezik a Palio dei Comuni versenyt" },
+        { name: "Ippodromo dei Sauri", city: "Castelluccio dei Sauri (Foggia)", lat: 41.3075, lng: 15.4548, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: null, operatorName: null, note: "Dél-olasz vidéki pálya, karácsonyi rendezvényekről és családbarát programjairól ismert" },
+        { name: "Ippodromo del Savio", city: "Cesena", lat: 44.1434, lng: 12.2297, founded: 1922, status: "active", length: 800, org: "HippoGroup Cesenate S.p.A.", ownSite: null, operatorSite: "https://www.hippogroupcesenate.it/", operatorName: "HippoGroup Cesenate S.p.A.", note: "1927 óta itt rendezik a Campionato Europeo di Trotto-t (Európa-bajnokság), amelynek egyedülálló formátuma van: két azonos versenyszámmal induló prova, majd egy közvetlen párbaj (race-off) a végső győztesért" },
+        { name: "Ippodromo Paolo Sesto", city: "Taranto", lat: 40.5376, lng: 17.3052, founded: null, status: "inactive", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: "https://ippodromopaolosesto.com/", operatorSite: null, operatorName: null, note: "Puglia régió ügetőpályája. STÁTUSZ (2026 nyara): jogi bizonytalanság – a Masaf 2026-ban visszavonta az üzemeltető társaság elismerését, miután a létesítményt végrehajtási árverésen adták el; a helyzet rendeződésétől függően újraindulhat" },
+        { name: "Ippodromo della Favorita", city: "Palermo", lat: 38.1520, lng: 13.3453, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: null, operatorName: null, note: "A Favorita történelmi park belsejében, a várost övező hegyek lábánál; nemrég újították fel" },
+        { name: "Ippodromo dei Pini", city: "Follonica", lat: 42.9429, lng: 10.7745, founded: null, status: "inactive", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: "http://www.ippodromodeipini.it/", operatorSite: null, operatorName: null, note: "Toszkán tengerparti pálya. STÁTUSZ (2026 nyara): egész 2026-ban zárva tart; az önkormányzat új pályázatot tervez 2027-re, de egy módosított településrendezési terv más célú hasznosítást is megenged a területnek" },
+        { name: "Ippodromo della Ghirlandina", city: "Modena", lat: 44.6077, lng: 10.9179, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: null, operatorName: null, note: "Teljes felújításon esett át, ma luxus éttermet (Antica Moka) is magába foglaló, Olaszország egyik legszebb pályájának tartott létesítmény" },
+        { name: "Ippodromo Euroitalia", city: "Casarano (Lecce)", lat: 40.0375, lng: 18.1665, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: null, operatorName: null, note: "Salento régió pályája, korábban az 1990-es években nagyobb jelentőséggel bírt" },
+        { name: "Ippodromo Snai Sesana", city: "Montecatini Terme", lat: 43.8819, lng: 10.7644, founded: 1916, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: null, operatorName: null, note: "Olaszország egyik mindössze három pályája (Trieszt, Padova mellett), amely 1922-ben már létezett és azóta is az eredeti helyén működik" },
+        { name: "Ippodromo Sant'Artemio", city: "Treviso", lat: 45.6936, lng: 12.2558, founded: null, status: "active", length: null, org: "Nordest Ippodromi S.p.A.", ownSite: null, operatorSite: "https://www.nordestippodromi.com/", operatorName: "Nordest Ippodromi S.p.A.", note: "Veneto régió pályája, galopp és ügető versenyeknek egyaránt otthont ad; 2026-tól ide (és Padovába) helyezték át a bezárt trieszti Montebello versenynapjait is" },
+        { name: "Ippodromo del Garigliano", city: "Santi Cosma e Damiano (Latina)", lat: 41.2502, lng: 13.8067, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: null, operatorName: null, note: "Csak nyáron üzemelő, családbarát vidéki pálya a Garigliano folyó mentén" },
+        { name: "Ippodromo del Visarno Cesare Meli", city: "Firenze", lat: 43.7806, lng: 11.2239, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: "https://www.visarno.it/", operatorSite: null, operatorName: null, note: "A Cascine parkban található; koncertek (pl. Guns N' Roses, Imagine Dragons) kedvelt helyszíne is" },
+        { name: "Ippodromo dei Fiori", city: "Villanova d'Albenga (Savona)", lat: 44.0425, lng: 8.1233, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: null, operatorName: null, note: "Ligur riviéra pályája, esti versenyekkel és látványos tengerparti panorámával" },
+        { name: "Ippodromo delle Padovanelle (V.S. Breda)", city: "Padova", lat: 45.4248, lng: 11.9337, founded: 1901, status: "active", length: null, org: "Gruppo Coppiello snc", ownSite: null, operatorSite: null, operatorName: null, note: "Olaszország egyik mindössze három pályája (Trieszt, Montecatini mellett), amely 1922-ben már létezett és azóta is az eredeti helyén működik; 2011-ben pénzügyi okokból ideiglenesen felfüggesztették a versenyeket, 2013 óta újra aktív" },
+        { name: "Ippodromo Valentinia", city: "Pontecagnano Faiano (Salerno)", lat: 40.6015, lng: 14.9018, founded: null, status: "active", length: null, org: "Valentinia S.r.l.", ownSite: null, operatorSite: null, operatorName: null, note: "Dél-olasz pálya Salerno közelében" },
+        { name: "Ippodromo Montebello", city: "Trieste", lat: 45.6386, lng: 13.7943, founded: 1892, status: "closed", length: null, org: "Nordest Ippodromi S.p.A. (korábbi üzemeltető)", ownSite: null, operatorSite: "https://www.nordestippodromi.com/", operatorName: "Nordest Ippodromi S.p.A. (korábbi üzemeltető)", note: "Olaszország legrégebbi, folyamatosan az eredeti helyén működő versenypályája volt (1892 óta). STÁTUSZ (2026 nyara): a Nordest Ippodromi Spa 2026 elején végleg lemondott az üzemeltetésről, a Masaf visszavonta az engedélyt, a versenyeket Trevisóba és Padovába helyezték át; a régió 30 millió eurót különített el a terület más célú (sportcitadella) átalakítására – a visszatérés lóversenyzéshez valószínűtlen" },
+        { name: "Ippodromo Cirigliano", city: "Aversa (Caserta)", lat: 40.9587, lng: 14.2039, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: null, operatorName: null, note: "Campania régió pályája, egykor Aversa városának fontos központja volt" },
+        { name: "Ippodromo San Marone", city: "Civitanova Marche (Macerata)", lat: 43.3374, lng: 13.6775, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: null, operatorName: null, note: "Dombtetőn fekvő pálya, panorámás kilátással a tengerre és a hegyekre" },
+        { name: "Ippodromo Cesare Fiaschi", city: "Ferrara", lat: 44.8260, lng: 11.6142, founded: null, status: "active", length: null, org: "Nordest Ippodromi S.p.A.", ownSite: null, operatorSite: "https://www.nordestippodromi.com/", operatorName: "Nordest Ippodromi S.p.A.", note: "Emilia-Romagna régió pályája; a Nordest Ippodromi Spa több mint 20 éve kezeli (egy rövid, üzemeltető-váltás miatti szünettől eltekintve), Trieszttel és Trevisóval közös hálózatban" }
+    ],
+    FIN: [
+        { name: "Vermo Areena", city: "Espoo (Helsinki)", lat: 60.2152, lng: 24.8392, founded: null, status: "active", length: null, org: "Vermon Ravirata Oy", ownSite: "http://www.vermo.fi", operatorSite: null, operatorName: null, note: "Finnország központi (nemzeti) versenypályája; évi kb. 40 szerdai versenynap. Kiemelt futamok: Finlandia-Ajo, Suuri Suomalainen Derby, Käpylä Grand Prix" },
+        { name: "Pilvenmäki", city: "Forssa", lat: 60.8069, lng: 23.5833, founded: null, status: "active", length: null, org: "Forssan Seudun Hippos ry", ownSite: "http://www.pilvenmaki.fi", operatorSite: null, operatorName: null, note: "Kanta-Häme régió edzőközpontja és versenypályája. Kiemelt futamok: Pilvenmäki Special, Tammavaltikka, Pilvenmäki Maraton" },
+        { name: "Joensuun ravirata (Linnunlahti)", city: "Joensuu", lat: 62.5982, lng: 29.7307, founded: null, status: "active", length: null, org: "Joensuun Ravirata Oy", ownSite: "http://www.joensuunravirata.fi", operatorSite: null, operatorName: null, note: "Több mint 100 éves történelmű pálya, híres izgalmas hajrá-versenyeiről. Kiemelt futam: Joensuu-Ajo" },
+        { name: "Killeri", city: "Jyväskylä", lat: 62.2450, lng: 25.6729, founded: null, status: "active", length: null, org: "Keski-Suomen Ravirata Oy", ownSite: "http://www.killeri.fi", operatorSite: null, operatorName: null, note: "Festői tóparti fekvés (Killerjärvi mellett); évi 20+ versenynap. Kiemelt futamok: Killerin Eliitti, Keskisuomalainen Derby" },
+        { name: "Kainuun ravirata", city: "Kajaani", lat: 64.2788, lng: 27.8473, founded: null, status: "active", length: null, org: "Racetrack Kainuu Oy", ownSite: "http://www.kainuunravirata.fi", operatorSite: null, operatorName: null, note: "Egyedi vöröses borítású pálya, amit sokan Finnország legszebb versenypályájának tartanak; önkéntes munkával üzemeltetve" },
+        { name: "Kaustinen (Nikula)", city: "Kaustinen", lat: 63.5816, lng: 23.5790, founded: null, status: "active", length: null, org: "Kaustisen Seudun Raviseura ry", ownSite: "https://kaustisenravit.fi", operatorSite: null, operatorName: null, note: "A híres Kaustinen Folk Music Festival régiójában; kiemelt futamok: Pelimanni-ravit, Festivaaliravit" },
+        { name: "Kouvolan ravirata", city: "Kouvola", lat: 60.8848, lng: 26.7033, founded: 1910, status: "active", length: null, org: "Valkealan hevosystäväinseura ry", ownSite: "http://www.kouvolanravirata.com/", operatorSite: null, operatorName: null, note: "Az 1910-es évek eleje óta ugyanazon a helyen működik – Finnország 2. legrégebbi, folyamatosan azonos helyszínű pályája. 2026-ban itt rendezték a UET Elite Circuit Kymi Grand Prix-t" },
+        { name: "Kuopion ravirata (Sorsasalo)", city: "Kuopio", lat: 62.9670, lng: 27.6805, founded: null, status: "active", length: null, org: "Kuopion ravirata", ownSite: "http://www.kuopionravirata.fi", operatorSite: null, operatorName: null, note: "Évi kb. 25 versenynap. Kiemelt futam: Kuopio Stakes" },
+        { name: "Jokimaa", city: "Lahti", lat: 60.9385, lng: 25.6089, founded: null, status: "active", length: null, org: "Lahden hevosystäväinseura ry", ownSite: "https://www.jokimaanravit.fi/", operatorSite: null, operatorName: null, note: "Évi 30+ versenynap, közel 100 ló edz a területén. Fő eseménye a háromnapos Suur-Hollola-ravit" },
+        { name: "Lappeen ravirata", city: "Lappeenranta", lat: 61.0363, lng: 28.1039, founded: 1973, status: "active", length: null, org: "Lappeenrannan Ravirata Oy", ownSite: "https://www.lappeenravit.fi/", operatorSite: null, operatorName: null, note: "1973 óta rendeznek itt versenyt. Kiemelt futam: Villinmiehen Tammakilpailu" },
+        { name: "Mikkelin ravirata", city: "Mikkeli", lat: 61.7037, lng: 27.2436, founded: null, status: "active", length: null, org: "Mikkelin ravirata Oy", ownSite: "http://www.mikkelinravirata.fi/", operatorSite: null, operatorName: null, note: "Világhírű \"rekordpálya\" – számos világ-, Európa- és Finnország-rekord született itt. 1979 óta rendszeres nagyversenyek helyszíne (St Michel-ajo, 1981 óta)" },
+        { name: "Äimäraution ravirata", city: "Oulu", lat: 64.9815, lng: 25.4690, founded: 1908, status: "active", length: null, org: "Pohjolan Hevosystävät ry", ownSite: "http://oulunravit.fi", operatorSite: null, operatorName: null, note: "Finnország legrégebbi versenypályája (1908 óta). Kiemelt futamok: Oulu Express, Number One" },
+        { name: "Porin ravirata", city: "Pori", lat: 61.4670, lng: 21.8116, founded: null, status: "active", length: null, org: "Porin Ravit Oy", ownSite: "http://porinravit.fi", operatorSite: null, operatorName: null, note: "Városközponthoz közeli, dinamikus rendezvényhelyszín. Kiemelt futamok: Kultaloimi, St. Leger, Satakunta-ajo" },
+        { name: "Rovaniemen ravirata (Mäntyvaara)", city: "Rovaniemi", lat: 66.5113, lng: 25.6037, founded: 1976, status: "active", length: null, org: "Rovaniemen Ravirata Oy", ownSite: "https://rovaniemenravirata.fi/", operatorSite: null, operatorName: null, note: "1976 óta rendeznek itt versenyt; Finnország legészakibb pályája, amfiteátrum-szerű, egyedülálló lelátóval. Kiemelt futam: Arctic Horse Race" },
+        { name: "Seinäjoen ravikeskus", city: "Seinäjoki", lat: 62.8011, lng: 22.8544, founded: null, status: "active", length: null, org: "Etelä-Pohjanmaan hevosjalostusliitto ry", ownSite: "https://www.seinajoenravikeskus.fi/", operatorSite: null, operatorName: null, note: "Évi közel 30 versenynap. Kiemelt nemzetközi futam: Seinäjoki Race" },
+        { name: "Teivon ravirata", city: "Tampere (Ylöjärvi)", lat: 61.5292, lng: 23.6263, founded: null, status: "active", length: null, org: "Tampereen Ravirata Oy", ownSite: "http://www.teivo.fi", operatorSite: null, operatorName: null, note: "Finnország 2. legnagyobb pályája versenynapok száma szerint; 2026-ban ünnepelte 50 éves fennállását és itt rendezték a Kuninkuusravit (a finn \"királyi versenyek\", Finnország legnagyobb sportrendezvénye, kb. 50 000 nézővel)" },
+        { name: "Laivakankaan ravirata", city: "Tornio", lat: 65.8196, lng: 24.3606, founded: 1974, status: "active", length: null, org: "Länsi-Lapin Hevosystävät ry", ownSite: "https://laivakangas.fi/", operatorSite: null, operatorName: null, note: "1974 óta rendeznek itt versenyt; a pályát felújították, ma az egyik leggyorsabb finn pálya. Kiemelt futamok: Midnight Cup, Lady Cup" },
+        { name: "Metsämäen ravirata", city: "Turku", lat: 60.4933, lng: 22.3496, founded: 1978, status: "active", length: null, org: "Turun Hippos ry", ownSite: "https://www.turunhippos.fi/", operatorSite: null, operatorName: null, note: "1978 óta működik. Kiemelt futam: Pohjoismaiden mestaruus (skandináv bajnokság)" },
+        { name: "Ylivieskan ravirata (Keskinen)", city: "Ylivieska", lat: 64.1113, lng: 24.5105, founded: null, status: "active", length: null, org: "Pohjanmaan Ravi ry", ownSite: "http://www.ylivieskanravit.fi/", operatorSite: null, operatorName: null, note: "1997-ben itt rendezték a Kuninkuusravit. Kiemelt futamok: Ruunakunkkarit (hidegvérű heréltek), Malja-ajo" }
+    ],
+    NOR: [
+        { name: "Bjerke Travbane", city: "Oslo", lat: 59.9409, lng: 10.8104, founded: null, status: "active", length: null, org: "Det Norske Travselskap (DNT)", ownSite: null, operatorSite: null, operatorName: null, note: "Norvégia nemzeti főpályája, évi 100+ versenynappal; itt van a DNT (Det Norske Travselskap, alapítva 1875) központja is. Koncerthelyszínként is használt (pl. AC/DC, Tons of Rock fesztivál)" },
+        { name: "Bergen Travpark", city: "Breistein (Bergen)", lat: 60.4847, lng: 5.3858, founded: null, status: "active", length: null, org: "Bergen Travpark", ownSite: null, operatorSite: null, operatorName: null, note: "Nyugat-Norvégia vezető ügetőpályája" },
+        { name: "Biri Travbane", city: "Biri", lat: 60.9579, lng: 10.6254, founded: null, status: "active", length: null, org: "Biri Travbane", ownSite: null, operatorSite: null, operatorName: null, note: "Tóparti fekvésű pálya Gjøvik közelében" },
+        { name: "Forus Travbane", city: "Stavanger", lat: 58.8911, lng: 5.7254, founded: null, status: "active", length: null, org: "Forus Travbane", ownSite: null, operatorSite: null, operatorName: null, note: "Nyugat-Norvégia (Stavanger-régió) egyetlen ügetőpályája; koncerthelyszínként is működik" },
+        { name: "Harstad Travpark", city: "Harstad", lat: 68.7883, lng: 16.4591, founded: null, status: "active", length: null, org: "Harstad Travpark", ownSite: null, operatorSite: null, operatorName: null, note: "Észak-Norvégia egyik pályája, a sarkkörön túl" },
+        { name: "Jarlsberg Travbane", city: "Sem (Tønsberg)", lat: 59.2787, lng: 10.3694, founded: null, status: "active", length: null, org: "Jarlsberg Travbane", ownSite: null, operatorSite: null, operatorName: null, note: "Vestfold megye vezető ügetőpályája" },
+        { name: "Klosterskogen Travbane", city: "Skien", lat: 59.1903, lng: 9.5992, founded: null, status: "active", length: null, org: "AS Klosterskogen Travbane", ownSite: null, operatorSite: null, operatorName: null, note: "Húsvéti versenyeiről ismert, élénk hangulatú pálya" },
+        { name: "Momarken Travbane", city: "Mysen", lat: 59.5691, lng: 11.3340, founded: null, status: "active", length: null, org: "Momarken Travbane", ownSite: null, operatorSite: null, operatorName: null, note: "Kelet-Norvégia (Østfold megye) pályája" },
+        { name: "Sørlandets Travpark", city: "Kristiansand", lat: 58.1810, lng: 8.1508, founded: null, status: "active", length: null, org: "Sørlandets Travpark AS", ownSite: null, operatorSite: null, operatorName: null, note: "Dél-Norvégia vezető ügetőpályája" },
+        { name: "Leangen Travbane (Varig Orkla Arena)", city: "Trondheim", lat: 63.4300, lng: 10.4711, founded: null, status: "active", length: null, org: "Leangen Travbane", ownSite: null, operatorSite: null, operatorName: null, note: "Közép-Norvégia pályája; itt rendezik évente az Észak-Norvég Ügető Fesztivált (Nord-Norsk Travfestival). Jelenleg szponzori névhasználattal \"Varig Orkla Arena\" néven fut a versenynaptárban" },
+        { name: "Drammen Travbane", city: "Drammen", lat: 59.7551, lng: 10.1154, founded: 1955, status: "closed", length: 800, org: "Det Norske Travselskap (korábbi üzemeltető)", ownSite: null, operatorSite: null, operatorName: null, note: "1955-ben nyílt, 800 m-es pálya. STÁTUSZ: 2019-ben véglegesen bezárt – az utolsó szezonja volt, miután évtizedekig motorsport-, kutyakiállítás- és ügető-helyszínként is szolgált" }
+    ]
+};
+
+const countryMeta = {
+    SWE: { name: "Sweden", hasGallop: false, hasTrot: true, flag: "🇸🇪", orgSite: "https://www.travsport.se/", orgSiteLabel: "Svensk Travsport" },
+    FRA: { name: "France", hasGallop: true,  hasTrot: true, flag: "🇫🇷", orgSite: "https://www.letrot.com/", orgSiteLabel: "LeTrot" },
+    ITA: { name: "Italy",  hasGallop: true,  hasTrot: true, flag: "🇮🇹", orgSite: "https://new.trottoweb.com/", orgSiteLabel: "TrottoWeb – versenynaptár", orgSiteAlt: "https://www.politicheagricole.it/", orgSiteAltLabel: "Masaf – hivatalos minisztériumi oldal" },
+    FIN: { name: "Finland", hasGallop: false, hasTrot: true, flag: "🇫🇮", orgSite: "https://www.hippos.fi/", orgSiteLabel: "Suomen Hippos ry" },
+    NOR: { name: "Norway",  hasGallop: true,  hasTrot: true, flag: "🇳🇴", orgSite: "https://www.travsport.no/", orgSiteLabel: "Det Norske Travselskap (DNT)" }
+};
+
+const DATA_ISO_CODES = Object.keys(trackDatabase); // ["SWE", "FRA"]
+
+let currentFilter = 'all';
+let currentIso = null;
+
+// ================================================================
+// 2) ORSZÁG-AZONOSÍTÁS JAVÍTVA
+// A Natural Earth 110m GeoJSON-ban Franciaországnál (és néhány más
+// országnál) az ISO_A3 mező hibásan "-99" lehet a helyes "FRA" helyett
+// (ismert, dokumentált adathiba a tengerentúli megyék miatt). Ezért
+// az ADM0_A3 mezőt is megnézzük tartalék azonosítóként.
+// ================================================================
+function resolveIso(properties) {
+    if (properties.ISO_A3 && properties.ISO_A3 !== '-99') return properties.ISO_A3;
+    if (properties.ADM0_A3 && properties.ADM0_A3 !== '-99') return properties.ADM0_A3;
+    return properties.ISO_A3; // ha semmi nem jó, marad az eredeti (lehet "-99")
+}
+
+// ================================================================
+// 3) 3D FÖLDGÖMB
+// ================================================================
+const world = Globe()
+    (document.getElementById('globeViz'))
+    .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-dark.jpg')
+    .backgroundImageUrl('https://unpkg.com/three-globe/example/img/night-sky.png')
+    .lineHoverPrecision(0)
+    .polygonSideColor(() => 'rgba(15, 23, 42, 0.5)')
+    .polygonStrokeColor(() => '#1e293b')
+    .polygonCapColor(feat => polygonColor(feat, null))
+    .polygonAltitude(0.01)
+    .polygonLabel(({ properties }) => {
+        const iso = resolveIso(properties);
+        if (!DATA_ISO_CODES.includes(iso)) return null;
+        const meta = countryMeta[iso];
+        const count = trackDatabase[iso].length;
+        return `
+            <div style="background:#0f172a;color:white;padding:8px 12px;border-radius:8px;border:1px solid #334155;">
+                <strong>${meta ? meta.name : iso}</strong><br/>
+                <span style="color:#f59e0b;font-size:0.85rem;">🏁 ${count} dokumentált versenypálya</span>
+            </div>
+        `;
+    })
+    .onPolygonHover(hoverD => {
+        world.polygonAltitude(d => {
+            const iso = resolveIso(d.properties);
+            if (!DATA_ISO_CODES.includes(iso)) return 0.01;
+            return d === hoverD ? 0.06 : 0.01;
+        });
+        world.polygonCapColor(d => polygonColor(d, hoverD));
+    })
+    .onPolygonClick(polygon => {
+        const iso = resolveIso(polygon.properties);
+        if (!DATA_ISO_CODES.includes(iso)) return;
+        goToCountry(iso);
+    });
+
+function polygonColor(feat, hoverD) {
+    const iso = resolveIso(feat.properties);
+    if (!DATA_ISO_CODES.includes(iso)) return 'rgba(30, 41, 59, 0.25)';
+
+    if (feat === hoverD) return '#f59e0b';
+
+    const meta = countryMeta[iso] || {};
+
+    // Ha kifejezetten csak egy szakágra szűrtél, csak azok az országok
+    // színesek, amik azt a szakágat futják - a többi szürke
+    if (currentFilter === 'gallop') return meta.hasGallop ? 'rgba(239, 68, 68, 0.55)' : 'rgba(30, 41, 59, 0.25)';
+    if (currentFilter === 'trot') return meta.hasTrot ? 'rgba(56, 189, 248, 0.55)' : 'rgba(30, 41, 59, 0.25)';
+
+    // Alapállapot (nincs szűrő): szakág szerinti színezés
+    if (meta.hasTrot && meta.hasGallop) return 'rgba(167, 139, 250, 0.55)'; // mindkettő: lila
+    if (meta.hasTrot) return 'rgba(56, 189, 248, 0.55)';   // csak ügető: kék
+    if (meta.hasGallop) return 'rgba(239, 68, 68, 0.55)';  // csak galopp: piros
+    return 'rgba(245, 158, 11, 0.5)';
+}
+
+fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
+    .then(res => res.json())
+    .then(countries => world.polygonsData(countries.features))
+    .catch(err => console.error('Országhatár GeoJSON betöltési hiba:', err));
+
+// ================================================================
+// 4) VEZÉRLÉS - EGYSZERŰ, JÓL BEVÁLT BEÁLLÍTÁSOK
+// Szándékosan nincs egyedi eseménykezelő-trükk (pl. auto-forgás
+// leállítása kattintásra) - ez a szabványos three.js OrbitControls
+// autoRotate + enableDamping kombináció, ami magától is helyesen
+// kezeli a felhasználói húzást/nagyítást auto-forgás mellett.
+// ================================================================
+world.controls().autoRotate = true;
+world.controls().autoRotateSpeed = 0.4;
+world.controls().enableDamping = true;
+world.controls().dampingFactor = 0.1;
+
+// ================================================================
+// 4b) KÉPERNYŐ-FORGATÁS / ÁTMÉRETEZÉS KEZELÉSE
+// Enélkül a Globe.gl vászna (canvas) a régi, elforgatás előtti
+// méretben ragad be, és a képernyő fele feketén marad. Ezt javítja:
+// a földgömb ÉS a Leaflet térkép is újra méretezi magát, amikor a
+// böngésző ablakmérete vagy a telefon tájolása megváltozik.
+// ================================================================
+function handleViewportResize() {
+    world.width(window.innerWidth).height(window.innerHeight);
+    if (leafletMap) {
+        // Kis késleltetés kell, mert mobilon a forgás után egy röpke
+        // pillanatig még a régi méretet jelenti be a böngésző
+        setTimeout(() => leafletMap.invalidateSize(), 200);
+    }
+}
+window.addEventListener('resize', handleViewportResize);
+window.addEventListener('orientationchange', () => {
+    // A tájolásváltás eseménye néha a méretváltozás ELŐTT tüzel el,
+    // ezért egy röpke késleltetéssel újra lefuttatjuk
+    setTimeout(handleViewportResize, 300);
+});
+
+// ================================================================
+// 5) ORSZÁG KÖZÉPPONT SZÁMÍTÁSA A SAJÁT ADATAINKBÓL
+// ================================================================
+function getCountryCenter(iso) {
+    const tracks = trackDatabase[iso];
+    const avgLat = tracks.reduce((s, t) => s + t.lat, 0) / tracks.length;
+    const avgLng = tracks.reduce((s, t) => s + t.lng, 0) / tracks.length;
+    return { lat: avgLat, lng: avgLng };
+}
+
+// ================================================================
+// 6) ÁTVÁLTÁS 3D FÖLDGÖMBRŐL 2D TÉRKÉPRE
+// ================================================================
+function goToCountry(iso) {
+    currentIso = iso;
+    const center = getCountryCenter(iso);
+
+    document.getElementById('filterContainer').classList.add('disabled');
+    document.getElementById('instructionBar').style.opacity = '0';
+
+    world.pointOfView({ lat: center.lat, lng: center.lng, altitude: 0.35 }, 1600);
+
+    setTimeout(() => showMap(iso), 1600);
+}
+
+// ================================================================
+// 7) 2D LEAFLET TÉRKÉP
+// ================================================================
+let leafletMap = null;
+let currentTileLayer = null;
+let labelsLayer = null;
+const markerLayerGroup = L.layerGroup();
+
+const TILE_SATELLITE = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+const TILE_LABELS     = 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}';
+const TILE_STREET     = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+function initLeafletIfNeeded() {
+    if (leafletMap) return;
+    leafletMap = L.map('mapViz', { zoomControl: false, attributionControl: true }).setView([50, 10], 5);
+    L.control.zoom({ position: 'bottomleft' }).addTo(leafletMap);
+    markerLayerGroup.addTo(leafletMap);
+    setBaseLayer('satellite');
+}
+
+function setBaseLayer(type) {
+    initLeafletIfNeeded();
+
+    if (currentTileLayer) leafletMap.removeLayer(currentTileLayer);
+    if (labelsLayer) leafletMap.removeLayer(labelsLayer);
+
+    document.getElementById('btnSatellite').classList.toggle('active', type === 'satellite');
+    document.getElementById('btnStreet').classList.toggle('active', type === 'street');
+
+    if (type === 'satellite') {
+        currentTileLayer = L.tileLayer(TILE_SATELLITE, { attribution: 'Tiles &copy; Esri', maxZoom: 18 }).addTo(leafletMap);
+        labelsLayer = L.tileLayer(TILE_LABELS, { maxZoom: 18 }).addTo(leafletMap);
+    } else {
+        currentTileLayer = L.tileLayer(TILE_STREET, { attribution: '&copy; OpenStreetMap contributors', maxZoom: 19 }).addTo(leafletMap);
+    }
+}
+
+function showMap(iso) {
+    initLeafletIfNeeded();
+
+    const tracks = trackDatabase[iso];
+    const meta = countryMeta[iso] || { name: iso };
+
+    document.getElementById('globeLayer').classList.add('hidden');
+    document.getElementById('mapLayer').classList.add('visible');
+    document.getElementById('backBtn').classList.add('visible');
+    document.getElementById('layerToggle').classList.add('visible');
+
+    const panel = document.getElementById('countryPanel');
+    document.getElementById('panelTitle').textContent = meta.name;
+    document.getElementById('panelSub').textContent = `${tracks.length} dokumentált versenypálya`;
+    document.getElementById('panelTracks').innerHTML = tracks.map((t, idx) => {
+        const status = t.status || "active";
+        const statusColor = status === 'closed' ? '#ef4444' : (status === 'inactive' ? '#eab308' : '#22c55e');
+        return `
+        <div class="track-item" onclick="focusTrack(${idx})">
+            <div class="t-name"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${statusColor};margin-right:6px;"></span>${t.name}</div>
+            <div class="t-meta">${t.city}${t.founded ? ' · alapítva ' + t.founded : ''}</div>
+            <div class="t-note">${t.note}</div>
+        </div>
+    `;
+    }).join('');
+    panel.classList.add('visible');
+    panel.classList.remove('collapsed');
+
+    markerLayerGroup.clearLayers();
+    const bounds = [];
+    tracks.forEach((t, idx) => {
+        const icon = L.divIcon({ className: '', html: '<div class="track-marker"></div>', iconSize: [16, 16] });
+        const marker = L.marker([t.lat, t.lng], { icon }).addTo(markerLayerGroup);
+        marker.bindPopup(buildPopupHtml(t, meta));
+        bounds.push([t.lat, t.lng]);
+    });
+
+    setTimeout(() => {
+        leafletMap.invalidateSize();
+        leafletMap.fitBounds(bounds, { padding: [60, 60] });
+    }, 100);
+}
+
+// Egy pálya felugró adatlapjának felépítése: két fül -
+// "Általános" (zászló, alapítás, hossz, szervezet, honlap) és
+// "Történet és érdekességek" (a note mező szövege)
+function buildPopupHtml(t, meta) {
+    const lengthText = t.length ? `${t.length} m` : "nincs adat";
+
+    // 1. szint: a pálya SAJÁT, kizárólag rá vonatkozó honlapja (ha van).
+    const ownSiteText = t.ownSite
+        ? `<a href="${t.ownSite}" target="_blank" rel="noopener">${t.ownSite.replace(/^https?:\/\//, '')}</a>`
+        : "nincs saját honlap";
+
+    // 2. szint: az ÜZEMELTETŐ honlapja - csak akkor jelenik meg, ha ténylegesen
+    // van ilyen adatunk (pl. HippoGroup, Nordest Ippodromi, Snaitech). Ha a
+    // pályának nincs saját domainje, ez az üzemeltető honlapja szolgál a
+    // gyakorlatban "pálya honlapjaként" is.
+    const operatorRow = t.operatorSite
+        ? `<div class="popup-row"><b>Üzemeltető honlapja:</b> <a href="${t.operatorSite}" target="_blank" rel="noopener">${t.operatorSite.replace(/^https?:\/\//, '')}</a>${t.operatorName ? ` <span style="color:#64748b;font-size:0.72rem;">(${t.operatorName})</span>` : ''}</div>`
+        : '';
+
+    const foundedText = t.founded ? t.founded : "nincs pontos adat";
+
+    // 3. szint: az ORSZÁGOS versenyszervezet honlapja MINDIG megjelenik.
+    const orgSiteText = meta.orgSite
+        ? `<a href="${meta.orgSite}" target="_blank" rel="noopener">${meta.orgSite.replace(/^https?:\/\//, '')}</a>`
+        : "nincs adat";
+
+    // Másodlagos, hivatalos (pl. minisztériumi) link, ha van ilyen megadva -
+    // ez egy kiegészítő sor, kisebb betűvel, nem cseréli le a fő linket.
+    const altSiteRow = meta.orgSiteAlt
+        ? `<div class="popup-row" style="font-size:0.72rem;color:#64748b;"><b>${meta.orgSiteAltLabel || 'Egyéb hivatalos link'}:</b> <a href="${meta.orgSiteAlt}" target="_blank" rel="noopener" style="color:#64748b;">${meta.orgSiteAlt.replace(/^https?:\/\//, '')}</a></div>`
+        : '';
+
+    // Státusz-ikon: zöld = aktív, sárga = inaktív/felfüggesztve, piros = végleg bezárt
+    const statusLabels = { active: "Aktív", inactive: "Inaktív / felfüggesztve", closed: "Végleg bezárt" };
+    const status = t.status || "active";
+    const statusLabel = statusLabels[status] || "Aktív";
+
+    return `
+        <div class="popup-card">
+            <span class="popup-status ${status}" title="${statusLabel}"></span>
+            <span class="popup-flag">${meta.flag || ''}</span>
+            <div class="popup-title">${t.name}</div>
+            <div class="popup-tabs">
+                <button class="popup-tab-btn active" onclick="switchPopupTab(this, 'general')">Általános</button>
+                <button class="popup-tab-btn" onclick="switchPopupTab(this, 'history')">Történet</button>
+            </div>
+            <div class="popup-tab-content active" data-tab="general">
+                <div class="popup-row"><b>Státusz:</b> ${statusLabel}</div>
+                <div class="popup-row"><b>Település:</b> ${t.city}</div>
+                <div class="popup-row"><b>Alapítás éve:</b> ${foundedText}</div>
+                <div class="popup-row"><b>Pálya hossza:</b> ${lengthText}</div>
+                <div class="popup-row"><b>Szervezet:</b> ${t.org}</div>
+                <div class="popup-row"><b>Pálya honlapja:</b> ${ownSiteText}</div>
+                ${operatorRow}
+                <div class="popup-row"><b>${meta.orgSiteLabel || 'Versenyszervezet'}:</b> ${orgSiteText}</div>
+                ${altSiteRow}
+            </div>
+            <div class="popup-tab-content" data-tab="history">
+                <div class="popup-row">${t.note}</div>
+            </div>
+        </div>
+    `;
+}
+
+// Fülváltás egy adott felugró adatlapon belül (csak azon a
+// popup-kártyán belül vált, amelyikben a gombra kattintottak)
+function switchPopupTab(btnEl, tabName) {
+    const card = btnEl.closest('.popup-card');
+    card.querySelectorAll('.popup-tab-btn').forEach(b => b.classList.remove('active'));
+    btnEl.classList.add('active');
+    card.querySelectorAll('.popup-tab-content').forEach(c => {
+        c.classList.toggle('active', c.dataset.tab === tabName);
+    });
+}
+
+function focusTrack(idx) {
+    const t = trackDatabase[currentIso][idx];
+    leafletMap.setView([t.lat, t.lng], 11, { animate: true });
+    markerLayerGroup.eachLayer(m => {
+        const ll = m.getLatLng();
+        if (Math.abs(ll.lat - t.lat) < 0.0001 && Math.abs(ll.lng - t.lng) < 0.0001) {
+            m.openPopup();
+        }
+    });
+    document.getElementById('countryPanel').classList.add('collapsed');
+}
+
+function togglePanelCollapse() {
+    document.getElementById('countryPanel').classList.toggle('collapsed');
+}
+
+// ================================================================
+// 8) SZŰRŐ
+// ================================================================
+function setFilter(type, btn) {
+    // Kapcsoló (toggle) viselkedés: ha ugyanarra az already aktív gombra
+    // kattintasz, visszaáll az alapállapotra (mindkét szakág, saját színén)
+    if (currentFilter === type) {
+        currentFilter = 'all';
+        btn.classList.remove('active');
+    } else {
+        currentFilter = type;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    world.polygonsData(world.polygonsData());
+}
+
+// ================================================================
+// 9) VISSZA A FÖLDGÖMBHÖZ
+// ================================================================
+function resetToGlobe() {
+    currentIso = null;
+
+    document.getElementById('mapLayer').classList.remove('visible');
+    document.getElementById('globeLayer').classList.remove('hidden');
+    document.getElementById('backBtn').classList.remove('visible');
+    document.getElementById('layerToggle').classList.remove('visible');
+    document.getElementById('countryPanel').classList.remove('visible');
+    document.getElementById('filterContainer').classList.remove('disabled');
+    document.getElementById('instructionBar').style.opacity = '1';
+
+    world.pointOfView({ lat: 20, lng: 0, altitude: 2.2 }, 1400);
+}
+
+// ================================================================
+// 10) COOKIE-CONSENT KEZELÉS
+// A döntést localStorage-ben tároljuk (ez a szokásos, elvárt módszer
+// cookie-hozzájárulás perzisztálására - ez a fájl a saját szerveren
+// fut majd, nem a Claude előnézetben).
+// ================================================================
+
+// KAPCSOLÓ: ha beállítottad a CookieYes-t (lásd a <head>-ben lévő
+// utasítást), állítsd ezt true-ra - ekkor a saját, egyszerű bannerünk
+// automatikusan nem jelenik meg, mert a CookieYes saját, TCF-kompatibilis
+// bannere veszi át a szerepét. Amíg false, a saját bannerünk fut
+// (jó a Booking-affiliate jelzésre, de ÖNMAGÁBAN NEM elég AdSense-hez).
+const USE_COOKIEYES = true;
+
+const COOKIE_CONSENT_KEY = 'rc360_cookie_consent'; // értéke: "accepted" | "rejected"
+
+function initCookieBanner() {
+    if (USE_COOKIEYES) return; // a CookieYes saját bannere kezeli ezt
+
+    let stored = null;
+    try { stored = localStorage.getItem(COOKIE_CONSENT_KEY); } catch (e) { /* localStorage nem elérhető */ }
+
+    if (!stored) {
+        document.getElementById('cookieBanner').classList.add('visible');
+    } else if (stored === 'accepted') {
+        loadAdsAndAffiliateScripts();
+    }
+    // ha "rejected": nem csinálunk semmit, a hirdetési/affiliate scriptek nem töltődnek be
+}
+
+function setCookieConsent(accepted) {
+    try { localStorage.setItem(COOKIE_CONSENT_KEY, accepted ? 'accepted' : 'rejected'); } catch (e) { /* nem elérhető */ }
+    document.getElementById('cookieBanner').classList.remove('visible');
+    if (accepted) loadAdsAndAffiliateScripts();
+}
+
+// A GDPR megköveteli, hogy a hozzájárulás visszavonása/módosítása
+// ugyanolyan könnyű legyen, mint a megadása - ez a gomb bármikor,
+// bárhonnan (lábléc, jogi modal) újra megnyitja a döntési sávot.
+function reopenCookieBanner() {
+    closeLegal();
+    if (USE_COOKIEYES) {
+        // A CookieYes saját "Cookie Settings" felülete nyílik meg,
+        // ha a CookieYes widget be van állítva (window.cookieyes API)
+        if (window.cookieyes) { window.cookieyes.showSettings(); }
+        return;
+    }
+    document.getElementById('cookieBanner').classList.add('visible');
+}
+
+// Ide kell majd behelyettesíteni a tényleges hirdetési/affiliate scripteket
+// (pl. Google AdSense, Booking.com affiliate pixel). Ez a függvény
+// KIZÁRÓLAG akkor fut le, ha a látogató elfogadta a sütiket - eddig a
+// pontig szándékosan üres/placeholder.
+function loadAdsAndAffiliateScripts() {
+    console.log('[RC360] Hirdetési/affiliate hozzájárulás megadva - ide kerülnek majd a valós script-betöltések.');
+    // Példa (kikommentezve, cseréld a saját azonosítóidra):
+    // const s = document.createElement('script');
+    // s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX';
+    // s.async = true;
+    // document.head.appendChild(s);
+}
+
+// ================================================================
+// 11) JOGI MODAL (Adatvédelem / Impresszum)
+// ================================================================
+function openLegal(tab) {
+    document.getElementById('legalModal').classList.add('visible');
+    switchLegalTab(tab || 'privacy');
+}
+
+function closeLegal() {
+    document.getElementById('legalModal').classList.remove('visible');
+}
+
+function switchLegalTab(tab) {
+    document.getElementById('legalTabPrivacy').classList.toggle('active', tab === 'privacy');
+    document.getElementById('legalTabImpresszum').classList.toggle('active', tab === 'impresszum');
+    document.querySelectorAll('.legal-tab-content').forEach(el => {
+        el.classList.toggle('active', el.dataset.legal === tab);
+    });
+}
+
+// Modal bezárása háttérre kattintva
+document.getElementById('legalModal').addEventListener('click', (e) => {
+    if (e.target.id === 'legalModal') closeLegal();
+});
+
+// ================================================================
+// 12) LEGÖRDÜLŐ MENÜK (nyelvválasztó + hamburger)
+// ================================================================
+function toggleDropdown(id) {
+    const menu = document.getElementById(id);
+    const isOpen = menu.classList.contains('open');
+    // Minden más dropdown bezárása, mielőtt megnyitnánk az újat
+    document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
+    if (!isOpen) menu.classList.add('open');
+}
+
+// Kattintás máshova -> minden dropdown bezáródik
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.dropdown-wrap')) {
+        document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
+    }
+});
+
+// ================================================================
+// 13) RÓLUNK / KONTAKT MODAL
+// ================================================================
+function openInfo(tab) {
+    document.getElementById('infoModal').classList.add('visible');
+    switchInfoTab(tab || 'about');
+}
+function closeInfo() {
+    document.getElementById('infoModal').classList.remove('visible');
+}
+function switchInfoTab(tab) {
+    document.getElementById('infoTabAbout').classList.toggle('active', tab === 'about');
+    document.getElementById('infoTabContact').classList.toggle('active', tab === 'contact');
+    document.querySelectorAll('.legal-tab-content[data-info]').forEach(el => {
+        el.classList.toggle('active', el.dataset.info === tab);
+    });
+}
+document.getElementById('infoModal').addEventListener('click', (e) => {
+    if (e.target.id === 'infoModal') closeInfo();
+});
+
+// ================================================================
+// 14) NYELVVÁLASZTÁS
+// Fontos, őszinte korlát: ez a felhasználói felület kulcs-elemeit
+// (gombok, feliratok) fordítja le, NEM a pálya-adatbázis részletes
+// leírásait (100+ pálya jegyzete) - az egy külön, nagy volumenű
+// fordítási feladat lenne.
+// ================================================================
+const translations = {
+    hu: { back: "Vissza a földgömbhöz", legalTitle: "Adatvédelem / Impresszum", menu: "Menü", lang: "Nyelv / Language",
+          menuAbout: "Rólunk", menuContact: "Kontakt", instruction: "💡 Válassz egy színezett országot a versenypályák megtekintéséhez!" },
+    en: { back: "Back to the globe", legalTitle: "Privacy / Legal", menu: "Menu", lang: "Language",
+          menuAbout: "About us", menuContact: "Contact", instruction: "💡 Select a colored country to view its racecourses!" },
+    de: { back: "Zurück zum Globus", legalTitle: "Datenschutz / Impressum", menu: "Menü", lang: "Sprache",
+          menuAbout: "Über uns", menuContact: "Kontakt", instruction: "💡 Wähle ein farbiges Land, um die Rennbahnen zu sehen!" },
+    fr: { back: "Retour au globe", legalTitle: "Confidentialité / Mentions légales", menu: "Menu", lang: "Langue",
+          menuAbout: "À propos", menuContact: "Contact", instruction: "💡 Choisissez un pays coloré pour voir ses hippodromes !" },
+    sv: { back: "Tillbaka till jordgloben", legalTitle: "Integritet / Juridisk info", menu: "Meny", lang: "Språk",
+          menuAbout: "Om oss", menuContact: "Kontakt", instruction: "💡 Välj ett färgat land för att se dess travbanor!" },
+    es: { back: "Volver al globo", legalTitle: "Privacidad / Aviso legal", menu: "Menú", lang: "Idioma",
+          menuAbout: "Sobre nosotros", menuContact: "Contacto", instruction: "💡 ¡Selecciona un país coloreado para ver sus hipódromos!" },
+    it: { back: "Torna al globo", legalTitle: "Privacy / Note legali", menu: "Menu", lang: "Lingua",
+          menuAbout: "Chi siamo", menuContact: "Contatti", instruction: "💡 Seleziona un paese colorato per vedere i suoi ippodromi!" },
+    ja: { back: "地球儀に戻る", legalTitle: "プライバシー / 法的情報", menu: "メニュー", lang: "言語",
+          menuAbout: "私たちについて", menuContact: "お問い合わせ", instruction: "💡 色付きの国を選んで競馬場を見てみましょう！" },
+    zh: { back: "返回地球", legalTitle: "隐私 / 法律信息", menu: "菜单", lang: "语言",
+          menuAbout: "关于我们", menuContact: "联系我们", instruction: "💡 选择一个彩色国家查看其赛马场！" },
+    ar: { back: "العودة إلى الكرة الأرضية", legalTitle: "الخصوصية / قانوني", menu: "القائمة", lang: "اللغة",
+          menuAbout: "من نحن", menuContact: "اتصل بنا", instruction: "💡 اختر دولة ملونة لعرض مضامير السباق فيها!" }
+};
+
+function setLanguage(code, btn, isManual = true) {
+    const t = translations[code] || translations.hu;
+
+    document.querySelector('#backBtn .full-text').textContent = t.back;
+    document.getElementById('legalInfoBtn').title = t.legalTitle;
+    document.getElementById('hamburgerBtn').title = t.menu;
+    document.getElementById('langBtn').title = t.lang;
+    document.querySelector('[data-i18n="menuAbout"]').textContent = t.menuAbout;
+    document.querySelector('[data-i18n="menuContact"]').textContent = t.menuContact;
+    document.getElementById('instructionBar').textContent = t.instruction;
+
+    // Arab nyelvnél jobbról-balra irányítás a fejléc jobb oldali csoportjára
+    document.documentElement.dir = (code === 'ar') ? 'rtl' : 'ltr';
+
+    document.querySelectorAll('#langMenu button').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
+
+    // Ha a látogató KÉZZEL választott nyelvet, azt eltároljuk, hogy a
+    // következő látogatáskor ezt tiszteletben tartsuk, és NE írja felül
+    // az automatikus országfelismerés.
+    if (isManual) {
+        try { localStorage.setItem('rc360_lang_manual', code); } catch (e) { /* nem elérhető */ }
+    }
+}
+
+// ================================================================
+// 15) AUTOMATIKUS ORSZÁG-FELISMERÉS ÉS NYELVVÁLASZTÁS
+// Ingyenes, kulcs nélküli IP-geolokációs szolgáltatással (ipwho.is)
+// megállapítjuk, melyik országból érkezik a látogató, és ez alapján
+// automatikusan beállítjuk a felület nyelvét - kivéve, ha korábban
+// már kézzel választott nyelvet (azt mindig tiszteletben tartjuk).
+// ================================================================
+const COUNTRY_TO_LANG = {
+    HU: 'hu', GB: 'en', US: 'en', IE: 'en', AU: 'en', CA: 'en',
+    DE: 'de', AT: 'de', CH: 'de',
+    FR: 'fr', BE: 'fr',
+    SE: 'sv',
+    ES: 'es', MX: 'es', AR: 'es',
+    IT: 'it',
+    JP: 'ja',
+    CN: 'zh', TW: 'zh', HK: 'zh',
+    SA: 'ar', AE: 'ar', EG: 'ar', QA: 'ar'
+};
+
+async function detectAndSetLanguage() {
+    let manual = null;
+    try { manual = localStorage.getItem('rc360_lang_manual'); } catch (e) { /* nem elérhető */ }
+
+    if (manual) {
+        // A látogató korábban már kézzel választott nyelvet - azt használjuk,
+        // nem írjuk felül automatikus felismeréssel.
+        setLanguage(manual, null, false);
+        return;
+    }
+
+    try {
+        const res = await fetch('https://ipwho.is/');
+        const data = await res.json();
+        if (data && data.success !== false && data.country_code) {
+            const langCode = COUNTRY_TO_LANG[data.country_code] || 'en';
+            setLanguage(langCode, null, false);
+        }
+    } catch (e) {
+        // Ha a geolokációs szolgáltatás nem elérhető, egyszerűen
+        // magyar marad az alapértelmezett felület - nincs hibaüzenet,
+        // a felhasználó ettől még bármikor kézzel válthat nyelvet.
+        console.log('[RC360] Automatikus nyelvfelismerés nem elérhető, alapértelmezett marad.');
+    }
+}
+
+// Indításkor ellenőrizzük a cookie-hozzájárulás állapotát
+initCookieBanner();
+
+// Indításkor megpróbáljuk automatikusan felismerni a látogató országát/nyelvét
+detectAndSetLanguage();
+</script>
+
+<!-- Lábléc jogi linkekkel -->
+
+<div id="siteFooter">
+    © 2026 Racecourse360 — <a onclick="openLegal('privacy')">Adatvédelmi tájékoztató</a> · <a onclick="openLegal('impresszum')">Impresszum</a> · <a onclick="reopenCookieBanner()">Cookie-beállítások módosítása</a>
+</div>
+
+<!-- Cookie-banner -->
+<div id="cookieBanner">
+    <div class="cookie-text">
+        🍪 Ez az oldal sütiket használ a működéshez, statisztikákhoz, valamint <b>hirdetésekhez és partnerlinkekhez</b> (pl. Booking.com), amelyeken keresztül jutalékot kaphatunk. Bővebben az <a onclick="openLegal('privacy')">Adatvédelmi tájékoztatóban</a>.
+    </div>
+    <div class="cookie-buttons">
+        <button class="cookie-btn reject" onclick="setCookieConsent(false)">Csak a szükséges</button>
+        <button class="cookie-btn accept" onclick="setCookieConsent(true)">Mindet elfogadom</button>
+    </div>
+</div>
+
+<!-- Jogi modal: Adatvédelmi tájékoztató + Impresszum -->
+<div id="legalModal">
+    <div class="legal-box">
+        <button class="legal-close" onclick="closeLegal()">✕</button>
+        <div class="legal-tabs">
+            <button class="legal-tab-btn active" id="legalTabPrivacy" onclick="switchLegalTab('privacy')">Adatvédelem</button>
+            <button class="legal-tab-btn" id="legalTabImpresszum" onclick="switchLegalTab('impresszum')">Impresszum</button>
+        </div>
+
+        <div class="legal-tab-content active" data-legal="privacy">
+            <h2>Adatvédelmi tájékoztató</h2>
+            <p>Utolsó frissítés: 2026. — Ez a tájékoztató a Racecourse360 weboldal (a "Szolgáltatás") adatkezelési gyakorlatát ismerteti. A Szolgáltatás egy független, nem hivatalos, informatív célú térkép a nemzetközi ügetőversenypályákról.</p>
+
+            <h3>1. Milyen sütiket (cookie-kat) használunk?</h3>
+            <ul>
+                <li><b>Szükséges sütik:</b> a weboldal alapvető működéséhez kellenek (pl. a cookie-hozzájárulásod eltárolásához). Ezek nem kapcsolhatók ki, mert nélkülük az oldal nem tudna helyesen működni.</li>
+                <li><b>Hirdetési és partner (affiliate) sütik:</b> csak akkor aktiválódnak, ha ehhez hozzájárulsz. Ezek segítenek relevánsabb hirdetéseket mutatni, és lehetővé teszik, hogy nyomon kövessük, ha egy partnerlinkünkön (pl. Booking.com) keresztül foglalást vagy vásárlást indítasz — ez esetben jutalékot kaphatunk, számodra ez plusz költséggel nem jár.</li>
+            </ul>
+
+            <h3>2. Milyen adatokat gyűjtünk?</h3>
+            <p>A Szolgáltatás nem kér és nem tárol személyes fiókadatot (nincs regisztráció). Hirdetési/analitikai partnereink (pl. Google) a hozzájárulásod esetén névtelenített, technikai adatokat (böngésző típusa, hozzávetőleges földrajzi hely, meglátogatott oldalak) gyűjthetnek a saját adatvédelmi szabályzatuk szerint.</p>
+
+            <h3>3. Partnerkapcsolatok (affiliate)</h3>
+            <p>A Szolgáltatáson feltüntetett egyes linkek (pl. szállásfoglalási ajánlatok) partnerprogramokon (pl. Booking.com Partner Program) keresztül működnek. Ha ilyen linken keresztül foglalsz, jutalékot kaphatunk — ez az árat számodra nem növeli.</p>
+
+            <h3>4. Jogaid</h3>
+            <p>Az Európai Unió Általános Adatvédelmi Rendelete (GDPR) alapján jogod van a hozzájárulásod bármikor visszavonni (a cookie-beállítások törlésével a böngésződben), tájékoztatást kérni a rólad tárolt adatokról, és panaszt tenni az illetékes adatvédelmi hatóságnál.</p>
+
+            <h3>5. Kapcsolat</h3>
+            <p>Adatvédelemmel kapcsolatos kérdés esetén: <i>[ide kerül az üzemeltető e-mail címe]</i></p>
+
+            <button class="cookie-btn reject" style="margin-bottom:14px;" onclick="reopenCookieBanner()">🍪 Cookie-beállítások módosítása</button>
+
+            <p style="margin-top:16px;font-size:0.72rem;color:#64748b;">⚠️ Ez a szöveg magyar nyelvű minta-tervezet, jogi szaktanácsadás nélkül készült. Éles publikálás előtt javasolt jogi szakemberrel átnézetni, és a weboldal tényleges célnyelveire (olasz, francia, svéd, angol stb.) lefordíttatni.</p>
+        </div>
+
+        <div class="legal-tab-content" data-legal="impresszum">
+            <h2>Impresszum</h2>
+            <h3>Szolgáltató adatai</h3>
+            <ul>
+                <li>Név / cégnév: <i>[ide kerül a hivatalos név]</i></li>
+                <li>Székhely / cím: <i>[ide kerül a cím]</i></li>
+                <li>Cégjegyzékszám / adószám: <i>[ide kerül, ha van bejegyzett vállalkozás]</i></li>
+                <li>E-mail: <i>[ide kerül a kapcsolattartási e-mail]</i></li>
+            </ul>
+
+            <h3>A Szolgáltatás jellege</h3>
+            <p>A Racecourse360 egy <b>független, nem hivatalos</b> információs és térképes oldal, amely nyilvánosan elérhető források (hivatalos szövetségi honlapok, sajtóanyagok, közhiteles nyilvántartások) alapján, saját szerkesztésben mutatja be a nemzetközi ügetőversenypályákat.</p>
+
+            <h3>Nincs hivatalos kapcsolat</h3>
+            <p>A Szolgáltatás <b>nem áll hivatalos kapcsolatban</b> az oldalon megemlített versenypálya-üzemeltetőkkel, szövetségekkel vagy szervezetekkel (pl. HippoGroup, Nordest Ippodromi, TrottoWeb, LeTrot, Svensk Travsport). A feltüntetett nevek és linkek kizárólag tájékoztató jellegűek, azok saját tulajdonosaik védjegyei/tulajdonai.</p>
+
+            <h3>Felelősség kizárása</h3>
+            <p>A Szolgáltatáson feltüntetett adatok (alapítási évek, pályaadatok, üzemeltetői információk) jóhiszeműen, több forrás kereszthivatkozásával kerültek összeállításra, de tartalmazhatnak pontatlanságot. A tényleges versenynaptárért és hivatalos információkért mindig az adott pálya vagy szövetség hivatalos honlapja az irányadó.</p>
+
+            <p style="margin-top:16px;font-size:0.72rem;color:#64748b;">⚠️ Ez egy minta-impresszum. Éles publikálás előtt töltsd ki a hiányzó adatokat (cégnév, cím, adószám), és ellenőrizd az adott ország (Magyarország és/vagy a célországok) impresszum-kötelezettségeit.</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
