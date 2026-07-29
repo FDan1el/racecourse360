@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Racecourse360 - Global Horse Racing Map</title>
+
+<!-- Globe.gl 3D könyvtár -->
+<script src="https://unpkg.com/globe.gl"></script>
+
+<!-- Leaflet 2D térkép könyvtár -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
+    body, html { width: 100%; height: 100%; overflow: hidden; background-color: #030712; }
+
+    /* ============ FEJLÉC ============ */
+    header {
+        position: absolute; top: 0; left: 0; right: 0; height: 65px;
+        background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(12px);
+        color: white; display: flex; align-items: center; justify-content: space-between;
+        padding: 0 25px; z-index: 500; border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; color: #ffffff; }
+    .logo span { color: #f59e0b; }
+
+    .filter-container {
+        display: flex; gap: 8px; background: rgba(0, 0, 0, 0.4);
+        padding: 4px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1);
+    }
+    .filter-btn {
+        background: none; border: none; color: #94a3b8; padding: 8px 16px;
+        font-size: 0.85rem; font-weight: 600; border-radius: 20px; cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .filter-btn.active { background: #38bdf8; color: #0f172a; }
+    .filter-btn:hover:not(.active) { color: #ffffff; }
+    .filter-container.disabled { opacity: 0.35; pointer-events: none; }
+
+    .back-btn {
+        display: none;
+        background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; color: #f59e0b;
+        padding: 8px 18px; font-size: 0.85rem; font-weight: 600; border-radius: 20px;
+        cursor: pointer; transition: all 0.2s ease;
+    }
+    .back-btn:hover { background: #f59e0b; color: #0f172a; }
+    .back-btn.visible { display: inline-block; }
+
+    /* ============ ALSÓ INFÓSÁV ============ */
+    .instruction-bar {
+        position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+        background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
+        color: #e2e8f0; padding: 12px 24px; border-radius: 30px; font-size: 0.9rem;
+        border: 1px solid rgba(255,255,255,0.1); z-index: 400; pointer-events: none;
+        max-width: 90%; text-align: center;
+        transition: opacity 0.3s ease;
+    }
+
+    /* ============ 3D FÖLDGÖMB RÉTEG ============ */
+    #globeLayer {
+        position: absolute; inset: 0; z-index: 10;
+        opacity: 1; transition: opacity 0.6s ease;
+    }
+    #globeLayer.hidden { opacity: 0; pointer-events: none; }
+    #globeViz { width: 100%; height: 100vh; }
+
+    /* ============ 2D TÉRKÉP RÉTEG ============ */
+    #mapLayer {
+        position: absolute; inset: 0; z-index: 20;
+        opacity: 0; pointer-events: none; transition: opacity 0.6s ease;
+    }
+    #mapLayer.visible { opacity: 1; pointer-events: auto; }
+    #mapViz { width: 100%; height: 100vh; background: #0f172a; }
+
+    /* Réteg-váltó (Műhold / Térkép) gomb a 2D nézetben */
+    .layer-toggle {
+        position: absolute; top: 85px; left: 20px; z-index: 450;
+        background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 14px; padding: 4px; display: none; gap: 4px;
+        backdrop-filter: blur(8px);
+    }
+    .layer-toggle.visible { display: flex; }
+    .layer-toggle button {
+        background: none; border: none; color: #94a3b8; padding: 7px 14px;
+        font-size: 0.8rem; font-weight: 600; border-radius: 10px; cursor: pointer;
+    }
+    .layer-toggle button.active { background: #38bdf8; color: #0f172a; }
+
+    /* ============ ORSZÁG-PANEL (pálya lista) ============ */
+    .country-panel {
+        position: absolute; top: 85px; right: 20px; width: 320px; max-height: calc(100vh - 140px);
+        overflow-y: auto; background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 18px;
+        color: #e2e8f0; z-index: 450; display: none;
+        box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6);
+    }
+    .country-panel.visible { display: block; }
+    .country-panel h2 { font-size: 1.1rem; color: #f59e0b; margin-bottom: 4px; }
+    .country-panel .sub { font-size: 0.75rem; color: #64748b; margin-bottom: 14px; }
+    .track-item {
+        padding: 10px 12px; border-radius: 10px; margin-bottom: 8px;
+        background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+        cursor: pointer; transition: background 0.2s ease;
+    }
+    .track-item:hover { background: rgba(56, 189, 248, 0.12); border-color: #38bdf8; }
+    .track-item .t-name { font-weight: 700; font-size: 0.9rem; color: #ffffff; }
+    .track-item .t-meta { font-size: 0.75rem; color: #94a3b8; margin-top: 2px; }
+    .track-item .t-note { font-size: 0.78rem; color: #cbd5e1; margin-top: 4px; line-height: 1.3; }
+    .country-panel::-webkit-scrollbar { width: 6px; }
+    .country-panel::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+
+    /* ============ EGYEDI LEAFLET MARKER ============ */
+    .track-marker {
+        width: 16px; height: 16px; border-radius: 50%;
+        background: #38bdf8; border: 2px solid #0f172a;
+        box-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
+    }
+
+    /* ============ EGYEDI LEAFLET POPUP STÍLUS ============ */
+    .leaflet-popup-content-wrapper {
+        background: #0f172a; color: #e2e8f0; border-radius: 12px;
+        border: 1px solid #334155; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.6);
+    }
+    .leaflet-popup-tip { background: #0f172a; }
+    .popup-title { font-weight: 700; color: #ffffff; font-size: 0.95rem; margin-bottom: 2px; }
+    .popup-meta { font-size: 0.78rem; color: #94a3b8; margin-bottom: 6px; }
+    .popup-note { font-size: 0.82rem; color: #cbd5e1; line-height: 1.35; }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Racecourse<span>360</span></div>
+
+    <div class="filter-container" id="filterContainer">
+        <button class="filter-btn active" onclick="setFilter('all', this)">Összes</button>
+        <button class="filter-btn" onclick="setFilter('gallop', this)">🐎 Galopp</button>
+        <button class="filter-btn" onclick="setFilter('trot', this)">🚜 Ügető</button>
+    </div>
+
+    <button class="back-btn" id="backBtn" onclick="resetToGlobe()">← Vissza a földgömbhöz</button>
+</header>
+
+<!-- Réteg 1: 3D földgömb -->
+<div id="globeLayer">
+    <div id="globeViz"></div>
+</div>
+
+<!-- Réteg 2: 2D térkép -->
+<div id="mapLayer">
+    <div id="mapViz"></div>
+</div>
+
+<!-- Műhold / Térkép váltó -->
+<div class="layer-toggle" id="layerToggle">
+    <button class="active" id="btnSatellite" onclick="setBaseLayer('satellite')">🛰️ Műhold</button>
+    <button id="btnStreet" onclick="setBaseLayer('street')">🗺️ Térkép</button>
+</div>
+
+<!-- Ország-panel -->
+<div class="country-panel" id="countryPanel">
+    <h2 id="panelTitle"></h2>
+    <div class="sub" id="panelSub"></div>
+    <div id="panelTracks"></div>
+</div>
+
+<div class="instruction-bar" id="instructionBar">
+    💡 Válassz egy színezett országot a versenypályák megtekintéséhez!
+</div>
+
+<script>
+// ================================================================
+// PÁLYA-ADATBÁZIS
+// Csak közismert, nyilvános tényeket tartalmaz (név, hely, alapítási
+// év, rövid jellemző), több forrásból kereszthivatkozva.
+// EZ AZ EGYETLEN HELY, AHOL EGY ÚJ ORSZÁGOT FEL KELL VENNI:
+// csak adj hozzá egy új ISO-kulcsot (pl. NOR: [...]) ugyanilyen
+// szerkezettel, és a térkép/földgömb automatikusan felismeri.
+// ================================================================
+const trackDatabase = {
+    SWE: [
+        { name: "Jägersro", city: "Malmö", lat: 55.5699, lng: 13.0697, founded: 1907, note: "Svédország legrégebbi pályája; egyetlen kombinált ügető-galopp aréna" },
+        { name: "Solvalla", city: "Stockholm", lat: 59.3666, lng: 17.9397, founded: 1927, note: "Skandinávia legnagyobb pályája; az Elitloppet otthona" },
+        { name: "Åbytravet", city: "Mölndal", lat: 57.6500, lng: 12.0017, founded: 1936, note: "Svédország 2. legnagyobb pályája" },
+        { name: "Färjestad", city: "Karlstad", lat: 59.4085, lng: 13.5006, founded: 1936, note: "Unionstravet – közös svéd-norvég futam" },
+        { name: "Bergsåkers travbana", city: "Sundsvall", lat: 62.4151, lng: 17.2269, founded: 1932, note: "Svédország 3. legrégebbi pályája" },
+        { name: "Axevalla travbana", city: "Axvall", lat: 58.4006, lng: 13.5642, founded: 1956, note: "Az ország leghosszabb célegyenese" },
+        { name: "Sundbyholms travbana", city: "
