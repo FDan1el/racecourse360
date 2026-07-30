@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>Racecourse360 - Global Horse Racing Map</title>
+
+<!-- ================================================================
+     COOKIEYES CMP (Google-hitelesített, IAB TCF-kompatibilis)
+     ================================================================
+     STÁTUSZ: már beállítva és aktív (lásd lent, a valódi script).
+     A USE_COOKIEYES kapcsoló (a fő JS blokkban) true-ra van állítva,
+     ezért a saját, egyszerű bannerünk automatikusan nem fut - a
+     CookieYes hitelesített felülete kezeli a hozzájárulást.
+
+     HA MÁSIK DOMAINRE KÖLTÖZTÖK: jelentkezz be az app.cookieyes.com
+     fiókodba, add hozzá az új domaint, és a onnan kapott új
+     azonosítóval cseréld le a lenti script "src" attribútumát.
+     ================================================================ -->
+<!-- Start cookieyes banner -->
+<script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/3de8775ee16f2ba8c335048e4eb116f3/script.js"></script>
+<!-- End cookieyes banner -->
+
+<!-- Globe.gl 3D könyvtár -->
+<script src="https://unpkg.com/globe.gl"></script>
+
+<!-- Leaflet 2D térkép könyvtár -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header>
+    <img class="logo-img" src="img/logo.png" alt="Racecourse360.com">
+
+    <div class="filter-container" id="filterContainer">
+                <button class="filter-btn btn-gallop" onclick="setFilter('gallop', this)" title="Hamarosan - egyelőre nincs megbízható galopp-adatunk"><img class="btn-icon" src="img/icon-gallop.png" alt="Galopp"><span class="btn-label"> Galopp</span></button>
+        <button class="filter-btn btn-trot" onclick="setFilter('trot', this)"><img class="btn-icon" src="img/icon-trot.png" alt="Ügető"><span class="btn-label"> Ügető</span></button>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+        <button class="back-btn" id="backBtn" onclick="resetToGlobe()">← <span class="full-text">Vissza a földgömbhöz</span></button>
+        <button id="legalInfoBtn" onclick="openLegal('privacy')" title="Adatvédelem / Impresszum">ⓘ</button>
+
+        <div class="dropdown-wrap">
+            <button id="langBtn" onclick="toggleDropdown('langMenu')" title="Nyelv / Language">🌐</button>
+            <div class="dropdown-menu" id="langMenu">
+                <button onclick="setLanguage('en', this)"><span class="dd-flag">🇬🇧</span> English</button>
+                <button onclick="setLanguage('de', this)"><span class="dd-flag">🇩🇪</span> Deutsch</button>
+                <button onclick="setLanguage('fr', this)"><span class="dd-flag">🇫🇷</span> Français</button>
+                <button onclick="setLanguage('sv', this)"><span class="dd-flag">🇸🇪</span> Svenska</button>
+                <button onclick="setLanguage('es', this)"><span class="dd-flag">🇪🇸</span> Español</button>
+                <button onclick="setLanguage('it', this)"><span class="dd-flag">🇮🇹</span> Italiano</button>
+                <button onclick="setLanguage('ja', this)"><span class="dd-flag">🇯🇵</span> 日本語</button>
+                <button onclick="setLanguage('zh', this)"><span class="dd-flag">🇨🇳</span> 中文</button>
+                <button onclick="setLanguage('ar', this)"><span class="dd-flag">🇸🇦</span> العربية</button>
+                <button onclick="setLanguage('hu', this)"><span class="dd-flag">🇭🇺</span> Magyar</button>
+            </div>
+        </div>
+
+        <div class="dropdown-wrap">
+            <button id="hamburgerBtn" onclick="toggleDropdown('hamburgerMenu')" title="Menü">☰</button>
+            <div class="dropdown-menu" id="hamburgerMenu">
+                <button onclick="openTracksMenu()" data-i18n="menuTracks">🏁 Pályák</button>
+                <button onclick="openInfo('about')" data-i18n="menuAbout">Rólunk</button>
+                <button onclick="openInfo('contact')" data-i18n="menuContact">Kontakt</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Pályák böngésző: országok -> pályák, harmadszintű lenyílással -->
+<div id="tracksPanel">
+    <div class="tp-head">
+        <span class="tp-title">🏁 Pályák</span>
+        <button class="tp-close" onclick="closeTracksMenu()">✕</button>
+    </div>
+    <div class="tp-body" id="tracksPanelBody"></div>
+</div>
+
+<!-- Rólunk / Kontakt modal -->
+<div id="infoModal">
+    <div class="legal-box">
+        <button class="legal-close" onclick="closeInfo()">✕</button>
+        <div class="legal-tabs">
+            <button class="legal-tab-btn active" id="infoTabAbout" onclick="switchInfoTab('about')">Rólunk</button>
+            <button class="legal-tab-btn" id="infoTabContact" onclick="switchInfoTab('contact')">Kontakt</button>
+        </div>
+
+        <div class="legal-tab-content active" data-info="about">
+            <h2>Rólunk</h2>
+            <p>A Racecourse360 egy független, hobbi- és tájékoztató célú projekt, amelynek célja, hogy egyetlen, könnyen áttekinthető térképen mutassa be a nemzetközi ügető- és galoppversenypályákat, azok történetét és alapadatait.</p>
+            <p>Az oldalon szereplő adatokat nyilvánosan elérhető forrásokból (hivatalos szövetségi honlapok, sajtóanyagok, közhiteles nyilvántartások) gyűjtöttük össze és dolgoztuk fel saját szerkesztésben.</p>
+            <p style="margin-top:16px;font-size:0.72rem;color:#64748b;">⚠️ Ez egy minta "Rólunk" szöveg – éles publikálás előtt érdemes a tényleges projekt/csapat bemutatására cserélni.</p>
+        </div>
+
+        <div class="legal-tab-content" data-info="contact">
+            <h2>Kontakt</h2>
+            <p><b>E-mail:</b> <i>[ide kerül a kapcsolattartási e-mail cím]</i></p>
+            <p><b>Közösségi média:</b> <i>[ide kerülnek a linkek, ha vannak]</i></p>
+            <p style="margin-top:16px;font-size:0.72rem;color:#64748b;">⚠️ Ez egy minta kontakt-oldal – töltsd ki a tényleges elérhetőségekkel.</p>
+        </div>
+    </div>
+</div>
+
+<div id="globeLayer">
+    <div id="globeViz"></div>
+</div>
+
+<div id="mapLayer">
+    <div id="mapViz"></div>
+</div>
+
+<!-- Dupla ikon: bal fele = nappali/éjszakai földgömb mód, jobb fele = térkép-réteg váltó
+     (a jobb fele csak a 2D térkép nézetben látszik) -->
+<div id="dualToggle">
+    <button id="btnDayNight" onclick="toggleDayNight()" title="Nappali / éjszakai mód">🌙</button>
+</div>
+
+<!-- Az ország-panel eltávolítva: a pályalista a fejléc "Pályák" menüjében érhető el,
+     így nem zavarja az interaktív térképet. -->
+
+<div class="instruction-bar" id="instructionBar">
+    💡 Válassz egy színezett országot a versenypályák megtekintéséhez!
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+
+<!-- Lábléc jogi linkekkel -->
+
+<div id="siteFooter">
+    © 2026 Racecourse360 — <a onclick="openLegal('privacy')">Adatvédelmi tájékoztató</a> · <a onclick="openLegal('impresszum')">Impresszum</a> · <a onclick="openLegal('terms')">Felhasználási feltételek</a> · <a onclick="reopenCookieBanner()">Cookie-beállítások</a>
+</div>
+
+<!-- Cookie-banner -->
+<div id="cookieBanner">
+    <div class="cookie-text">
+        🍪 Ez az oldal sütiket használ a működéshez, statisztikákhoz, valamint <b>hirdetésekhez és partnerlinkekhez</b> (pl. Booking.com), amelyeken keresztül jutalékot kaphatunk. Bővebben az <a onclick="openLegal('privacy')">Adatvédelmi tájékoztatóban</a>.
+    </div>
+    <div class="cookie-buttons">
+        <button class="cookie-btn reject" onclick="setCookieConsent(false)">Csak a szükséges</button>
+        <button class="cookie-btn accept" onclick="setCookieConsent(true)">Mindet elfogadom</button>
+    </div>
+</div>
+
+<!-- Jogi modal: Adatvédelmi tájékoztató + Impresszum -->
+<div id="legalModal">
+    <div class="legal-box">
+        <button class="legal-close" onclick="closeLegal()">✕</button>
+        <div class="legal-tabs">
+            <button class="legal-tab-btn active" id="legalTabPrivacy" onclick="switchLegalTab('privacy')">Adatvédelem</button>
+            <button class="legal-tab-btn" id="legalTabImpresszum" onclick="switchLegalTab('impresszum')">Impresszum</button>
+            <button class="legal-tab-btn" id="legalTabTerms" onclick="switchLegalTab('terms')">Felhasználási feltételek</button>
+        </div>
+
+        <div class="legal-tab-content active" data-legal="privacy">
+            <h2>Adatvédelmi tájékoztató</h2>
+            <p>Utolsó frissítés: 2026. — Ez a tájékoztató a Racecourse360 weboldal (a "Szolgáltatás") adatkezelési gyakorlatát ismerteti. A Szolgáltatás egy független, nem hivatalos, informatív célú térkép a nemzetközi ügetőversenypályákról.</p>
+
+            <h3>1. Milyen sütiket (cookie-kat) használunk?</h3>
+            <ul>
+                <li><b>Szükséges sütik:</b> a weboldal alapvető működéséhez kellenek (pl. a cookie-hozzájárulásod eltárolásához). Ezek nem kapcsolhatók ki, mert nélkülük az oldal nem tudna helyesen működni.</li>
+                <li><b>Hirdetési és partner (affiliate) sütik:</b> csak akkor aktiválódnak, ha ehhez hozzájárulsz. Ezek segítenek relevánsabb hirdetéseket mutatni, és lehetővé teszik, hogy nyomon kövessük, ha egy partnerlinkünkön (pl. Booking.com) keresztül foglalást vagy vásárlást indítasz — ez esetben jutalékot kaphatunk, számodra ez plusz költséggel nem jár.</li>
+            </ul>
+
+            <h3>2. Milyen adatokat gyűjtünk?</h3>
+            <p>A Szolgáltatás nem kér és nem tárol személyes fiókadatot (nincs regisztráció). Hirdetési/analitikai partnereink (pl. Google) a hozzájárulásod esetén névtelenített, technikai adatokat (böngésző típusa, hozzávetőleges földrajzi hely, meglátogatott oldalak) gyűjthetnek a saját adatvédelmi szabályzatuk szerint.</p>
+
+            <h3>3. Partnerkapcsolatok (affiliate)</h3>
+            <p>A Szolgáltatáson feltüntetett egyes linkek (pl. szállásfoglalási ajánlatok) partnerprogramokon (pl. Booking.com Partner Program) keresztül működnek. Ha ilyen linken keresztül foglalsz, jutalékot kaphatunk — ez az árat számodra nem növeli.</p>
+
+            <h3>4. Jogaid</h3>
+            <p>Az Európai Unió Általános Adatvédelmi Rendelete (GDPR) alapján jogod van a hozzájárulásod bármikor visszavonni (a cookie-beállítások törlésével a böngésződben), tájékoztatást kérni a rólad tárolt adatokról, és panaszt tenni az illetékes adatvédelmi hatóságnál.</p>
+
+            <h3>5. Kapcsolat</h3>
+            <p>Adatvédelemmel kapcsolatos kérdés esetén: <i>[ide kerül az üzemeltető e-mail címe]</i></p>
+
+            <button class="cookie-btn reject" style="margin-bottom:14px;" onclick="reopenCookieBanner()">🍪 Cookie-beállítások módosítása</button>
+
+            <p style="margin-top:16px;font-size:0.72rem;color:#64748b;">⚠️ Ez a szöveg magyar nyelvű minta-tervezet, jogi szaktanácsadás nélkül készült. Éles publikálás előtt javasolt jogi szakemberrel átnézetni, és a weboldal tényleges célnyelveire (olasz, francia, svéd, angol stb.) lefordíttatni.</p>
+        </div>
+
+        <div class="legal-tab-content" data-legal="impresszum">
+            <h2>Impresszum</h2>
+            <h3>Szolgáltató adatai</h3>
+            <ul>
+                <li>Név / cégnév: <i>[ide kerül a hivatalos név]</i></li>
+                <li>Székhely / cím: <i>[ide kerül a cím]</i></li>
+                <li>Cégjegyzékszám / adószám: <i>[ide kerül, ha van bejegyzett vállalkozás]</i></li>
+                <li>E-mail: <i>[ide kerül a kapcsolattartási e-mail]</i></li>
+            </ul>
+
+            <h3>A Szolgáltatás jellege</h3>
+            <p>A Racecourse360 egy <b>független, nem hivatalos</b> információs és térképes oldal, amely nyilvánosan elérhető források (hivatalos szövetségi honlapok, sajtóanyagok, közhiteles nyilvántartások) alapján, saját szerkesztésben mutatja be a nemzetközi ügetőversenypályákat.</p>
+
+            <h3>Nincs hivatalos kapcsolat</h3>
+            <p>A Szolgáltatás <b>nem áll hivatalos kapcsolatban</b> az oldalon megemlített versenypálya-üzemeltetőkkel, szövetségekkel vagy szervezetekkel (pl. HippoGroup, Nordest Ippodromi, TrottoWeb, LeTrot, Svensk Travsport). A feltüntetett nevek és linkek kizárólag tájékoztató jellegűek, azok saját tulajdonosaik védjegyei/tulajdonai.</p>
+
+            <h3>Felelősség kizárása</h3>
+            <p>A Szolgáltatáson feltüntetett adatok (alapítási évek, pályaadatok, üzemeltetői információk) jóhiszeműen, több forrás kereszthivatkozásával kerültek összeállításra, de tartalmazhatnak pontatlanságot. A tényleges versenynaptárért és hivatalos információkért mindig az adott pálya vagy szövetség hivatalos honlapja az irányadó.</p>
+
+            <p style="margin-top:16px;font-size:0.72rem;color:#64748b;">⚠️ Ez egy minta-impresszum. Éles publikálás előtt töltsd ki a hiányzó adatokat (cégnév, cím, adószám), és ellenőrizd az adott ország (Magyarország és/vagy a célországok) impresszum-kötelezettségeit.</p>
+        </div>
+
+        <div class="legal-tab-content" data-legal="terms">
+            <h2>Felhasználási feltételek</h2>
+            <p>A Racecourse360 weboldal (a "Szolgáltatás") használatával Ön elfogadja az alábbi feltételeket. Kérjük, olvassa el figyelmesen.</p>
+
+            <h3>1. A Szolgáltatás tartalma és jogi státusza</h3>
+            <p>A Szolgáltatáson megjelenő versenypálya-adatbázis <b>saját, jelentős idő- és munkaráfordítással létrehozott szerkesztői összeállítás</b>: az egyes adatokat nyilvánosan elérhető forrásokból gyűjtöttük össze, ellenőriztük több forrás kereszthivatkozásával, kategorizáltuk és saját szerkesztésben, saját megfogalmazásban tettük közzé.</p>
+            <p>Ez az összeállítás – szerkezetében és egészében – az Európai Unió adatbázisokra vonatkozó jogi védelméről szóló 96/9/EK irányelve, valamint a magyar szerzői jogi törvény (1999. évi LXXVI. tv.) szerinti <b>adatbázis-előállítói (sui generis) védelem</b> alá tartozik. A saját megfogalmazású leírások, elemzések és szerkesztői megjegyzések önállóan is szerzői jogi védelmet élveznek.</p>
+
+            <h3>2. Engedélyezett felhasználás</h3>
+            <ul>
+                <li>Az oldal szabad, ingyenes böngészése magánszemélyként, normál internetböngészővel</li>
+                <li>Egyedi adatok személyes tájékozódás céljából történő felhasználása</li>
+                <li>Az oldalra való hivatkozás (linkelés), a forrás megjelölésével</li>
+                <li>Egyedi képernyőképek megosztása nem kereskedelmi célból, forrásmegjelöléssel</li>
+            </ul>
+
+            <h3>3. Tiltott felhasználás</h3>
+            <p>Előzetes, írásos engedélyünk nélkül <b>kifejezetten tilos</b>:</p>
+            <ul>
+                <li><b>Automatizált adatgyűjtés</b> (scraping, crawling, harvesting) bármilyen szoftverrel, szkripttel, bottal vagy egyéb automatizált eszközzel</li>
+                <li>Az adatbázis egészének vagy <b>lényeges részének</b> kimásolása, letöltése, tárolása vagy újrafelhasználása – akár egyszeri, akár ismételt vagy rendszeres formában</li>
+                <li>Az adatok felhasználása <b>mesterséges intelligencia modellek tanítására</b>, továbbá gépi tanulási adatkészletek összeállítására</li>
+                <li>Az adatok újraértékesítése, továbbterjesztése, vagy azokra épülő versengő szolgáltatás létrehozása</li>
+                <li>A technikai védelmi mechanizmusok (rate limiting, bot-szűrés) megkerülése vagy kijátszása</li>
+                <li>Az oldal szerverének indokolatlan, aránytalan terhelése</li>
+            </ul>
+
+            <h3>4. Együttműködési lehetőség</h3>
+            <p>Ha kutatási, oktatási, újságírói vagy üzleti célból szeretne az adatokhoz hozzáférni, kérjük, keresse fel az üzemeltetőt a Kontakt menüpontban megadott elérhetőségen. <b>Nyitottak vagyunk az együttműködésre</b> – gyakran egyszerűbb és mindkét fél számára hasznosabb egy megállapodás, mint az engedély nélküli adatgyűjtés.</p>
+
+            <h3>5. Az adatok pontossága, felelősség</h3>
+            <p>Az adatokat jóhiszeműen, több forrás kereszthivatkozásával állítjuk össze, de azok pontosságára, teljességére vagy naprakészségére <b>nem vállalunk garanciát</b>. A versenynaptárakért, nyitvatartásért és minden hivatalos információért kizárólag az adott pálya vagy szövetség saját honlapja az irányadó. A Szolgáltatás használatából eredő közvetett vagy közvetlen károkért felelősséget nem vállalunk.</p>
+
+            <h3>6. Külső hivatkozások</h3>
+            <p>A Szolgáltatás harmadik felek honlapjaira mutató linkeket tartalmaz. Ezek tartalmáért, elérhetőségéért és adatkezeléséért nem vállalunk felelősséget.</p>
+
+            <h3>7. Térképadatok forrása és licence</h3>
+            <p>A térképi megjelenítés az <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> (ODbL licenc) és az <a href="https://opentopomap.org" target="_blank" rel="noopener">OpenTopoMap</a> (CC-BY-SA licenc) szabadon felhasználható adatain alapul, a licencek által megkívánt attribúcióval.</p>
+
+            <h3>8. A feltételek módosítása</h3>
+            <p>A feltételeket bármikor egyoldalúan módosíthatjuk. A módosítás a Szolgáltatáson való közzététellel válik hatályossá.</p>
+
+            <p style="margin-top:16px;font-size:0.72rem;color:#64748b;">⚠️ Ez egy magyar nyelvű minta-tervezet, jogi szaktanácsadás nélkül készült. Éles, bevételtermelő publikálás előtt javasolt jogi szakemberrel átnézetni, és a célnyelvekre lefordíttatni.</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
