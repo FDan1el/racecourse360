@@ -1,0 +1,1488 @@
+/* ==========================================================
+   Racecourse360 – MOTOR (adat + alkalmazáslogika)
+   ==========================================================
+   Két jól elkülönített szakasz:
+
+     1. SZAKASZ – ADAT
+        trackDatabase : a versenypályák országonként
+        countryMeta   : országos metaadatok és szervezeti linkek
+        Itt módosíts, ha pályát javítasz vagy újat veszel fel.
+
+     2. SZAKASZ – LOGIKA
+        3D földgömb (Globe.gl), 2D térkép (Leaflet), menük,
+        nyelvváltás, cookie-kezelés, adatlapok.
+        Itt módosíts, ha a működésen változtatsz.
+
+   A két szakasz között NINCS átfedés: a logika csak OLVASSA
+   az adatot. A szakaszhatárt a "2. SZAKASZ" fejléc jelöli.
+
+   Egy pálya mezői:
+     name, city, lat, lng          alapadatok (kötelező)
+     status                        "active" | "inactive" | "unknown" | "closed"
+     founded, length               szám vagy null
+     org                           üzemeltető/szervezet neve
+     ownSite                       a pálya saját honlapja vagy null
+     operatorSite, operatorName    üzemeltetői/szervezeti oldal vagy null
+     note                          történet és megjegyzések
+     historyVerified: true         ha ellenőrzött, a "Történet" fül aktív lesz
+   ========================================================== */
+
+
+/* ==========================================================
+   1. SZAKASZ – ADAT
+   ========================================================== */
+
+const trackDatabase = {
+    SWE: [
+        { name: "Jägersro", city: "Malmö", lat: 55.5699, lng: 13.0697, founded: 1907, status: "active", length: 1000, org: "Skånska Travsällskapet / Svensk Travsport", ownSite: "https://www.travsport.se/travbanor/jagersro/", operatorSite: null, operatorName: null, note: "Svédország legrégebbi pályája; egyetlen kombinált ügető-galopp aréna" },
+        { name: "Solvalla", city: "Stockholm", lat: 59.3666, lng: 17.9397, founded: 1927, status: "active", length: 1000, org: "Stockholms Travsällskap / Svensk Travsport", ownSite: "https://www.solvalla.se/", operatorSite: null, operatorName: null, note: "Skandinávia legnagyobb pályája; az Elitloppet otthona" },
+        { name: "Åbytravet", city: "Mölndal", lat: 57.6500, lng: 12.0017, founded: 1936, status: "active", length: 1000, org: "Svensk Travsport", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Svédország 2. legnagyobb pályája" },
+        { name: "Färjestad", city: "Karlstad", lat: 59.4085, lng: 13.5006, founded: 1936, status: "active", length: 1000, org: "Svensk Travsport", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Unionstravet – közös svéd-norvég futam" },
+        { name: "Bergsåkers travbana", city: "Sundsvall", lat: 62.4151, lng: 17.2269, founded: 1932, status: "active", length: 1000, org: "Norrlands Travsällskap / Svensk Travsport", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Svédország 3. legrégebbi pályája" },
+        { name: "Axevalla travbana", city: "Axvall", lat: 58.4006, lng: 13.5642, founded: 1956, status: "active", length: 1000, org: "Svensk Travsport", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Az ország leghosszabb célegyenese" },
+        { name: "Sundbyholms travbana", city: "Eskilstuna", lat: 59.4388, lng: 16.6138, founded: 1955, status: "active", length: 1000, org: "Sörmlands Travsällskap", ownSite: "https://www.sundbyholm.com/", operatorSite: null, operatorName: null, note: "A Breeders' Crown döntőinek helyszíne 2008 óta" },
+        { name: "Bodentravet", city: "Boden", lat: 65.8133, lng: 21.7057, founded: 1944, status: "active", length: 1000, org: "Norrbottens Travsällskap", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Svédország legészakibb travbanája" },
+        { name: "Gävletravet", city: "Gävle", lat: 60.6885, lng: 17.1384, founded: 1938, status: "active", length: 1000, org: "Gefle-Dala Travsällskap", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "\"Sveriges snabbaste bana\" – az ország leggyorsabb pályája" },
+        { name: "Hagmyren", city: "Hudiksvall", lat: 61.7729, lng: 17.1145, founded: 1956, status: "active", length: 1000, org: "Norra Hälsinglands Travsällskap", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "A legendás Nordin fivérek szülőföldje" },
+        { name: "Halmstadtravet", city: "Halmstad", lat: 56.6905, lng: 12.9277, founded: 1969, status: "active", length: 1000, org: "Hallands Travsällskap", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Sprintermästaren futam helyszíne" },
+        { name: "Hotingtravet", city: "Hoting", lat: 64.0875, lng: 16.2358, founded: 1967, status: "active", length: 800, org: "Västra Ångermanlands Travsällskap", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Évi mindössze 3 versenynap" },
+        { name: "Kalmartravet", city: "Kalmar", lat: 56.6680, lng: 16.2717, founded: 1965, status: "active", length: 1000, org: "Sydöstra Sveriges Travsällskap", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Sibylla svéd hercegnő nyitotta meg" },
+        { name: "Karlshamnstravet", city: "Asarum", lat: 56.2228, lng: 14.8313, founded: 1993, status: "active", length: 800, org: "Blekinge Travsällskap", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "A nézők a pálya belső terében állnak" },
+        { name: "Fornaboda travbana", city: "Lindesberg", lat: 59.6295, lng: 15.1741, founded: 1951, status: "active", length: 1000, org: "Lindes Travklubb", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Korábban a befagyott Lindessjön tavon versenyeztek" },
+        { name: "Lyckseletravet", city: "Lycksele", lat: 64.5521, lng: 18.7160, founded: 1955, status: "active", length: 1000, org: "Lycksele Travsällskap", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Nyári lóhét a helyi közösségi élet csúcspontja" },
+        { name: "Mantorp Hästsportarena", city: "Mantorp", lat: 58.3695, lng: 15.2837, founded: 1965, status: "active", length: 1000, org: "Östergötlands Travsällskap", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "A legendás Ina Scot nevű ló itt van eltemetve" },
+        { name: "Ovallatravet", city: "Oviken", lat: 62.9978, lng: 14.3773, founded: 1971, status: "active", length: 800, org: "Ovikens Travklubb", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "800 m-es kispálya" },
+        { name: "Romme travbana", city: "Borlänge", lat: 60.4529, lng: 15.5005, founded: 1955, status: "active", length: 1000, org: "Svensk Travsport", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Rommeheatet – melegvérűek futama" },
+        { name: "Rättviks travbana", city: "Rättvik", lat: 60.9021, lng: 15.1156, founded: 1955, status: "active", length: 1000, org: "Siljans Travsällskap", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Itt indult Olle Goop, Svédország legsikeresebb hajtójának pályafutása" },
+        { name: "Skellefteåtravet", city: "Skellefteå", lat: 64.7325, lng: 20.9492, founded: 1952, status: "active", length: 1000, org: "Skellefteortens Travsällskap", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Az egyik két svéd pálya \"open stretch\" előzősávval" },
+        { name: "Solänget", city: "Örnsköldsvik", lat: 63.2861, lng: 18.6352, founded: 1952, status: "active", length: 1004, org: "Svensk Travsport", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Mellanbana kategóriájú pálya" },
+        { name: "Tingsrydtravet", city: "Tingsryd", lat: 56.5118, lng: 14.9960, founded: 2003, status: "active", length: 1609, org: "Svensk Travsport", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Svédország egyetlen \"mile\" (1609 m) pályája" },
+        { name: "Umåkers travbana", city: "Umeå", lat: 63.8209, lng: 20.1779, founded: 1944, status: "active", length: 1000, org: "Svensk Travsport", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Egész évben rendeznek itt versenyt" },
+        { name: "Vaggerydstravet", city: "Vaggeryd", lat: 57.5226, lng: 14.1117, founded: 1995, status: "active", length: 1000, org: "Jönköping-Vaggeryds Travsällskap", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "SmålandsMästaren futam helyszíne" },
+        { name: "Visbytravet", city: "Gotland", lat: 57.6175, lng: 18.3288, founded: 1948, status: "active", length: 1000, org: "Gotlands Travsällskap", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Szigeti pálya, csak nyáron üzemel" },
+        { name: "Åmålstravet", city: "Åmål", lat: 59.0335, lng: 12.7051, founded: 1953, status: "active", length: 800, org: "Dalslands Travsällskap", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Az egyetlen pálya, ahol jobbkéz irányban versenyeznek" },
+        { name: "Årjängstravet", city: "Årjäng", lat: 59.3900, lng: 12.1557, founded: 1936, status: "active", length: 1000, org: "Nordmarkens Travsällskap", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Sokak szerint Svédország legszebb ügetőpályája" },
+        { name: "Örebrotravet", city: "Örebro", lat: 59.2191, lng: 15.1611, founded: 1954, status: "active", length: 1000, org: "Örebro Travsällskap", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Örebro Int'l – 3140 m-es stayer-futam" },
+        { name: "Östersundstravet", city: "Östersund", lat: 63.1643, lng: 14.6730, founded: 1936, status: "active", length: 1000, org: "Jämtlands Travsällskap", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Az ország 2. leghosszabb célegyenese" },
+        { name: "Bollnästravet", city: "Bollnäs", lat: 61.3403, lng: 16.3356, founded: 1955, status: "active", length: 1000, org: "Svensk Travsport", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "Hälsingland régió egyik pályája" },
+        { name: "Dannero travbana", city: "Kramfors", lat: 63.0207, lng: 17.8045, founded: 1958, status: "active", length: 1000, org: "Ådalens Travsällskap", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "2005-ös tűz után teljesen megújult" },
+        { name: "Arvika travbana", city: "Arvika", lat: 59.6574, lng: 12.6221, founded: 1954, status: "active", length: 800, org: "Wermlands Trafvarsällskap (1882)", ownSite: null, operatorSite: "https://www.travsport.se/", operatorName: "Svensk Travsport", note: "A Wermlands Trafvarsällskap (1882) Svédország legrégebbi ügető-egyesülete" }
+    ],
+    FRA: [
+        { name: "Hippodrome de Vincennes", city: "Párizs", lat: 48.8212, lng: 2.4517, founded: 1863, status: "active", length: 1975, org: "SETF (Société d'Encouragement à l'Elevage du Trotteur Français)", ownSite: "https://www.vincennes-hippodrome.com/fr/", operatorSite: null, operatorName: null, note: "A trot \"temploma\" – itt rendezik a Prix d'Amérique-et" },
+        { name: "Hippodrome d'Enghien-Soisy", city: "Soisy-sous-Montmorency", lat: 48.9805, lng: 2.2917, founded: 1879, status: "active", length: 1300, org: "SECF (Société d'Encouragement du Cheval Français)", ownSite: "https://www.hippodrome-enghien.com/", operatorSite: null, operatorName: null, note: "Franciaország 2. legnagyobb ügetőpályája" },
+        { name: "Hippodrome de Rambouillet", city: "Rambouillet", lat: 48.6366, lng: 1.8508, founded: 1880, status: "active", length: null, org: "France Trot / Cheval Français", ownSite: null, operatorSite: "https://www.letrot.com/", operatorName: "LeTrot", note: "Családias, erdőszéli pálya" },
+        { name: "Hippodrome de Caen (la Prairie)", city: "Caen", lat: 49.1748, lng: -0.3641, founded: 1839, status: "active", length: 1955, org: "SECF (Société d'Encouragement du Cheval Français)", ownSite: null, operatorSite: "https://www.letrot.com/", operatorName: "LeTrot", note: "Az egyik legelső kizárólag ügető célú francia pálya" },
+        { name: "Hippodrome de Cabourg", city: "Cabourg", lat: 49.2801, lng: -0.1211, founded: 1928, status: "active", length: 1275, org: "SECF (Société d'Encouragement du Cheval Français)", ownSite: "https://www.hippodrome-cabourg.com/", operatorSite: null, operatorName: null, note: "\"A normandiai kis Vincennes\"" },
+        { name: "Hippodrome de Bellevue-la-Forêt", city: "Laval", lat: 48.0384, lng: -0.7953, founded: 1921, status: "active", length: 1250, org: "Société des courses de Laval", ownSite: null, operatorSite: "https://www.letrot.com/", operatorName: "LeTrot", note: "Nyugat-franciaországi regionális referenciapálya" },
+        { name: "Hippodrome de Nantes", city: "Nantes", lat: 47.2457, lng: -1.5626, founded: 1875, status: "active", length: null, org: "Société des Courses de Nantes", ownSite: "https://www.hippodrome-nantes.fr/historique", operatorSite: null, operatorName: null, note: "A Grand National du Trot egyik állomása" },
+        { name: "Hippodrome de Châteaubriant", city: "Châteaubriant", lat: 47.7376, lng: -1.3922, founded: 1980, status: "active", length: null, org: "Association des Courses Hippiques de Châteaubriant", ownSite: "https://www.hippodrome-chateaubriant.fr/", operatorSite: null, operatorName: null, note: "Első kategóriás, mindhárom diszciplínát befogadó pólus" },
+        { name: "Hippodrome de Pontchâteau", city: "Pontchâteau", lat: 47.4459, lng: -2.1315, founded: 1889, status: "active", length: 1225, org: "Société des Courses de Pontchâteau", ownSite: null, operatorSite: "https://www.letrot.com/", operatorName: "LeTrot", note: "Vincennes fontos \"előszoba\" pályája" },
+        { name: "Hippodrome d'Angers-Écouflant", city: "Écouflant", lat: 47.4978, lng: -0.5078, founded: 1847, status: "active", length: null, org: "Société des Courses d'Angers", ownSite: "https://hippodrome-angers.com/hippodrome", operatorSite: null, operatorName: null, note: "\"Equures\" lójólléti minősítés (2024)" },
+        { name: "Hippodrome de la Côte d'Azur", city: "Cagnes-sur-Mer", lat: 43.6485, lng: 7.1462, founded: 1952, status: "active", length: 1288, org: "Société des Courses de Cagnes-sur-Mer", ownSite: "http://www.hippodrome-cotedazur.fr/fr/", operatorSite: null, operatorName: null, note: "A francia téli lóversenyzés egyik központja" },
+        { name: "Hippodrome de Vichy-Bellerive", city: "Bellerive-sur-Allier", lat: 46.1305, lng: 3.4072, founded: 1875, status: "active", length: null, org: "France Trot / Cheval Français", ownSite: null, operatorSite: "https://www.letrot.com/", operatorName: "LeTrot", note: "Az Allier folyó partján, márciustól szeptemberig" },
+        { name: "Hippodrome de Divonne-les-Bains", city: "Divonne-les-Bains", lat: 46.3503, lng: 6.1563, founded: 1965, status: "active", length: 1220, org: "Société des Courses de Divonne-les-Bains", ownSite: null, operatorSite: "https://www.letrot.com/", operatorName: "LeTrot", note: "Az egyetlen francia pálya a Genfi-tó medencéjében" },
+        { name: "Hippodrome d'Agen-La Garenne", city: "Agen", lat: 44.1762, lng: 0.5978, founded: 1850, status: "active", length: 1190, org: "Société des Courses d'Agen", ownSite: "https://hippodrome-agen.fr/", operatorSite: null, operatorName: null, note: "1975-ben itt rendezték az első kizárólag nőknek szóló futamot" }
+    ],
+    ITA: [
+        { name: "Ippodromo di Agnano", city: "Napoli", lat: 40.8371, lng: 14.1671, founded: 1935, status: "active", length: 1000, org: "New Agnano Arena & Races Srl", ownSite: "https://www.ippodromoagnano.it/", operatorSite: null, operatorName: null, note: "Dél-Olaszország ügetősportjának központja; 1947 óta itt rendezik a Gran Premio Lotteria di Agnano-t; itt futotta 2002-ben Varenne, minden idők legjobb olasz ügetője, a máig megdöntetlen pályarekordot" },
+        { name: "Ippodromo Snai San Siro (trotto)", city: "Milánó", lat: 45.4810, lng: 9.1373, founded: null, status: "active", length: null, org: "Snaitech S.p.A.", ownSite: null, operatorSite: "https://www.ippodromisnai.it/", operatorName: "Snaitech (Ippodromi Snai hálózat)", note: "Az 1920-as években épült nagy milánói lósport-komplexum ügetőrésze; koncertek és nagyrendezvények helyszíneként is ismert" },
+        { name: "Ippodromo dell'Arcoveggio", city: "Bologna", lat: 44.5179, lng: 11.3451, founded: null, status: "active", length: null, org: "HippoGroup Cesenate S.p.A.", ownSite: null, operatorSite: "https://www.hippogroupcesenate.it/", operatorName: "HippoGroup Cesenate S.p.A.", note: "Ugyanaz a társaság (HippoGroup Cesenate) üzemelteti, mint a cesenai Savio-t; nyáron szabadtéri moziként is funkcionál a pálya belső területén" },
+        { name: "Ippodromo delle Capannelle", city: "Róma", lat: 41.8256, lng: 12.5630, founded: 1881, status: "active", length: null, org: "Roma Capitale (tulajdonos) / HippoGroup Roma Capannelle Srl (üzemeltető)", ownSite: null, operatorSite: "https://www.hippogroup.it/", operatorName: "HippoGroup (országos hálózat)", note: "Olaszország legrégebbi versenypályája (1881); 1926-ig kizárólag galopp, 2014 óta a galopppálya belsejében kialakított külön pályán ügetőversenyeket is rendeznek a bezárt Tor di Valle pálya öröksége nyomán" },
+        { name: "Ippodromo del Mediterraneo", city: "Siracusa", lat: 37.0014, lng: 15.1922, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: "https://new.trottoweb.com/", operatorName: "TrottoWeb – versenynaptár", note: "Szicília egyetlen jelentős versenypályája, festői környezetben" },
+        { name: "Ippodromo di Stupinigi", city: "Vinovo (Torino)", lat: 44.9785, lng: 7.6121, founded: null, status: "active", length: null, org: "HippoGroup Torinese S.p.A.", ownSite: "http://www.ippodromovinovo.it/", operatorSite: "https://www.hippogroup.it/", operatorName: "HippoGroup (országos hálózat)", note: "Piemont vezető ügetőpályája, a Stupinigi-i vadászkastély közelében" },
+        { name: "Ippodromo San Paolo", city: "Montegiorgio", lat: 43.1168, lng: 13.5743, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: "http://www.sanpaolo.ippodromo.it/", operatorSite: null, operatorName: null, note: "Márche régió referenciapályája, itt rendezik a Palio dei Comuni versenyt" },
+        { name: "Ippodromo dei Sauri", city: "Castelluccio dei Sauri (Foggia)", lat: 41.3075, lng: 15.4548, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: "https://new.trottoweb.com/", operatorName: "TrottoWeb – versenynaptár", note: "Dél-olasz vidéki pálya, karácsonyi rendezvényekről és családbarát programjairól ismert" },
+        { name: "Ippodromo del Savio", city: "Cesena", lat: 44.1434, lng: 12.2297, founded: 1922, status: "active", length: 800, org: "HippoGroup Cesenate S.p.A.", ownSite: null, operatorSite: "https://www.hippogroupcesenate.it/", operatorName: "HippoGroup Cesenate S.p.A.", note: "1927 óta itt rendezik a Campionato Europeo di Trotto-t (Európa-bajnokság), amelynek egyedülálló formátuma van: két azonos versenyszámmal induló prova, majd egy közvetlen párbaj (race-off) a végső győztesért" },
+        { name: "Ippodromo Paolo Sesto", city: "Taranto", lat: 40.5376, lng: 17.3052, founded: null, status: "inactive", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: "https://ippodromopaolosesto.com/", operatorSite: null, operatorName: null, note: "Puglia régió ügetőpályája. STÁTUSZ (2026 nyara): jogi bizonytalanság – a Masaf 2026-ban visszavonta az üzemeltető társaság elismerését, miután a létesítményt végrehajtási árverésen adták el; a helyzet rendeződésétől függően újraindulhat" },
+        { name: "Ippodromo della Favorita", city: "Palermo", lat: 38.1520, lng: 13.3453, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: "https://new.trottoweb.com/", operatorName: "TrottoWeb – versenynaptár", note: "A Favorita történelmi park belsejében, a várost övező hegyek lábánál; nemrég újították fel" },
+        { name: "Ippodromo dei Pini", city: "Follonica", lat: 42.9429, lng: 10.7745, founded: null, status: "inactive", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: "http://www.ippodromodeipini.it/", operatorSite: null, operatorName: null, note: "Toszkán tengerparti pálya. STÁTUSZ (2026 nyara): egész 2026-ban zárva tart; az önkormányzat új pályázatot tervez 2027-re, de egy módosított településrendezési terv más célú hasznosítást is megenged a területnek" },
+        { name: "Ippodromo della Ghirlandina", city: "Modena", lat: 44.6077, lng: 10.9179, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: "https://new.trottoweb.com/", operatorName: "TrottoWeb – versenynaptár", note: "Teljes felújításon esett át, ma luxus éttermet (Antica Moka) is magába foglaló, Olaszország egyik legszebb pályájának tartott létesítmény" },
+        { name: "Ippodromo Euroitalia", city: "Casarano (Lecce)", lat: 40.0375, lng: 18.1665, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: "https://new.trottoweb.com/", operatorName: "TrottoWeb – versenynaptár", note: "Salento régió pályája, korábban az 1990-es években nagyobb jelentőséggel bírt" },
+        { name: "Ippodromo Snai Sesana", city: "Montecatini Terme", lat: 43.8819, lng: 10.7644, founded: 1916, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: "https://new.trottoweb.com/", operatorName: "TrottoWeb – versenynaptár", note: "Olaszország egyik mindössze három pályája (Trieszt, Padova mellett), amely 1922-ben már létezett és azóta is az eredeti helyén működik" },
+        { name: "Ippodromo Sant'Artemio", city: "Treviso", lat: 45.6936, lng: 12.2558, founded: null, status: "active", length: null, org: "Nordest Ippodromi S.p.A.", ownSite: null, operatorSite: "https://www.nordestippodromi.com/", operatorName: "Nordest Ippodromi S.p.A.", note: "Veneto régió pályája, galopp és ügető versenyeknek egyaránt otthont ad; 2026-tól ide (és Padovába) helyezték át a bezárt trieszti Montebello versenynapjait is" },
+        { name: "Ippodromo del Garigliano", city: "Santi Cosma e Damiano (Latina)", lat: 41.2502, lng: 13.8067, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: "https://new.trottoweb.com/", operatorName: "TrottoWeb – versenynaptár", note: "Csak nyáron üzemelő, családbarát vidéki pálya a Garigliano folyó mentén" },
+        { name: "Ippodromo del Visarno Cesare Meli", city: "Firenze", lat: 43.7806, lng: 11.2239, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: "https://www.visarno.it/", operatorSite: null, operatorName: null, note: "A Cascine parkban található; koncertek (pl. Guns N' Roses, Imagine Dragons) kedvelt helyszíne is" },
+        { name: "Ippodromo dei Fiori", city: "Villanova d'Albenga (Savona)", lat: 44.0425, lng: 8.1233, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: "https://new.trottoweb.com/", operatorName: "TrottoWeb – versenynaptár", note: "Ligur riviéra pályája, esti versenyekkel és látványos tengerparti panorámával" },
+        { name: "Ippodromo delle Padovanelle (V.S. Breda)", city: "Padova", lat: 45.4248, lng: 11.9337, founded: 1901, status: "active", length: null, org: "Gruppo Coppiello snc", ownSite: null, operatorSite: "https://new.trottoweb.com/", operatorName: "TrottoWeb – versenynaptár", note: "Olaszország egyik mindössze három pályája (Trieszt, Montecatini mellett), amely 1922-ben már létezett és azóta is az eredeti helyén működik; 2011-ben pénzügyi okokból ideiglenesen felfüggesztették a versenyeket, 2013 óta újra aktív" },
+        { name: "Ippodromo Valentinia", city: "Pontecagnano Faiano (Salerno)", lat: 40.6015, lng: 14.9018, founded: null, status: "active", length: null, org: "Valentinia S.r.l.", ownSite: null, operatorSite: "https://new.trottoweb.com/", operatorName: "TrottoWeb – versenynaptár", note: "Dél-olasz pálya Salerno közelében" },
+        { name: "Ippodromo Montebello", city: "Trieste", lat: 45.6386, lng: 13.7943, founded: 1892, status: "closed", length: null, org: "Nordest Ippodromi S.p.A. (korábbi üzemeltető)", ownSite: null, operatorSite: "https://www.nordestippodromi.com/", operatorName: "Nordest Ippodromi S.p.A. (korábbi üzemeltető)", note: "Olaszország legrégebbi, folyamatosan az eredeti helyén működő versenypályája volt (1892 óta). STÁTUSZ (2026 nyara): a Nordest Ippodromi Spa 2026 elején végleg lemondott az üzemeltetésről, a Masaf visszavonta az engedélyt, a versenyeket Trevisóba és Padovába helyezték át; a régió 30 millió eurót különített el a terület más célú (sportcitadella) átalakítására – a visszatérés lóversenyzéshez valószínűtlen" },
+        { name: "Ippodromo Cirigliano", city: "Aversa (Caserta)", lat: 40.9587, lng: 14.2039, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: "https://new.trottoweb.com/", operatorName: "TrottoWeb – versenynaptár", note: "Campania régió pályája, egykor Aversa városának fontos központja volt" },
+        { name: "Ippodromo San Marone", city: "Civitanova Marche (Macerata)", lat: 43.3374, lng: 13.6775, founded: null, status: "active", length: null, org: "Masaf – Direzione Generale Ippica", ownSite: null, operatorSite: "https://new.trottoweb.com/", operatorName: "TrottoWeb – versenynaptár", note: "Dombtetőn fekvő pálya, panorámás kilátással a tengerre és a hegyekre" },
+        { name: "Ippodromo Cesare Fiaschi", city: "Ferrara", lat: 44.8260, lng: 11.6142, founded: null, status: "active", length: null, org: "Nordest Ippodromi S.p.A.", ownSite: null, operatorSite: "https://www.nordestippodromi.com/", operatorName: "Nordest Ippodromi S.p.A.", note: "Emilia-Romagna régió pályája; a Nordest Ippodromi Spa több mint 20 éve kezeli (egy rövid, üzemeltető-váltás miatti szünettől eltekintve), Trieszttel és Trevisóval közös hálózatban" }
+    ],
+    FIN: [
+        { name: "Vermo Areena", city: "Espoo (Helsinki)", lat: 60.2152, lng: 24.8392, founded: null, status: "active", length: null, org: "Vermon Ravirata Oy", ownSite: "http://www.vermo.fi", operatorSite: null, operatorName: null, note: "Finnország központi (nemzeti) versenypályája; évi kb. 40 szerdai versenynap. Kiemelt futamok: Finlandia-Ajo, Suuri Suomalainen Derby, Käpylä Grand Prix" },
+        { name: "Pilvenmäki", city: "Forssa", lat: 60.8069, lng: 23.5833, founded: null, status: "active", length: null, org: "Forssan Seudun Hippos ry", ownSite: "http://www.pilvenmaki.fi", operatorSite: null, operatorName: null, note: "Kanta-Häme régió edzőközpontja és versenypályája. Kiemelt futamok: Pilvenmäki Special, Tammavaltikka, Pilvenmäki Maraton" },
+        { name: "Joensuun ravirata (Linnunlahti)", city: "Joensuu", lat: 62.5982, lng: 29.7307, founded: null, status: "active", length: null, org: "Joensuun Ravirata Oy", ownSite: "http://www.joensuunravirata.fi", operatorSite: null, operatorName: null, note: "Több mint 100 éves történelmű pálya, híres izgalmas hajrá-versenyeiről. Kiemelt futam: Joensuu-Ajo" },
+        { name: "Killeri", city: "Jyväskylä", lat: 62.2450, lng: 25.6729, founded: null, status: "active", length: null, org: "Keski-Suomen Ravirata Oy", ownSite: "http://www.killeri.fi", operatorSite: null, operatorName: null, note: "Festői tóparti fekvés (Killerjärvi mellett); évi 20+ versenynap. Kiemelt futamok: Killerin Eliitti, Keskisuomalainen Derby" },
+        { name: "Kainuun ravirata", city: "Kajaani", lat: 64.2788, lng: 27.8473, founded: null, status: "active", length: null, org: "Racetrack Kainuu Oy", ownSite: "http://www.kainuunravirata.fi", operatorSite: null, operatorName: null, note: "Egyedi vöröses borítású pálya, amit sokan Finnország legszebb versenypályájának tartanak; önkéntes munkával üzemeltetve" },
+        { name: "Kaustinen (Nikula)", city: "Kaustinen", lat: 63.5816, lng: 23.5790, founded: null, status: "active", length: null, org: "Kaustisen Seudun Raviseura ry", ownSite: "https://kaustisenravit.fi", operatorSite: null, operatorName: null, note: "A híres Kaustinen Folk Music Festival régiójában; kiemelt futamok: Pelimanni-ravit, Festivaaliravit" },
+        { name: "Kouvolan ravirata", city: "Kouvola", lat: 60.8848, lng: 26.7033, founded: 1910, status: "active", length: null, org: "Valkealan hevosystäväinseura ry", ownSite: "http://www.kouvolanravirata.com/", operatorSite: null, operatorName: null, note: "Az 1910-es évek eleje óta ugyanazon a helyen működik – Finnország 2. legrégebbi, folyamatosan azonos helyszínű pályája. 2026-ban itt rendezték a UET Elite Circuit Kymi Grand Prix-t" },
+        { name: "Kuopion ravirata (Sorsasalo)", city: "Kuopio", lat: 62.9670, lng: 27.6805, founded: null, status: "active", length: null, org: "Kuopion ravirata", ownSite: "http://www.kuopionravirata.fi", operatorSite: null, operatorName: null, note: "Évi kb. 25 versenynap. Kiemelt futam: Kuopio Stakes" },
+        { name: "Jokimaa", city: "Lahti", lat: 60.9385, lng: 25.6089, founded: null, status: "active", length: null, org: "Lahden hevosystäväinseura ry", ownSite: "https://www.jokimaanravit.fi/", operatorSite: null, operatorName: null, note: "Évi 30+ versenynap, közel 100 ló edz a területén. Fő eseménye a háromnapos Suur-Hollola-ravit" },
+        { name: "Lappeen ravirata", city: "Lappeenranta", lat: 61.0363, lng: 28.1039, founded: 1973, status: "active", length: null, org: "Lappeenrannan Ravirata Oy", ownSite: "https://www.lappeenravit.fi/", operatorSite: null, operatorName: null, note: "1973 óta rendeznek itt versenyt. Kiemelt futam: Villinmiehen Tammakilpailu" },
+        { name: "Mikkelin ravirata", city: "Mikkeli", lat: 61.7037, lng: 27.2436, founded: null, status: "active", length: null, org: "Mikkelin ravirata Oy", ownSite: "http://www.mikkelinravirata.fi/", operatorSite: null, operatorName: null, note: "Világhírű \"rekordpálya\" – számos világ-, Európa- és Finnország-rekord született itt. 1979 óta rendszeres nagyversenyek helyszíne (St Michel-ajo, 1981 óta)" },
+        { name: "Äimäraution ravirata", city: "Oulu", lat: 64.9815, lng: 25.4690, founded: 1908, status: "active", length: null, org: "Pohjolan Hevosystävät ry", ownSite: "http://oulunravit.fi", operatorSite: null, operatorName: null, note: "Finnország legrégebbi versenypályája (1908 óta). Kiemelt futamok: Oulu Express, Number One" },
+        { name: "Porin ravirata", city: "Pori", lat: 61.4670, lng: 21.8116, founded: null, status: "active", length: null, org: "Porin Ravit Oy", ownSite: "http://porinravit.fi", operatorSite: null, operatorName: null, note: "Városközponthoz közeli, dinamikus rendezvényhelyszín. Kiemelt futamok: Kultaloimi, St. Leger, Satakunta-ajo" },
+        { name: "Rovaniemen ravirata (Mäntyvaara)", city: "Rovaniemi", lat: 66.5113, lng: 25.6037, founded: 1976, status: "active", length: null, org: "Rovaniemen Ravirata Oy", ownSite: "https://rovaniemenravirata.fi/", operatorSite: null, operatorName: null, note: "1976 óta rendeznek itt versenyt; Finnország legészakibb pályája, amfiteátrum-szerű, egyedülálló lelátóval. Kiemelt futam: Arctic Horse Race" },
+        { name: "Seinäjoen ravikeskus", city: "Seinäjoki", lat: 62.8011, lng: 22.8544, founded: null, status: "active", length: null, org: "Etelä-Pohjanmaan hevosjalostusliitto ry", ownSite: "https://www.seinajoenravikeskus.fi/", operatorSite: null, operatorName: null, note: "Évi közel 30 versenynap. Kiemelt nemzetközi futam: Seinäjoki Race" },
+        { name: "Teivon ravirata", city: "Tampere (Ylöjärvi)", lat: 61.5292, lng: 23.6263, founded: null, status: "active", length: null, org: "Tampereen Ravirata Oy", ownSite: "http://www.teivo.fi", operatorSite: null, operatorName: null, note: "Finnország 2. legnagyobb pályája versenynapok száma szerint; 2026-ban ünnepelte 50 éves fennállását és itt rendezték a Kuninkuusravit (a finn \"királyi versenyek\", Finnország legnagyobb sportrendezvénye, kb. 50 000 nézővel)" },
+        { name: "Laivakankaan ravirata", city: "Tornio", lat: 65.8196, lng: 24.3606, founded: 1974, status: "active", length: null, org: "Länsi-Lapin Hevosystävät ry", ownSite: "https://laivakangas.fi/", operatorSite: null, operatorName: null, note: "1974 óta rendeznek itt versenyt; a pályát felújították, ma az egyik leggyorsabb finn pálya. Kiemelt futamok: Midnight Cup, Lady Cup" },
+        { name: "Metsämäen ravirata", city: "Turku", lat: 60.4933, lng: 22.3496, founded: 1978, status: "active", length: null, org: "Turun Hippos ry", ownSite: "https://www.turunhippos.fi/", operatorSite: null, operatorName: null, note: "1978 óta működik. Kiemelt futam: Pohjoismaiden mestaruus (skandináv bajnokság)" },
+        { name: "Ylivieskan ravirata (Keskinen)", city: "Ylivieska", lat: 64.1113, lng: 24.5105, founded: null, status: "active", length: null, org: "Pohjanmaan Ravi ry", ownSite: "http://www.ylivieskanravit.fi/", operatorSite: null, operatorName: null, note: "1997-ben itt rendezték a Kuninkuusravit. Kiemelt futamok: Ruunakunkkarit (hidegvérű heréltek), Malja-ajo" }
+    ],
+    NOR: [
+        { name: "Bjerke Travbane", city: "Oslo", lat: 59.9409, lng: 10.8104, founded: null, status: "active", length: null, org: "Det Norske Travselskap (DNT)", ownSite: null, operatorSite: "https://www.travsport.no/", operatorName: "Det Norske Travselskap (DNT)", note: "Norvégia nemzeti főpályája, évi 100+ versenynappal; itt van a DNT (Det Norske Travselskap, alapítva 1875) központja is. Koncerthelyszínként is használt (pl. AC/DC, Tons of Rock fesztivál)" },
+        { name: "Bergen Travpark", city: "Breistein (Bergen)", lat: 60.4847, lng: 5.3858, founded: null, status: "active", length: null, org: "Bergen Travpark", ownSite: null, operatorSite: "https://www.travsport.no/", operatorName: "Det Norske Travselskap (DNT)", note: "Nyugat-Norvégia vezető ügetőpályája" },
+        { name: "Biri Travbane", city: "Biri", lat: 60.9579, lng: 10.6254, founded: null, status: "active", length: null, org: "Biri Travbane", ownSite: null, operatorSite: "https://www.travsport.no/", operatorName: "Det Norske Travselskap (DNT)", note: "Tóparti fekvésű pálya Gjøvik közelében" },
+        { name: "Forus Travbane", city: "Stavanger", lat: 58.8911, lng: 5.7254, founded: null, status: "active", length: null, org: "Forus Travbane", ownSite: null, operatorSite: "https://www.travsport.no/", operatorName: "Det Norske Travselskap (DNT)", note: "Nyugat-Norvégia (Stavanger-régió) egyetlen ügetőpályája; koncerthelyszínként is működik" },
+        { name: "Harstad Travpark", city: "Harstad", lat: 68.7883, lng: 16.4591, founded: null, status: "active", length: null, org: "Harstad Travpark", ownSite: null, operatorSite: "https://www.travsport.no/", operatorName: "Det Norske Travselskap (DNT)", note: "Észak-Norvégia egyik pályája, a sarkkörön túl" },
+        { name: "Jarlsberg Travbane", city: "Sem (Tønsberg)", lat: 59.2787, lng: 10.3694, founded: null, status: "active", length: null, org: "Jarlsberg Travbane", ownSite: null, operatorSite: "https://www.travsport.no/", operatorName: "Det Norske Travselskap (DNT)", note: "Vestfold megye vezető ügetőpályája" },
+        { name: "Klosterskogen Travbane", city: "Skien", lat: 59.1903, lng: 9.5992, founded: null, status: "active", length: null, org: "AS Klosterskogen Travbane", ownSite: null, operatorSite: "https://www.travsport.no/", operatorName: "Det Norske Travselskap (DNT)", note: "Húsvéti versenyeiről ismert, élénk hangulatú pálya" },
+        { name: "Momarken Travbane", city: "Mysen", lat: 59.5691, lng: 11.3340, founded: null, status: "active", length: null, org: "Momarken Travbane", ownSite: null, operatorSite: "https://www.travsport.no/", operatorName: "Det Norske Travselskap (DNT)", note: "Kelet-Norvégia (Østfold megye) pályája" },
+        { name: "Sørlandets Travpark", city: "Kristiansand", lat: 58.1810, lng: 8.1508, founded: null, status: "active", length: null, org: "Sørlandets Travpark AS", ownSite: null, operatorSite: "https://www.travsport.no/", operatorName: "Det Norske Travselskap (DNT)", note: "Dél-Norvégia vezető ügetőpályája" },
+        { name: "Leangen Travbane (Varig Orkla Arena)", city: "Trondheim", lat: 63.4300, lng: 10.4711, founded: null, status: "active", length: null, org: "Leangen Travbane", ownSite: null, operatorSite: "https://www.travsport.no/", operatorName: "Det Norske Travselskap (DNT)", note: "Közép-Norvégia pályája; itt rendezik évente az Észak-Norvég Ügető Fesztivált (Nord-Norsk Travfestival). Jelenleg szponzori névhasználattal \"Varig Orkla Arena\" néven fut a versenynaptárban" },
+        { name: "Drammen Travbane", city: "Drammen", lat: 59.7551, lng: 10.1154, founded: 1955, status: "closed", length: 800, org: "Det Norske Travselskap (korábbi üzemeltető)", ownSite: null, operatorSite: "https://www.travsport.no/", operatorName: "Det Norske Travselskap (DNT)", note: "1955-ben nyílt, 800 m-es pálya. STÁTUSZ: 2019-ben véglegesen bezárt – az utolsó szezonja volt, miután évtizedekig motorsport-, kutyakiállítás- és ügető-helyszínként is szolgált" }
+    ],
+    POL: [
+        { name: "Tor Wyścigów Konnych Służewiec", city: "Varsó", lat: 52.1652, lng: 21.0159, founded: 1939, status: "active", length: 2300, org: "Tor Służewiec Sp. z o.o.", ownSite: null, operatorSite: "https://pkwk.org/", operatorName: "Polski Klub Wyścigów Konnych", note: "ELLENŐRZVE (2026): AKTÍV, ügetőversennyel is. Lengyelország legnagyobb és legrégebbi lóversenypályája (1939), történelmi műemlék. Elsődlegesen galopp, de a lengyel szaksajtó szerint Varsóban, Wrocławban és Sopotban egyaránt több tucat ügetőfutamot rendeznek szezononként. MEGJEGYZÉS: Lengyelország nem UET-tagország, ezért a nemzetközi ügető-nyilvántartásokban nem szerepel – a sport mégis létezik, hazai szervezésben" },
+        { name: "Wrocławski Tor Wyścigów Konnych – Partynice", city: "Wrocław", lat: 51.0552, lng: 17.0007, founded: 1833, status: "active", length: null, org: "Gmina Wrocław (önkormányzati fenntartású)", ownSite: "https://www.torpartynice.pl/", operatorSite: null, operatorName: null, note: "ELLENŐRZVE (2026): AKTÍV, rendszeres nemzetközi ügetőfutamokkal. 1833 óta rendeznek itt versenyt. A 2026-os szezon április 12-én indult (a látogatói rekord 21 000 fő volt 2022-ben, ingyenes belépéssel). Igazolt 2026-os ügetőfutamok: Nagroda Otwarcia Sezonu Kłusaczego (május 1., 20 000 zł), Puchar Pierwszego Maja (2400 m, francia ügetők), Puchar Światowego Dnia Krwiodawstwa (június 14.). Lengyelország három versenypályája közül az EGYETLEN, ahol akadályversenyt is rendeznek" },
+        { name: "Hipodrom Sopot", city: "Sopot", lat: 54.4280, lng: 18.5706, founded: null, status: "active", length: null, org: "Hipodrom Sopot", ownSite: null, operatorSite: "https://pkwk.org/", operatorName: "Polski Klub Wyścigów Konnych", note: "VISSZAHELYEZVE ÖNKORREKCIÓ UTÁN: korábban tévesen kivettem a listából, mert csak lovassport-központként (Longines FEI Jumping Nations Cup) azonosítottam. A lengyel szaksajtó szerint azonban Sopot Lengyelország három versenypályájának egyike, ahol szezononként több tucat ügetőfutamot is rendeznek Varsó és Wrocław mellett. Vegyes profil: díjugratás + lóverseny" },
+        { name: "Krakowski Tor Wyścigów Konnych (Buczków)", city: "Buczków (Krakkó mellett)", lat: 50.0458, lng: 20.5645, founded: null, status: "unknown", length: null, org: "Krakowski Tor Wyścigów Konnych", ownSite: null, operatorSite: "https://pkwk.org/", operatorName: "Polski Klub Wyścigów Konnych", note: "STÁTUSZ: ELLENŐRZENDŐ – ez a listánk egyetlen megoldatlan tétele. Lengyel ügető-specifikus forráslisták kłusaki (ügető) pályaként említik, DE a lengyel szaksajtó következetesen csak HÁROM versenypályát nevez meg az országban (Varsó-Służewiec, Wrocław-Partynice, Sopot). Ez alapján Buczków legfeljebb kisebb edző- vagy alkalmi helyszín lehet, nem hivatalos versenypálya. A megerősítéshez helyi/lengyel nyelvű forrás vagy közvetlen megkeresés kellene" }
+    ],
+    CZE: [
+        { name: "Velká Chuchle (Chuchle Arena Praha)", city: "Prága", lat: 50.0092, lng: 14.3893, founded: 1906, status: "active", length: null, org: "Chuchle Arena Praha / Česká Klusácká Asociace", ownSite: "https://www.dostihy.cz/", operatorSite: "http://www.czetra.cz/", operatorName: "Česká Klusácká Asociace", note: "ELLENŐRZVE (2026, több forrás): AKTÍV ÜGETŐPÁLYA. 1906. szeptember 28-án nyílt. ITT VAN A CSEH ÜGETŐSZÖVETSÉG (Česká Klusácká Asociace) SZÉKHELYE, és a cseh ügetőfutamok túlnyomó többségét is itt rendezik. Galopp és ügető egyaránt; évi kb. 20 versenynap április-októberben, 2026-ra 13 versenynap tervezve. KÜLÖNLEGESSÉG: a világon mindössze két pályán versenyeznek jobbkéz (óramutató járása szerinti) irányban – Velká Chuchlén és a berlini pályán. A legrégebbi ma is kiírt futam a Cena prezidenta republiky (1920, T. G. Masaryk tiszteletére)" },
+        { name: "Hipodrom Bravantice", city: "Bravantice (Ostrava mellett)", lat: 49.7613, lng: 18.0921, founded: 2014, status: "active", length: 1000, org: "Hipodrom Central a.s. (Jiří Svoboda)", ownSite: "https://www.dostihyostrava.cz/", operatorSite: "http://www.czetra.cz/", operatorName: "Česká Klusácká Asociace", note: "ELLENŐRZVE (2026, több forrás): AKTÍV, KIZÁRÓLAG ÜGETŐPÁLYA. 2014 áprilisában nyílt, a SVÉD SOLVALLA mintájára építve – pontos kanyarívekkel, 16 ló számára elegendő szélességgel két sorban. 40 hektár, 200 lóbox, 10 000 fős kapacitás, többfunkciós tribün kilátótoronnyal. 2026-ban TÖBB VERSENYNAPOT rendez, mint a prágai Velká Chuchle (kb. 10/év) – nemzetközi részvétellel (holland, osztrák, német, svéd, ukrán versenyzők). A pályán mért időket nemzetközileg elismerik, Franciaországot is beleértve. Kiemelt esemény: České klusácké derby (2026. augusztus 29.). Ingyenes belépés és parkolás; a futamokat YouTube-on streamelik" }
+    ],
+    SVK: [
+        { name: "Závodisko Bratislava – Starý háj (Petržalka)", city: "Pozsony", lat: 48.1165, lng: 17.1216, founded: null, status: "inactive", length: 2800, org: "Závodisko, š.p. Bratislava", ownSite: null, operatorSite: "https://www.harness.sk/", operatorName: "Trotting Slovakia", note: "STÁTUSZ: a hivatalos ügető-üzemeltetés 2012-ben leállt; azóta csak alkalmi, lelkesedők (pl. a Klusácka asociácia Slovenska / Trotting Slovakia) által szervezett emlék- és díjfutamok vannak (pl. Szlovák Ügető Derby, rendszertelen időközönként). A hagyomány 1953-ig nyúlik vissza (Csehszlovák Ügető Derby)" }
+    ],
+    HUN: [
+        { name: "Kincsem Park", city: "Budapest", lat: 47.4972, lng: 19.1218, founded: null, status: "active", length: null, org: "Kincsem Nemzeti Kft.", ownSite: null, operatorSite: "https://kincsempark.hu/", operatorName: "Kincsem Park", note: "Magyarország egyetlen aktív, kombinált galopp- és ügetőpályája; mindkét szakágban rendszeres versenynaptárral" }
+    ],
+    EST: [
+        { name: "Tallinna Hipodroom", city: "Tallinn", lat: 59.4323, lng: 24.7055, founded: 1923, status: "closed", length: null, org: "korábbi üzemeltető ismeretlen", ownSite: null, operatorSite: null, operatorName: null, note: "1923 óta működött. STÁTUSZ: 2022-ben véglegesen bezárt, a területet irodaházként építik be. FONTOS KORREKCIÓ: az észt ügetősport ettől NEM szűnt meg – az Eesti Traaviliit UET-tagszövetség 2025-ben 84 futamot rendezett 1 pályán, tehát létezik egy másik, aktív helyszín, amit még azonosítani kell. Litvániában is 2 aktív ügetőpálya van (Lithuania National Trotting League, UET-tag)" }
+    ],
+    USA: [
+        { name: "Batavia Downs", city: "Batavia, NY", lat: 43.0097, lng: -78.2050, founded: null, status: "active", length: null, org: "Western Regional OTB", ownSite: "https://www.bataviadownsgaming.com/live-racing/", operatorSite: null, operatorName: null, note: "Amerika egyik legrégebbi téli versenynaptáras pályája; kaszinóval egybeépítve" },
+        { name: "Buffalo Raceway", city: "Hamburg, NY", lat: 42.7359, lng: -78.8152, founded: null, status: "active", length: null, org: "USTA", ownSite: "http://www.buffaloraceway.com", operatorSite: null, operatorName: null, note: "Az Erie County Fairgrounds területén; tavaszi-nyári versenyszezon" },
+        { name: "The Mint Gaming Hall – Cumberland Run", city: "Corbin, KY", lat: 36.9248, lng: -84.0565, founded: null, status: "active", length: null, org: "USTA", ownSite: null, operatorSite: "https://www.ustrotting.com/track-information/", operatorName: "USTA – pályainformációk", note: "Kentucky egyik újabb, kaszinóval egybeépített ügetőpályája" },
+        { name: "First Tracks Cumberland", city: "Cumberland, ME", lat: 43.8119, lng: -70.2888, founded: null, status: "active", length: null, org: "USTA", ownSite: null, operatorSite: "https://www.ustrotting.com/track-information/", operatorName: "USTA – pályainformációk", note: "Maine állam egyik két aktív pályája" },
+        { name: "Dover Downs", city: "Dover, DE", lat: 39.1890, lng: -75.5306, founded: null, status: "active", length: null, org: "Dover Downs Gaming & Entertainment", ownSite: "https://casinos.ballys.com/dover/harness-racing.htm", operatorSite: null, operatorName: null, note: "A Dover Downs Hotel & Casino komplexum része, a NASCAR-pályával (Dover Motor Speedway) közös területen" },
+        { name: "Harrah's Hoosier Park", city: "Anderson, IN", lat: 40.0694, lng: -85.6408, founded: null, status: "active", length: null, org: "Caesars Entertainment", ownSite: "https://www.caesars.com/harrahs-hoosier-park/racing", operatorSite: null, operatorName: null, note: "Indiana állam vezető ügetőpályája, kaszinóval" },
+        { name: "Harrah's Philadelphia", city: "Chester, PA", lat: 39.8505, lng: -75.3492, founded: null, status: "active", length: null, org: "Caesars Entertainment", ownSite: "https://www.caesars.com/harrahs-philly/racing", operatorSite: null, operatorName: null, note: "Delaware folyó partján, Philadelphiához közel" },
+        { name: "Harrington Raceway", city: "Harrington, DE", lat: 38.9120, lng: -75.5730, founded: null, status: "active", length: null, org: "Harrington Raceway & Casino", ownSite: "https://harringtonraceway.com/home/", operatorSite: null, operatorName: null, note: "Delaware állami vásárterület része" },
+        { name: "Hawthorne Race Course", city: "Cicero, IL", lat: 41.8286, lng: -87.7511, founded: 1891, status: "active", length: null, org: "Hawthorne Race Course Inc.", ownSite: "http://www.hawthorneracecourse.com/", operatorSite: null, operatorName: null, note: "Chicago környékének történelmi pályája (1891 óta); mind galopp, mind ügető versenyeknek otthont ad" },
+        { name: "Historic Track – Goshen", city: "Goshen, NY", lat: 41.4024, lng: -74.3210, founded: 1838, status: "active", length: null, org: "Goshen Historic Track Inc.", ownSite: "http://www.goshenhistorictrack.com/", operatorSite: null, operatorName: null, note: "Amerika legrégebbi, folyamatosan használt ügetőpályája (1838 óta); a Harness Racing Museum & Hall of Fame otthona, évente csak pár versenynappal (jellemzően július 4. körül)" },
+        { name: "Hollywood Casino at The Meadows", city: "Washington, PA", lat: 40.2206, lng: -80.2020, founded: null, status: "active", length: null, org: "Penn Entertainment", ownSite: "https://www.hollywoodmeadows.com/racing", operatorSite: null, operatorName: null, note: "Pittsburgh közelében; élő ügetőverseny a kaszinóval egybeépítve" },
+        { name: "Hollywood Gaming at Dayton Raceway", city: "Dayton, OH", lat: 39.8168, lng: -84.1725, founded: null, status: "active", length: null, org: "Penn Entertainment", ownSite: "https://www.hollywooddaytonraceway.com/racing", operatorSite: null, operatorName: null, note: "Ohio állam egyik újabb, kaszinó-integrált pályája" },
+        { name: "Bangor Raceway", city: "Bangor, ME", lat: 44.7907, lng: -68.7833, founded: null, status: "active", length: null, org: "Hollywood Casino Bangor", ownSite: "http://www.hollywoodcasinobangor.com/Racing", operatorSite: null, operatorName: null, note: "Maine állam másik aktív pályája" },
+        { name: "Little Brown Jug Race Track", city: "Delaware, OH", lat: 40.3165, lng: -83.0718, founded: null, status: "active", length: null, org: "Delaware County Fairgrounds", ownSite: "http://www.littlebrownjug.com", operatorSite: null, operatorName: null, note: "A híres Little Brown Jug (3 éves ügető csődörök egyik legrangosabb amerikai futama) hivatalos helyszíne, évi néhány versenynappal a megyei vásár idején" },
+        { name: "Meadowlands Racetrack", city: "East Rutherford, NJ", lat: 40.8200, lng: -74.0715, founded: 1976, status: "active", length: 1609, org: "Meadowlands Racing & Entertainment", ownSite: "https://playmeadowlands.com/", operatorSite: null, operatorName: null, note: "Az amerikai ügetősport legrangosabb, \"mile\" (1609 m) méretű pályája; itt rendezik a Hambletonian-t, az amerikai ügetősport Kentucky Derbyjének megfelelő, legrangosabb futamát" },
+        { name: "Miami Valley Raceway", city: "Lebanon, OH", lat: 39.4433, lng: -84.3201, founded: null, status: "active", length: null, org: "Miami Valley Gaming", ownSite: "https://miamivalleygaming.com/racing/", operatorSite: null, operatorName: null, note: "Ohio állam egyik kaszinó-integrált pályája" },
+        { name: "Mohegan Sun Pocono (Pocono Downs)", city: "Wilkes-Barre, PA", lat: 41.2695, lng: -75.8222, founded: null, status: "active", length: null, org: "Mohegan Gaming & Entertainment", ownSite: "http://www.poconodowns.com", operatorSite: null, operatorName: null, note: "Pennsylvania északkeleti részének vezető ügetőpályája" },
+        { name: "Monticello Raceway", city: "Monticello, NY", lat: 41.6688, lng: -74.7145, founded: null, status: "active", length: null, org: "Monticello Raceway Management", ownSite: "https://www.monticellocasinoandraceway.com/", operatorSite: null, operatorName: null, note: "A Catskills régió pályája; a látogatói vélemények szerint az utóbbi években leromlott állapotban van, jövője bizonytalan" },
+        { name: "Northfield Park", city: "Northfield, OH", lat: 41.3485, lng: -81.5243, founded: 1957, status: "active", length: null, org: "MTR Gaming Group / Northfield Park Associates", ownSite: "http://www.northfieldpark.com", operatorSite: null, operatorName: null, note: "Cleveland közelében; egyike a legtöbb versenynapot rendező amerikai ügetőpályáknak (gyakorlatilag egész évben)" },
+        { name: "Northville Downs (Barry Expo Center)", city: "Hastings, MI", lat: 42.6770, lng: -85.3953, founded: null, status: "active", length: null, org: "Northville Downs", ownSite: "http://www.northvilledowns.com/", operatorSite: null, operatorName: null, note: "A hagyományos detroiti Northville Downs pálya 2024-es bezárása után ideiglenesen a Barry Expo Centerben rendezik a versenyeket" },
+        { name: "Oak Grove Racing, Gaming & Hotel", city: "Oak Grove, KY", lat: 36.6586, lng: -87.4393, founded: null, status: "active", length: null, org: "Kentucky Downs / Oak Grove", ownSite: "https://www.oakgrovegaming.com/racing", operatorSite: null, operatorName: null, note: "Kentucky-Tennessee határ menti, kaszinóval egybeépített pálya" },
+        { name: "Ocean Downs", city: "Berlin, MD", lat: 38.3522, lng: -75.1633, founded: null, status: "active", length: null, org: "Ocean Downs Casino", ownSite: "https://www.oceandowns.com/racing/", operatorSite: null, operatorName: null, note: "Maryland tengerparti régiójának (Ocean City közelében) pályája; híres a szerdai \"$1 Wednesdays\" akciós versenynapjairól" },
+        { name: "Plainridge Park", city: "Plainville, MA", lat: 42.0322, lng: -71.3044, founded: null, status: "active", length: null, org: "Penn Entertainment", ownSite: "http://www.plainridgeparkcasino.com/racing", operatorSite: null, operatorName: null, note: "Massachusetts állam egyetlen aktív ügetőpályája" },
+        { name: "The Red Mile", city: "Lexington, KY", lat: 38.0426, lng: -84.5198, founded: 1875, status: "active", length: 1609, org: "Red Mile Gaming & Racing", ownSite: "http://www.redmileracing.com/", operatorSite: null, operatorName: null, note: "1875 óta működik; a világ egyik leggyorsabb, \"mile\" méretű pályája, számos ügető-világrekord született itt" },
+        { name: "Rosecroft Raceway", city: "Fort Washington, MD", lat: 38.7969, lng: -76.9625, founded: 1949, status: "active", length: null, org: "Rosecroft Raceway", ownSite: "http://www.rosecroft.com", operatorSite: null, operatorName: null, note: "Washington D.C. közelében; 1949 óta működő pálya" },
+        { name: "Running Aces Casino, Hotel & Racetrack", city: "Columbus, MN", lat: 45.2447, lng: -93.0339, founded: null, status: "active", length: null, org: "Running Aces", ownSite: "https://runaces.com/racing/", operatorSite: null, operatorName: null, note: "Minnesota állam egyetlen aktív ügetőpályája; élő versenyek keddenként, csütörtökönként és vasárnaponként május-szeptember között" },
+        { name: "Saratoga Harness Racing", city: "Saratoga Springs, NY", lat: 43.0620, lng: -73.7742, founded: null, status: "active", length: null, org: "Saratoga Casino Hotel", ownSite: "https://saratogacasino.com/racing/", operatorSite: null, operatorName: null, note: "A híres Saratoga Springs galoppváros ügető-testvérpályája" },
+        { name: "Eldorado Gaming Scioto Downs", city: "Columbus, OH", lat: 39.8395, lng: -82.9974, founded: null, status: "active", length: null, org: "Caesars Entertainment", ownSite: "https://www.caesars.com/scioto-downs/racing", operatorSite: null, operatorName: null, note: "Ohio állam fővárosának ügetőpályája" },
+        { name: "Shenandoah Downs", city: "Woodstock, VA", lat: 38.8732, lng: -78.5230, founded: null, status: "active", length: null, org: "Shenandoah County Fairgrounds", ownSite: null, operatorSite: "https://www.ustrotting.com/track-information/", operatorName: "USTA – pályainformációk", note: "Virginia állam vidéki hangulatú, vásártéri pályája" },
+        { name: "Tioga Downs", city: "Nichols, NY", lat: 42.0240, lng: -76.4131, founded: null, status: "active", length: null, org: "Tioga Downs Casino Resort", ownSite: "https://tiogadowns.com/racing/", operatorSite: null, operatorName: null, note: "New York állam déli részének kaszinó-integrált pályája" },
+        { name: "Vernon Downs", city: "Vernon, NY", lat: 43.0668, lng: -75.5280, founded: 1953, status: "active", length: 1408, org: "American Racing & Entertainment LLC (Jeff Gural)", ownSite: "https://vernondowns.com/racing/", operatorSite: null, operatorName: null, note: "ELLENŐRZVE (2026): AKTÍV. A 2026-os szezon nyitva (péntek-szombat 17:05, július-augusztusban csütörtök is); eredmények június végéig igazolva. 1953-ban nyílt; 2004-ben csődbe ment és bezárt, 2006-ban Jeff Gural vásárolta meg és újraindította. 2025-ben a 72. szezonját zárta. 7/8 mérföldes pályája New York állam legjobb versenyfelületének tartják. Kiemelt futamok: Zweig Memorial Trot, Empire Breeders Classic. MEGJEGYZÉS: a pálya visszatérően pénzügyi nehézségekkel küzd (2023-ban WARN-bejelentés 250 fő elbocsátásáról, adókedvezmény-vitával), de a bezárás nem valósult meg" },
+        { name: "Yonkers Raceway (Empire City)", city: "Yonkers, NY", lat: 40.9195, lng: -73.8650, founded: 1899, status: "active", length: null, org: "MGM Resorts / Empire City Casino", ownSite: "https://empirecitycasino.mgmresorts.com/en/racing.html", operatorSite: null, operatorName: null, note: "Amerika legrégebbi, folyamatosan üzemelő versenypályája (1899 óta) egyes források szerint; New York City közvetlen közelében" }
+    ],
+    CAN: [
+        { name: "Woodbine Mohawk Park", city: "Campbellville, ON", lat: 43.4966, lng: -80.0006, founded: null, status: "active", length: 1409, org: "Woodbine Entertainment Group", ownSite: "https://woodbine.com/mohawk/", operatorSite: null, operatorName: null, note: "Kanada vezető ügetőpályája; itt rendezik a Canadian Trotting Classic-ot (1976 óta) és a Canadian Pacing Derby-t, valamint a Mohawk Million-t. Elements Casino Mohawk kaszinóval egybeépítve" },
+        { name: "The Raceway at Western Fair District", city: "London, ON", lat: 42.9900, lng: -81.2187, founded: null, status: "active", length: null, org: "Western Fair District", ownSite: "http://www.westernfairdistrict.com/gaming/raceway", operatorSite: null, operatorName: null, note: "Ontario délnyugati részének vezető ügetőpályája; a Camluck Classic helyszíne" },
+        { name: "Flamboro Downs", city: "Dundas (Hamilton), ON", lat: 43.3101, lng: -80.0769, founded: null, status: "active", length: null, org: "Great Canadian Entertainment", ownSite: "http://www.flamborodowns.com", operatorSite: null, operatorName: null, note: "Hamilton közelében, kaszinóval egybeépítve" },
+        { name: "Georgian Downs", city: "Innisfil, ON", lat: 44.2924, lng: -79.6871, founded: null, status: "active", length: null, org: "Great Canadian Entertainment", ownSite: "http://www.georgiandowns.com/", operatorSite: null, operatorName: null, note: "Nyári szezonban keddi és vasárnapi versenynapokkal; a 400-as autópálya mellett" },
+        { name: "Grand River Raceway", city: "Elora, ON", lat: 43.6739, lng: -80.4317, founded: null, status: "active", length: null, org: "Grand River Agricultural Society", ownSite: "https://grandriverraceway.com/", operatorSite: null, operatorName: null, note: "Modern, akadálymentes létesítmény kaszinóval; ingyenes belépéssel" },
+        { name: "Hanover Raceway", city: "Hanover, ON", lat: 44.1458, lng: -81.0270, founded: null, status: "active", length: null, org: "Hanover Raceway", ownSite: "http://www.hanoverraceway.com/", operatorSite: null, operatorName: null, note: "Kisvárosi, családias hangulatú pálya kaszinóval és étteremmel" },
+        { name: "Clinton Raceway", city: "Clinton, ON", lat: 43.6201, lng: -81.5366, founded: null, status: "active", length: null, org: "Clinton Raceway", ownSite: "http://www.clintonraceway.com", operatorSite: null, operatorName: null, note: "2026-ban itt rendezték a Nemzeti Hajtóbajnokságot (National Driving Championship); vasárnapi versenynapok, a pálya belsejében két baseball-pálya" },
+        { name: "Dresden Raceway", city: "Dresden, ON", lat: 42.5818, lng: -82.1830, founded: null, status: "active", length: null, org: "Dresden Raceway", ownSite: "http://dresden-raceway.ca/", operatorSite: null, operatorName: null, note: "Kis, barátságos vidéki pálya vasárnapi versenynapokkal" },
+        { name: "Kawartha Downs", city: "Cavan-Monaghan (Peterborough), ON", lat: 44.2080, lng: -78.3935, founded: null, status: "active", length: null, org: "Kawartha Downs", ownSite: "https://www.kawarthadowns.com/events/harness-racing", operatorSite: null, operatorName: null, note: "Szombat esti versenynapok nyáron; egyéb rendezvényeknek (autókiállítás, tacskóverseny) is otthont ad" },
+        { name: "Leamington Raceway", city: "Leamington, ON", lat: 42.0598, lng: -82.5961, founded: null, status: "active", length: null, org: "Leamington Raceway", ownSite: "http://www.lakeshorehorseraceway.com/", operatorSite: null, operatorName: null, note: "Vasárnapi, családbarát versenynapok" },
+        { name: "Hiawatha Horse Park", city: "Sarnia, ON", lat: 42.9874, lng: -82.3272, founded: null, status: "active", length: null, org: "Hiawatha Horse Park", ownSite: "http://hiawathahorsepark.ca/", operatorSite: null, operatorName: null, note: "Heti egy versenynap; golf-driving range is működik a területen" },
+        { name: "Rideau Carleton Raceway", city: "Ottawa, ON", lat: 45.2951, lng: -75.6058, founded: 1962, status: "closed", length: null, org: "Hard Rock International (51%) / Rideau Carleton Raceway Holdings (49%)", ownSite: "http://www.rcr.net/", operatorSite: null, operatorName: null, note: "1962. szeptember 1-jén nyílt, 5500 fős kapacitással; a Frank Ryan Memorial Trot és a Des Smith Classic Pace otthona volt. STÁTUSZ: 2026 márciusában véglegesen bezárt – a helyszín ma Hard Rock Hotel & Casino Ottawa néven működik tovább, lóverseny nélkül" },
+        { name: "Hippodrome 3R", city: "Trois-Rivières, QC", lat: 46.3453, lng: -72.5595, founded: null, status: "active", length: null, org: "Hippodrome 3R", ownSite: "https://hippodrome3r.ca/", operatorSite: null, operatorName: null, note: "Québec tartomány EGYETLEN megmaradt versenypályája, egyben a legrégebbi is; a Coupe de l'Avenir helyszíne. A montreali, gatineau-i és québec-városi hippodromok mind bezártak" },
+        { name: "Century Downs Racetrack and Casino", city: "Rocky View County (Calgary), AB", lat: 51.2014, lng: -113.9806, founded: null, status: "active", length: null, org: "Century Casinos", ownSite: "https://www.cnty.com/centurydowns", operatorSite: null, operatorName: null, note: "Calgary közelében; Alberta tartomány egyik vezető pályája" },
+        { name: "Century Mile Racetrack and Casino", city: "Edmonton International Airport, AB", lat: 53.3146, lng: -113.5601, founded: null, status: "active", length: 1609, org: "Century Casinos", ownSite: "https://www.cnty.com/centurymile", operatorSite: null, operatorName: null, note: "Egy mérföldes pálya az edmontoni repülőtér mellett; a korábbi Northlands Park utódja" },
+        { name: "The Track on 2", city: "Lacombe County, AB", lat: 52.4522, lng: -113.7929, founded: null, status: "active", length: 1609, org: "Alberta Standardbred Horse Association (ASHA)", ownSite: "https://www.thetrackon2.com", operatorSite: null, operatorName: null, note: "Egy mérföldes közép-alberta-i pálya; tavaszi és nyári versenyszezonnal" },
+        { name: "Fraser Downs (Elements Casino Surrey)", city: "Surrey, BC", lat: 49.1123, lng: -122.7293, founded: null, status: "active", length: null, org: "Great Canadian Entertainment", ownSite: null, operatorSite: "https://standardbredcanada.ca/content/links-racetracks.html", operatorName: "Standardbred Canada – pályalinkek", note: "British Columbia tartomány ügetőpályája; a Homestretch étterem panorámás kilátással a pályára" },
+        { name: "Marquis Downs", city: "Saskatoon, SK", lat: 52.0941, lng: -106.6779, founded: null, status: "closed", length: null, org: "Prairieland Park", ownSite: null, operatorSite: "https://standardbredcanada.ca/content/links-racetracks.html", operatorName: "Standardbred Canada – pályalinkek", note: "STÁTUSZ: 2021 óta nincs lóverseny a helyszínen – a területet átalakították, ma a Saskatoon-i labdarúgó-stadion (Nutrien Park) áll rajta. A Standardbred Canada nyilvántartásában még szerepel történeti rekordok miatt" },
+        { name: "Yorkton Exhibition", city: "Yorkton, SK", lat: 51.2109, lng: -102.4902, founded: null, status: "active", length: null, org: "Yorkton Exhibition Association", ownSite: null, operatorSite: "https://standardbredcanada.ca/content/links-racetracks.html", operatorName: "Standardbred Canada – pályalinkek", note: "Vásártéri pálya; chuckwagon- és szekérversenyek is zajlanak itt" },
+        { name: "Red Shores Racetrack & Casino", city: "Charlottetown, PE", lat: 46.2466, lng: -63.1169, founded: null, status: "active", length: null, org: "Red Shores", ownSite: "http://www.redshores.ca", operatorSite: null, operatorName: null, note: "Prince Edward Island fő pályája; a P.E.I. Free-For-All Series és a Gold Cup & Saucer otthona" },
+        { name: "Red Shores Summerside Raceway", city: "Summerside, PE", lat: 46.3998, lng: -63.7996, founded: null, status: "active", length: null, org: "Red Shores", ownSite: "http://www.redshores.ca", operatorSite: null, operatorName: null, note: "A Red Shores hálózat második pályája PEI-n, sportkomplexummal egybeépítve" },
+        { name: "Truro Raceway", city: "Truro, NS", lat: 45.3764, lng: -63.2700, founded: null, status: "active", length: null, org: "Truro Raceway", ownSite: "http://www.truroraceway.ca/", operatorSite: null, operatorName: null, note: "Nova Scotia vezető ügetőpályája; a lelátót és az éttermet nemrég teljesen felújították" },
+        { name: "Inverness Raceway", city: "Inverness, NS", lat: 46.2271, lng: -61.3007, founded: null, status: "active", length: null, org: "Inverness Raceway", ownSite: null, operatorSite: "https://standardbredcanada.ca/content/links-racetracks.html", operatorName: "Standardbred Canada – pályalinkek", note: "Cape Breton-szigeti pálya; az Atlantic Sires Stakes (ATSS) egyik állomása, kiváló közösségi hangulattal" },
+        { name: "Northside Downs", city: "North Sydney, NS", lat: 46.2094, lng: -60.2692, founded: null, status: "active", length: null, org: "Northside Downs", ownSite: null, operatorSite: "https://standardbredcanada.ca/content/links-racetracks.html", operatorName: "Standardbred Canada – pályalinkek", note: "Cape Breton-sziget másik pályája; ingyenes belépéssel, családias hangulattal" },
+        { name: "Exhibition Park Raceway", city: "Saint John, NB", lat: 45.3134, lng: -66.0203, founded: null, status: "active", length: null, org: "Exhibition Park", ownSite: null, operatorSite: "https://standardbredcanada.ca/content/links-racetracks.html", operatorName: "Standardbred Canada – pályalinkek", note: "New Brunswick tartomány pályája a Saint John-i vásártéren" },
+        { name: "Fredericton Raceway", city: "Fredericton, NB", lat: 45.9608, lng: -66.6564, founded: null, status: "active", length: null, org: "Fredericton Raceway", ownSite: null, operatorSite: "https://standardbredcanada.ca/content/links-racetracks.html", operatorName: "Standardbred Canada – pályalinkek", note: "New Brunswick tartomány fővárosának ügetőpályája" },
+        { name: "St. John's Racing & Entertainment Centre", city: "Goulds (St. John's), NL", lat: 47.4460, lng: -52.7643, founded: null, status: "closed", length: null, org: "korábbi üzemeltető: St. John's Racing & Entertainment Centre Inc.", ownSite: null, operatorSite: "https://standardbredcanada.ca/content/links-racetracks.html", operatorName: "Standardbred Canada – pályalinkek", note: "ELLENŐRZVE (több forrás): VÉGLEGESEN BEZÁRT. Newfoundland tartomány egyetlen versenypályája volt. Kronológia: 2015. december 31-én bejelentették, hogy 2016-ban nem lesz sem élő, sem szimulcast fogadás; 2016 júniusában a lótulajdonosok kilakoltatási értesítést kaptak, az istállókat júliusban bezárták. Brett Whelan igazgató a CBC-nek: \"Az ökonómia a fő ok... be kellett zárnunk, mert a lóállomány az előző év egyötödére csökkent.\" A tartományi képviselőház ezt követően hatályon kívül helyezte az Atlantic Provinces Harness Racing Commission Actet. MEGJEGYZÉS: a Standardbred Canada pályalistájában elavult bejegyzésként még szerepel" }
+    ],
+    AUS: [
+        { name: "Melton Entertainment Park (Tabcorp Park)", city: "Melton, VIC", lat: -37.6969, lng: 144.5989, founded: 2009, status: "active", length: 1000, org: "Harness Racing Victoria", ownSite: null, operatorSite: "https://www.harness.org.au/", operatorName: "Harness Racing Australia", note: "Victoria állam fő pályája, 2009. július 5-én nyílt meg, felváltva a korábbi Moonee Valley-i pályát. Éttermekkel, szállodával és konferenciaközponttal; az A G Hunter Cup és a Victoria Cup otthona" },
+        { name: "Club Menangle (Menangle Park Paceway)", city: "Menangle Park, NSW", lat: -34.1032, lng: 150.7446, founded: null, status: "active", length: 1400, org: "NSW Harness Racing Club", ownSite: null, operatorSite: "https://www.harness.org.au/", operatorName: "Harness Racing Australia", note: "Új-Dél-Wales fő pályája; a Miracle Mile Pace otthona, Ausztrália egyik legrangosabb ügetőfutamáé. Az Australian Pacing Gold (APG) három tulajdonos klubjának egyike" },
+        { name: "Albion Park Raceway", city: "Brisbane, QLD", lat: -27.4393, lng: 153.0465, founded: null, status: "active", length: null, org: "Albion Park Harness Racing Club", ownSite: null, operatorSite: "https://www.harness.org.au/", operatorName: "Harness Racing Australia", note: "Queensland fő pályája; a Blacks A Fake Queensland Championship helyszíne. Az APG három tulajdonos klubjának egyike" },
+        { name: "Gloucester Park", city: "East Perth, WA", lat: -31.9580, lng: 115.8811, founded: null, status: "active", length: null, org: "Gloucester Park Harness Racing", ownSite: null, operatorSite: "https://www.harness.org.au/", operatorName: "Harness Racing Australia", note: "Nyugat-Ausztrália fő pályája, Perth belvárosában; a West Australian Derby otthona. Keddi és pénteki versenynapokon ingyenes belépés, családbarát hangulattal" },
+        { name: "Globe Derby Park", city: "Adelaide, SA", lat: -34.7964, lng: 138.5914, founded: null, status: "active", length: null, org: "South Australian Trotting Club", ownSite: null, operatorSite: "https://www.harness.org.au/", operatorName: "Harness Racing Australia", note: "Dél-Ausztrália fő ügetőpályája" },
+        { name: "Redcliffe Paceway", city: "Redcliffe, QLD", lat: -27.2311, lng: 153.1072, founded: null, status: "active", length: null, org: "Redcliffe Harness Racing Club", ownSite: null, operatorSite: "https://www.harness.org.au/", operatorName: "Harness Racing Australia", note: "Queensland második legfontosabb pályája; nemrég felújítva" },
+        { name: "Bathurst Paceway", city: "Bathurst, NSW", lat: -33.4514, lng: 149.5747, founded: null, status: "active", length: null, org: "Bathurst Harness Racing Club", ownSite: null, operatorSite: "https://www.harness.org.au/", operatorName: "Harness Racing Australia", note: "Az éves Gold Crown sorozat otthona; ingyenes belépés a versenynapokon" },
+        { name: "Newcastle Paceway", city: "New Lambton, NSW", lat: -32.9189, lng: 151.7278, founded: null, status: "active", length: null, org: "Newcastle Harness Racing Club", ownSite: null, operatorSite: "https://www.harness.org.au/", operatorName: "Harness Racing Australia", note: "Új-Dél-Wales egyik regionális központja" },
+        { name: "Bendigo Harness Racing Club", city: "Junortoun, VIC", lat: -36.7691, lng: 144.3345, founded: null, status: "active", length: null, org: "Bendigo Harness Racing Club", ownSite: null, operatorSite: "https://www.harness.org.au/", operatorName: "Harness Racing Australia", note: "Victoria egyik vezető vidéki pályája; a Red Hot Summer koncertsorozat helyszíne is" },
+        { name: "Ballarat & District Trotting Club", city: "Redan (Ballarat), VIC", lat: -37.5765, lng: 143.8305, founded: 1861, status: "active", length: null, org: "Ballarat & District Trotting Club", ownSite: null, operatorSite: "https://www.harness.org.au/", operatorName: "Harness Racing Australia", note: "A Ballarat and Creswick Trotting Club 1861-ben alakult – ez volt AUSZTRÁLIA ELSŐ, kifejezetten ügetősport népszerűsítésére létrehozott klubja" },
+        { name: "Shepparton Harness Racing Club", city: "Kialla, VIC", lat: -36.4475, lng: 145.3892, founded: null, status: "active", length: null, org: "Shepparton Harness Racing Club", ownSite: null, operatorSite: "https://www.harness.org.au/", operatorName: "Harness Racing Australia", note: "Victoria északi részének regionális pályája" },
+        { name: "Cranbourne Harness Racing Club", city: "Cranbourne, VIC", lat: -38.1180, lng: 145.2801, founded: null, status: "active", length: null, org: "Cranbourne Harness Racing Club", ownSite: null, operatorSite: "https://www.harness.org.au/", operatorName: "Harness Racing Australia", note: "Melbourne délkeleti agglomerációjának pályája" },
+        { name: "Pinjarra Paceway", city: "Pinjarra, WA", lat: -32.6438, lng: 115.8664, founded: null, status: "active", length: null, org: "Pinjarra Harness Racing Club", ownSite: null, operatorSite: "https://www.harness.org.au/", operatorName: "Harness Racing Australia", note: "Nyugat-Ausztrália egyik legnépszerűbb vidéki pályája, hétfői versenynapokkal" },
+        { name: "Bunbury Trotting Club", city: "Carey Park (Bunbury), WA", lat: -33.3557, lng: 115.6551, founded: null, status: "active", length: null, org: "Bunbury Trotting Club", ownSite: null, operatorSite: "https://www.harness.org.au/", operatorName: "Harness Racing Australia", note: "Donaldson Park; Nyugat-Ausztrália délnyugati régiójának pályája" },
+        { name: "Northam Race Club", city: "Northam, WA", lat: -31.6400, lng: 116.6999, founded: null, status: "active", length: null, org: "Northam Race Club", ownSite: null, operatorSite: "https://www.harness.org.au/", operatorName: "Harness Racing Australia", note: "A Northam Cup otthona; Perth-től kb. 1 óra 20 percre" },
+        { name: "Mowbray Racecourse", city: "Launceston, TAS", lat: -41.4039, lng: 147.1373, founded: null, status: "active", length: null, org: "Tasracing", ownSite: null, operatorSite: "https://www.harness.org.au/", operatorName: "Harness Racing Australia", note: "Tasmania északi részének fő versenypályája" },
+        { name: "Elwick Racecourse", city: "Glenorchy (Hobart), TAS", lat: -42.8254, lng: 147.2892, founded: null, status: "active", length: null, org: "Tasracing", ownSite: null, operatorSite: "https://www.harness.org.au/", operatorName: "Harness Racing Australia", note: "Tasmania déli részének fő pályája, a fővárosban" },
+        { name: "Devonport Racing Club", city: "Spreyton, TAS", lat: -41.2120, lng: 146.3388, founded: null, status: "active", length: null, org: "Tasracing", ownSite: null, operatorSite: "https://www.harness.org.au/", operatorName: "Harness Racing Australia", note: "Minden időjárásban használható pálya; a Devonport Cup otthona" }
+    ],
+    NZL: [
+        { name: "Addington Raceway", city: "Christchurch", lat: -43.5440, lng: 172.6000, founded: null, status: "active", length: null, org: "New Zealand Metropolitan Trotting Club", ownSite: null, operatorSite: "https://hrnz.co.nz/", operatorName: "Harness Racing New Zealand", note: "Új-Zéland vezető ügetőpályája; a New Zealand Trotting Cup otthona, az ország legrangosabb ügetőfutamáé. Rendezvényközponttal egybeépítve" },
+        { name: "Alexandra Park Raceway", city: "Auckland", lat: -36.8923, lng: 174.7762, founded: null, status: "active", length: null, org: "Auckland Trotting Club", ownSite: null, operatorSite: "https://hrnz.co.nz/", operatorName: "Harness Racing New Zealand", note: "Az Északi-sziget vezető pályája, Auckland belvárosához közel; az Auckland Trotting Cup helyszíne" },
+        { name: "Cambridge Raceway", city: "Cambridge", lat: -37.8810, lng: 175.4571, founded: null, status: "active", length: null, org: "Cambridge Harness Racing Club", ownSite: null, operatorSite: "https://hrnz.co.nz/", operatorName: "Harness Racing New Zealand", note: "Waikato régió fő pályája; lakóautós parkolóhellyel és sportbárral" },
+        { name: "Ashburton Raceway", city: "Ashburton", lat: -43.8886, lng: 171.7645, founded: null, status: "active", length: null, org: "Ashburton Trotting Club", ownSite: null, operatorSite: "https://hrnz.co.nz/", operatorName: "Harness Racing New Zealand", note: "Canterbury régió vidéki pályája" },
+        { name: "Ascot Park Raceway", city: "Invercargill", lat: -46.4010, lng: 168.3910, founded: null, status: "active", length: null, org: "Southland Harness Racing Club", ownSite: null, operatorSite: "https://hrnz.co.nz/", operatorName: "Harness Racing New Zealand", note: "Új-Zéland (és a világ) egyik legdélibb versenypályája" },
+        { name: "Methven Racecourse", city: "Methven", lat: -43.6227, lng: 171.6432, founded: null, status: "active", length: null, org: "Methven Trotting Club", ownSite: null, operatorSite: "https://hrnz.co.nz/", operatorName: "Harness Racing New Zealand", note: "Festői, hófödte hegyekre néző pálya a Déli-Alpok lábánál; termálfürdő közvetlenül mellette" },
+        { name: "Rangiora Racecourse", city: "Fernside (Rangiora)", lat: -43.2933, lng: 172.5685, founded: null, status: "active", length: null, org: "Canterbury Park Trotting Club", ownSite: null, operatorSite: "https://hrnz.co.nz/", operatorName: "Harness Racing New Zealand", note: "A Rangiora karácsonyi versenynapjairól ismert, ingyenes belépéssel" },
+        { name: "Central Southland Raceway", city: "Winton", lat: -46.1150, lng: 168.3176, founded: null, status: "active", length: null, org: "Central Southland Harness Racing Club", ownSite: null, operatorSite: "https://hrnz.co.nz/", operatorName: "Harness Racing New Zealand", note: "Vidéki pálya, évente már csak néhány versenynappal" },
+        { name: "Forbury Park Raceway", city: "Dunedin", lat: -45.9051, lng: 170.4876, founded: 1900, status: "closed", length: null, org: "Forbury Park Trotting Club (korábbi)", ownSite: null, operatorSite: "https://hrnz.co.nz/", operatorName: "Harness Racing New Zealand", note: "Otago régió történelmi ügetőpályája volt. STÁTUSZ: 2021-ben véglegesen bezárt pénzügyi okokból, a területet lakóövezetté alakítják" }
+    ],
+    DNK: [
+        { name: "Charlottenlund Travbane (Lunden)", city: "Charlottenlund (Koppenhága)", lat: 55.7545, lng: 12.5868, founded: 1891, status: "active", length: 950, org: "Det Danske Travselskab", ownSite: "https://www.travbanen.dk/", operatorSite: null, operatorName: null, note: "ÉSZAK-EURÓPA LEGRÉGEBBI ÜGETŐPÁLYÁJA (1891). A Copenhagen Cup (1928 óta) és a Dansk Trav Derby otthona. 950 m, 22 m széles, 200 m célegyenes, balkéz. Ikonikus történelmi tornyaival, a Charlottenlundi erdő mellett" },
+        { name: "Jydsk Væddeløbsbane", city: "Aarhus", lat: 56.1279, lng: 10.1960, founded: null, status: "active", length: null, org: "Jydsk Væddeløbsbane", ownSite: "https://www.jvb-aarhus.dk/", operatorSite: null, operatorName: null, note: "Aarhus déli részén, a Marselisborg-erdők mellett; egész évben ügető, áprilistól októberig galopp is" },
+        { name: "Billund Trav", city: "Billund", lat: 55.7289, lng: 9.1320, founded: 1971, status: "active", length: 1200, org: "Billund Trav A/S", ownSite: null, operatorSite: "https://www.trav.dk/", operatorName: "Dansk Travsports Centralforbund", note: "Korábban Sydjysk Væddeløbsbane néven; a megnyitó versenynapon kb. 15 000 néző volt jelen. 1200 m, 250 m célegyenes" },
+        { name: "Fyens Væddeløbsbane", city: "Odense", lat: 55.3756, lng: 10.3493, founded: null, status: "active", length: 1000, org: "Fyens Væddeløbsbane", ownSite: "https://www.fvb-odense.dk/", operatorSite: null, operatorName: null, note: "Odense nyugati részén; galopp és ügető egyaránt. 1000 m, 19,5 m széles, 250 m célegyenes" },
+        { name: "Skive Trav", city: "Skive", lat: 56.5316, lng: 9.0333, founded: null, status: "active", length: null, org: "Skive Trav", ownSite: "https://www.skive-trav.dk/", operatorSite: null, operatorName: null, note: "Itt versenyzett a legendás dán ügető, Tarok" },
+        { name: "Racing Arena Aalborg", city: "Aalborg", lat: 57.0532, lng: 9.8766, founded: null, status: "active", length: null, org: "Aalborg Væddeløbsbane", ownSite: "https://www.aav.dk/", operatorSite: null, operatorName: null, note: "Észak-Jylland pályája, Spar Nord Arena néven is ismert" },
+        { name: "Nykøbing F. Travbane", city: "Nykøbing Falster", lat: 54.7274, lng: 11.9171, founded: null, status: "active", length: null, org: "Nykøbing F. Travbane", ownSite: "https://www.nyktrav.dk/", operatorSite: null, operatorName: null, note: "Falster szigetének pályája, Dánia déli részén" },
+        { name: "Bornholms Brand Park", city: "Aakirkeby (Bornholm)", lat: 55.1261, lng: 14.9208, founded: null, status: "active", length: null, org: "Bornholms Brand Park", ownSite: "https://www.bornholmsbrandpark.dk/", operatorSite: null, operatorName: null, note: "Bornholm szigetének ügetőpályája a Balti-tengeren" }
+    ],
+    DEU: [
+        { name: "Trabrennbahn Berlin-Mariendorf", city: "Berlin", lat: 52.4273, lng: 13.3906, founded: null, status: "active", length: null, org: "Berliner Trabrenn-Verein e.V.", ownSite: null, operatorSite: "https://www.hvtonline.de/", operatorName: "HVT – Hauptverband für Traberzucht", note: "Németország legrangosabb ügetőpályája, a Deutsches Traber-Derby otthona; a HVT (szövetség) központi elszámolóhelye is itt működik" },
+        { name: "Trabrennbahn Berlin-Karlshorst", city: "Berlin", lat: 52.4760, lng: 13.5267, founded: null, status: "active", length: 1609, org: "Trabrennbahn Karlshorst", ownSite: null, operatorSite: "https://www.hvtonline.de/", operatorName: "HVT – Hauptverband für Traberzucht", note: "Berlin második pályája, 1609 m-es (mile) távokkal; havi bolhapiacnak is otthont ad" },
+        { name: "Trabrennbahn Gelsenkirchen", city: "Gelsenkirchen", lat: 51.5049, lng: 7.0559, founded: 1912, status: "active", length: null, org: "Gelsentrab", ownSite: null, operatorSite: "https://www.hvtonline.de/", operatorName: "HVT – Hauptverband für Traberzucht", note: "Németország egyik legnagyobb ügetőpályája, a Ruhr-vidék központjában; a versenynaptár egyik legaktívabb helyszíne" },
+        { name: "Trabrennbahn München-Daglfing", city: "München", lat: 48.1421, lng: 11.6576, founded: null, status: "active", length: null, org: "Münchener Traber-Zucht- und Rennverein", ownSite: null, operatorSite: "https://www.hvtonline.de/", operatorName: "HVT – Hauptverband für Traberzucht", note: "Bajorország fő ügetőpályája; havonta kétszer versenynap, nőknek és gyerekeknek ingyenes belépéssel" },
+        { name: "Trabrennbahn Mönchengladbach", city: "Mönchengladbach", lat: 51.2325, lng: 6.4911, founded: null, status: "active", length: null, org: "Verein zur Förderung des Rheinischen Trabrennsportes e.V.", ownSite: "http://www.mgtrab.de/", operatorSite: null, operatorName: null, note: "ELLENŐRZVE (2026): AKTÍV, DE VESZÉLYEZTETETT. 2026-ra 13 versenynapot terveztek (a január 25-i és március 15-i elmaradt); kiemelt futamok: Großer Preis der Stadt Mönchengladbach (július 19.), Großer Preis des Rheinischen Karnevals (november 15.). A pálya a Niers folyó mellett, a repülőtér szomszédságában fekszik. FENYEGETÉS: a város 2027-től ipari-kereskedelmi övezetté alakítaná a 232 hektáros területet; a \"Go4Gewerbe\" tartományi programból 2,3 millió eurós állami garanciát kapott erre. A bérleti szerződést a város évente csak egy évre hosszabbítja, így nincs tervezési biztonság. A HVT (német ügetőszövetség) elnöke levélben kérte NRW miniszterelnökét a pálya megőrzésére" },
+        { name: "Trabrennbahn Bahrenfeld", city: "Hamburg", lat: 53.5765, lng: 9.8925, founded: null, status: "active", length: null, org: "Hamburger Renn-Club", ownSite: null, operatorSite: "https://www.hvtonline.de/", operatorName: "HVT – Hauptverband für Traberzucht", note: "Észak-Németország fő pályája; nagyszabású koncerthelyszínként is ismert (Ed Sheeran, Foo Fighters, Robbie Williams)" },
+        { name: "Trabrennbahn Straubing", city: "Straubing", lat: 48.8699, lng: 12.5626, founded: null, status: "active", length: null, org: "Straubinger Trabrennverein", ownSite: null, operatorSite: "https://www.hvtonline.de/", operatorName: "HVT – Hauptverband für Traberzucht", note: "Alsó-bajorországi, történelmi hangulatú pálya" }
+    ],
+    AUT: [
+        { name: "Trabrennbahn Krieau", city: "Bécs", lat: 48.2106, lng: 16.4143, founded: 1878, status: "active", length: null, org: "Wiener Trabrenn-Verein", ownSite: null, operatorSite: "https://www.krieau.at/", operatorName: "Wiener Trabrenn-Verein", note: "1878. szeptember 29-én nyílt – EURÓPA MÁSODIK LEGRÉGEBBI ÜGETŐPÁLYÁJA; csak a moszkvai Központi Hippodrom (1834) idősebb nála. Ma is eredeti helyén működik, a bécsi Leopoldstadt kerületben, a Prater park mellett. Az Osztrák Ügető Derby és a Graf Kálmán Hunyady Memorial otthona (utóbbi magyar vonatkozású névadóval)" }
+    ],
+    NLD: [
+        { name: "Victoria Park Wolvega", city: "Wolvega (Frízföld)", lat: 52.8834, lng: 6.0097, founded: 1964, status: "active", length: 1000, org: "Victoria Park Wolvega", ownSite: "https://www.victoriaparkwolvega.nl/", operatorSite: null, operatorName: null, note: "HOLLANDIA VEZETŐ ÜGETŐPÁLYÁJA, sokak szerint Európa egyik legszebbje. 1964 óta; 1000 m-es pálya. Kiemelt futamok: Prijs der Giganten, Derby der Vierjarigen, Championnat des Trotteurs Français" },
+        { name: "Alkmaar ZEturf Arena", city: "Alkmaar (Észak-Holland)", lat: 52.6212, lng: 4.7325, founded: null, status: "active", length: null, org: "Drafbaan Alkmaar", ownSite: null, operatorSite: "https://www.victoriaparkwolvega.nl/", operatorName: "Victoria Park Wolvega", note: "Hollandia második legfontosabb ügetőpályája; kompakt, de élénk hangulatú. MEGJEGYZÉS: a látogatói visszajelzések szerint az utóbbi években csökkent a versenynapok száma" }
+    ],
+    ESP: [
+        { name: "Hipódromo Son Pardo", city: "Palma de Mallorca", lat: 39.5965, lng: 2.6574, founded: null, status: "active", length: null, org: "Hipódromo Son Pardo", ownSite: null, operatorSite: "https://www.federaciobaleardetrot.com/", operatorName: "Federació Balear de Trot", note: "Spanyolország vezető ügetőpályája; a Baleár-szigetek ügetőhagyománya egyedülálló az országban. Nyáron jellemzően vasárnaponként, ingyenes belépéssel" },
+        { name: "Hipòdrom de Manacor", city: "Manacor (Mallorca)", lat: 39.5787, lng: 3.2169, founded: null, status: "active", length: null, org: "Hipòdrom de Manacor", ownSite: null, operatorSite: "https://www.federaciobaleardetrot.com/", operatorName: "Federació Balear de Trot", note: "Mallorca keleti részének pályája; a helyi közösségi élet fontos találkozóhelye, esti versenynapokkal" },
+        { name: "Hipòdrom Municipal de Maó", city: "Maó (Menorca)", lat: 39.8628, lng: 4.2567, founded: null, status: "active", length: null, org: "Hipòdrom Municipal de Maó", ownSite: null, operatorSite: "https://www.federaciobaleardetrot.com/", operatorName: "Federació Balear de Trot", note: "Menorca fő ügetőpályája; rendszeres vasárnapi versenynapok, minitrote (póni) futamokkal is. Erős helyi közösségi hagyomány, alacsony tétekkel és családbarát hangulattal" },
+        { name: "Hipòdrom Torre del Ram", city: "Ciutadella (Menorca)", lat: 40.0112, lng: 3.8022, founded: null, status: "active", length: null, org: "Hipòdrom Torre del Ram", ownSite: "http://www.hipodromsantrafel.com/", operatorSite: "https://www.federaciobaleardetrot.com/", operatorName: "Federació Balear de Trot", note: "Menorca nyugati végén; vasárnap esti versenynapok (17:30-21:00), belépés kb. 6 euró, gyerekeknek ingyenes. A nézők a pálya körüli falon ülve követik a futamokat" }
+    ],
+    BEL: [
+        { name: "Hippodrome de Wallonie", city: "Ghlin (Mons)", lat: 50.4801, lng: 3.9248, founded: 1999, status: "active", length: null, org: "Hippodrome de Wallonie / Mons SA", ownSite: "https://hippodromedewallonie.be/", operatorSite: null, operatorName: null, note: "Belgium vezető ügetőpályája és Vallónia egyetlen versenypályája. 1999-ben alapította a Fédération Nationale du Trot és a Vallon Régió. Évi 55 versenynap: 40 ügető (kb. 360 futam) + 15 galopp. Itt versenyzett Bold Eagle, Timoko, Ready Cash és Love You is. Kiemelt futamok: Grand Prix de Wallonie, Grand Prix de la Toussaint. Nemzetközi patkolóiskola és lóversenyszakmai képzőközpont is működik a területén" },
+        { name: "Hippodroom Kuurne", city: "Kuurne", lat: 50.8599, lng: 3.2782, founded: null, status: "active", length: null, org: "Fédération Belge des Courses Hippiques", ownSite: null, operatorSite: "https://www.trotting.be", operatorName: "Fédération Belge des Courses Hippiques", note: "Flandriai ügetőpálya Kortrijk közelében" },
+        { name: "Hippodroom Waregem", city: "Waregem", lat: 50.8853, lng: 3.4416, founded: null, status: "active", length: null, org: "Hippodroom Waregem", ownSite: "http://www.hippodroomwaregem.be/", operatorSite: null, operatorName: null, note: "40 000 fős befogadóképesség; a Waregem Koerse (Great Flanders Steeple Chase) helyszíne. Vegyes profil: telivér és ügető egyaránt" },
+        { name: "Hippodroom Tongeren (Jeker)", city: "Tongeren", lat: 50.7687, lng: 5.4579, founded: null, status: "active", length: null, org: "Fédération Belge des Courses Hippiques", ownSite: null, operatorSite: "https://www.trotting.be", operatorName: "Fédération Belge des Courses Hippiques", note: "Limburg tartomány ügetőpályája, a Jeker folyó mentén" }
+    ],
+    GBR: [
+        { name: "Tir Prince Raceway", city: "Towyn, Wales", lat: 53.3036, lng: -3.5291, founded: null, status: "active", length: null, org: "Tir Prince Raceway", ownSite: null, operatorSite: "https://www.trotbritaingb.com/", operatorName: "Trot Britain", note: "Nagy-Britannia legjelentősebb ügetőpályája, Észak-Walesben; piaccal és vidámparkkal egybeépítve, élénk családi hangulattal" },
+        { name: "Corbiewood Stadium", city: "Bannockburn (Stirling), Skócia", lat: 56.0827, lng: -3.9134, founded: null, status: "active", length: null, org: "Corbiewood Stadium", ownSite: null, operatorSite: "https://www.trotbritaingb.com/", operatorName: "Trot Britain", note: "Skócia ügetőpályája; a brit ügetősport egyik történelmi központja" }
+    ],
+    IRL: [
+        { name: "Portmarnock Raceway", city: "Portmarnock (Dublin)", lat: 53.4256, lng: -6.1316, founded: 1969, status: "active", length: null, org: "Irish Harness Racing Association (IHRA)", ownSite: "http://portmarnockraceway.ie/", operatorSite: "https://www.irishharnessracing.com", operatorName: "Irish Harness Racing Association", note: "ELLENŐRZVE (2026): AKTÍV. 1969-ben nyílt, 2004-ben bezárt (a területet lakóparknak adták el, ami a 2008-as válság miatt sosem épült meg), majd 7 év szünet után 2011 júniusában újraindult. Ma évi 20+ versenynap. Létesítmények: klubház, bár, játszótér, bukmékerállások. Kiemelt események: All Ireland Series (Pace és Trot döntők), Vincent Delaney Memorial. FIGYELEM: a koordináta csak településszintű közelítés – a pálya pontos helye még ellenőrizendő" },
+        { name: "Annaghmore Raceway", city: "Craigavon, Észak-Írország", lat: 54.4665, lng: -6.6043, founded: null, status: "active", length: null, org: "Irish Harness Racing Association (IHRA)", ownSite: null, operatorSite: "https://www.irishharnessracing.com", operatorName: "Irish Harness Racing Association", note: "ÉSZAK-ÍRORSZÁG (Egyesült Királyság) EGYETLEN ÜGETŐPÁLYÁJA, de a sziget egészére kiterjedő IHRA szervezésében versenyez – ezért szerepel az ír listában, nem a britben. A 2026-os IHRA versenynaptár egyik legaktívabb helyszíne (június 27-i versenynap igazolva)" }
+    ],
+    LTU: [
+        { name: "Lazdijai Hippodrome (Bukta)", city: "Bukta, Lazdijai", lat: 54.2419, lng: 23.5270, founded: null, status: "active", length: null, org: "Lithuania National Trotting League", ownSite: null, operatorSite: "https://www.ristunusportas.lt", operatorName: "Lithuania National Trotting League", note: "Litvánia fő ügetőpályája és a nemzeti szövetség székhelye. FONTOS: ez cáfolja azt a korábbi feltevést, hogy a Baltikumban nincs ügetősport – Litvánia UET-tagország, 2025-ben 65 futammal, 2 pályán" }
+    ],
+    MLT: [
+        { name: "Marsa Racetrack", city: "Marsa", lat: 35.8779, lng: 14.4873, founded: null, status: "active", length: null, org: "Malta Racing Club", ownSite: "https://www.maltaracingclub.com", operatorSite: null, operatorName: null, note: "Málta egyetlen versenypályája, szinte kizárólag ügetőprofillal: 2025-ben 350 futam, 728 versenyző lóval – kiemelkedően intenzív használat egyetlen pályán. A Malta Racing Club UET-tagszövetség" }
+    ],
+    SRB: [
+        { name: "Beogradski hipodrom", city: "Belgrád", lat: 44.7857, lng: 20.4253, founded: null, status: "active", length: null, org: "Srpski Kasački Savez", ownSite: null, operatorSite: "https://www.serbia-trot.org.rs", operatorName: "Srpski Kasački Savez", note: "Szerbia fő versenypályája és a nemzeti ügetőszövetség székhelye. Tavasztól őszig havonta versenynapok, 1000-1500 nézővel; a közönség közelről követheti az istállóból való felvezetést, a bemelegítést és a futamot is" },
+        { name: "Hipodrom Subotica", city: "Szabadka (Subotica)", lat: 46.0915, lng: 19.6439, founded: null, status: "active", length: null, org: "Srpski Kasački Savez", ownSite: null, operatorSite: "https://www.serbia-trot.org.rs", operatorName: "Srpski Kasački Savez", note: "Vajdasági versenypálya a magyar határ közelében; galopp és ügető futamoknak egyaránt otthont ad" }
+    ],
+    SVN: [
+        { name: "Hipodrom Ljutomer", city: "Ljutomer", lat: 46.5216, lng: 16.1886, founded: null, status: "active", length: null, org: "Kasaška zveza Slovenije", ownSite: null, operatorSite: "https://www.zveza-kasaska-centrala.si", operatorName: "Kasaška zveza Slovenije", note: "Szlovénia legjelentősebb ügetőpályája, a szlovén ügetősport hagyományos központja Prlekija régióban. A helyi visszajelzések szerint a legjobban szervezett szlovén versenyhelyszín" }
+    ],
+    CHE: [
+        { name: "Hippodrome IENA Avenches", city: "Avenches", lat: 46.8836, lng: 7.0109, founded: null, status: "active", length: null, org: "Suisse Trot", ownSite: "https://suisse-trot.ch/", operatorSite: null, operatorName: null, note: "Svájc fő ügetőpályája és a Suisse Trot nemzeti szövetség székhelye. Az IENA (Institut équestre national) területén; póni-ügetőiskolát is működtet gyerekeknek" },
+        { name: "Pferderennbahn Frauenfeld", city: "Frauenfeld", lat: 47.5702, lng: 8.9035, founded: null, status: "active", length: null, org: "Suisse Trot", ownSite: null, operatorSite: "https://suisse-trot.ch/", operatorName: "Suisse Trot", note: "Német-svájci versenypálya Thurgau kantonban; vegyes profil" }
+    ]
+};
+
+const countryMeta = {
+    SWE: { name: "Sweden", hasGallop: false, hasTrot: true, flag: "🇸🇪", orgSite: "https://www.travsport.se/", orgSiteLabel: "Svensk Travsport" },
+    FRA: { name: "France", hasGallop: true,  hasTrot: true, flag: "🇫🇷", orgSite: "https://www.letrot.com/", orgSiteLabel: "LeTrot" },
+    ITA: { name: "Italy",  hasGallop: true,  hasTrot: true, flag: "🇮🇹", orgSite: "https://new.trottoweb.com/", orgSiteLabel: "TrottoWeb – versenynaptár", orgSiteAlt: "https://www.politicheagricole.it/", orgSiteAltLabel: "Masaf – hivatalos minisztériumi oldal" },
+    FIN: { name: "Finland", hasGallop: false, hasTrot: true, flag: "🇫🇮", orgSite: "https://www.hippos.fi/", orgSiteLabel: "Suomen Hippos ry" },
+    NOR: { name: "Norway",  hasGallop: true,  hasTrot: true, flag: "🇳🇴", orgSite: "https://www.travsport.no/", orgSiteLabel: "Det Norske Travselskap (DNT)" },
+    POL: { name: "Poland", hasGallop: true, hasTrot: true, flag: "🇵🇱", orgSite: "https://pkwk.org/", orgSiteLabel: "Polski Klub Wyścigów Konnych" },
+    CZE: { name: "Czech Republic", hasGallop: true, hasTrot: true, flag: "🇨🇿", orgSite: "http://www.czetra.cz/", orgSiteLabel: "Česká Klusácká Asociace (UET-tag)" },
+    SVK: { name: "Slovakia", hasGallop: true, hasTrot: true, flag: "🇸🇰", orgSite: "https://www.harness.sk/", orgSiteLabel: "Trotting Slovakia (nem UET-tag)" },
+    HUN: { name: "Hungary", hasGallop: true, hasTrot: true, flag: "🇭🇺", orgSite: "https://kincsempark.hu/", orgSiteLabel: "Kincsem Park" },
+    EST: { name: "Estonia", hasGallop: false, hasTrot: true, flag: "🇪🇪", orgSite: "https://www.hipodroom.ee/", orgSiteLabel: "Eesti Traaviliit MTÜ (UET-tag)" },
+    USA: { name: "United States", hasGallop: true, hasTrot: true, flag: "🇺🇸", orgSite: "https://www.ustrotting.com/", orgSiteLabel: "USTA (United States Trotting Association)" },
+    CAN: { name: "Canada", hasGallop: true, hasTrot: true, flag: "🇨🇦", orgSite: "https://standardbredcanada.ca/", orgSiteLabel: "Standardbred Canada" },
+    AUS: { name: "Australia", hasGallop: true, hasTrot: true, flag: "🇦🇺", orgSite: "https://www.harness.org.au/", orgSiteLabel: "Harness Racing Australia" },
+    NZL: { name: "New Zealand", hasGallop: true, hasTrot: true, flag: "🇳🇿", orgSite: "https://hrnz.co.nz/", orgSiteLabel: "Harness Racing New Zealand" },
+    DNK: { name: "Denmark", hasGallop: true, hasTrot: true, flag: "🇩🇰", orgSite: "https://www.trav.dk/", orgSiteLabel: "Dansk Travsports Centralforbund" },
+    DEU: { name: "Germany", hasGallop: true, hasTrot: true, flag: "🇩🇪", orgSite: "https://www.hvtonline.de/", orgSiteLabel: "HVT (Hauptverband für Traberzucht)" },
+    AUT: { name: "Austria", hasGallop: true, hasTrot: true, flag: "🇦🇹", orgSite: "https://www.krieau.at/", orgSiteLabel: "Wiener Trabrenn-Verein" },
+    NLD: { name: "Netherlands", hasGallop: true, hasTrot: true, flag: "🇳🇱", orgSite: "https://www.victoriaparkwolvega.nl/", orgSiteLabel: "Victoria Park Wolvega (vezető pálya)" },
+    ESP: { name: "Spain", hasGallop: true, hasTrot: true, flag: "🇪🇸", orgSite: "https://www.federaciobaleardetrot.com/", orgSiteLabel: "Federació Balear de Trot" },
+    BEL: { name: "Belgium", hasGallop: true, hasTrot: true, flag: "🇧🇪", orgSite: "https://www.trotting.be", orgSiteLabel: "Fédération Belge des Courses Hippiques" },
+    GBR: { name: "Great Britain", hasGallop: true, hasTrot: true, flag: "🇬🇧", orgSite: "https://www.trotbritaingb.com/", orgSiteLabel: "Trot Britain" },
+    IRL: { name: "Ireland", hasGallop: true, hasTrot: true, flag: "🇮🇪", orgSite: "https://www.irishharnessracing.com", orgSiteLabel: "Irish Harness Racing Association" },
+    LTU: { name: "Lithuania", hasGallop: false, hasTrot: true, flag: "🇱🇹", orgSite: "https://www.ristunusportas.lt", orgSiteLabel: "Lithuania National Trotting League" },
+    MLT: { name: "Malta", hasGallop: false, hasTrot: true, flag: "🇲🇹", orgSite: "https://www.maltaracingclub.com", orgSiteLabel: "Malta Racing Club" },
+    SRB: { name: "Serbia", hasGallop: true, hasTrot: true, flag: "🇷🇸", orgSite: "https://www.serbia-trot.org.rs", orgSiteLabel: "Srpski Kasački Savez" },
+    SVN: { name: "Slovenia", hasGallop: false, hasTrot: true, flag: "🇸🇮", orgSite: "https://www.zveza-kasaska-centrala.si", orgSiteLabel: "Kasaška zveza Slovenije" },
+    CHE: { name: "Switzerland", hasGallop: true, hasTrot: true, flag: "🇨🇭", orgSite: "https://suisse-trot.ch/", orgSiteLabel: "Suisse Trot" }
+};
+
+
+/* ==========================================================
+   2. SZAKASZ – LOGIKA
+   ========================================================== */
+
+// A státusz-feliratok itt, a logika ELEJÉN vannak definiálva, hogy
+// egy későbbi hiba (pl. a földgömb betöltésénél) ne akadályozza meg
+// a menük működését. Korábban ez a lenti sorokban volt, és egy
+// földgömb-hiba miatt inicializálatlan maradt.
+const STATUS_TEXT = {
+    active:   { label: 'Aktív',                        cls: 'st-active' },
+    inactive: { label: 'Inaktív / felfüggesztve',      cls: 'st-inactive' },
+    unknown:  { label: 'Ismeretlen – ellenőrzendő',    cls: 'st-unknown' },
+    closed:   { label: 'Véglegesen bezárt',            cls: 'st-closed' }
+};
+
+// ================================================================
+// 1) PÁLYA-ADATBÁZIS
+// ================================================================
+const DATA_ISO_CODES = Object.keys(trackDatabase); // ["SWE", "FRA"]
+
+let currentFilter = 'all';
+let currentIso = null;
+
+// ================================================================
+// 2) ORSZÁG-AZONOSÍTÁS JAVÍTVA
+// A Natural Earth 110m GeoJSON-ban Franciaországnál (és néhány más
+// országnál) az ISO_A3 mező hibásan "-99" lehet a helyes "FRA" helyett
+// (ismert, dokumentált adathiba a tengerentúli megyék miatt). Ezért
+// az ADM0_A3 mezőt is megnézzük tartalék azonosítóként.
+// ================================================================
+function resolveIso(properties) {
+    if (properties.ISO_A3 && properties.ISO_A3 !== '-99') return properties.ISO_A3;
+    if (properties.ADM0_A3 && properties.ADM0_A3 !== '-99') return properties.ADM0_A3;
+    return properties.ISO_A3; // ha semmi nem jó, marad az eredeti (lehet "-99")
+}
+
+// ================================================================
+// 3) 3D FÖLDGÖMB
+// ================================================================
+
+// A látogató saját eszközének helyi ideje alapján döntjük el, hogy
+// nappali (világos) vagy éjszakai (sötét) Föld-textúrát mutatunk.
+// 6:00-18:00 között nappali, egyébként éjszakai textúra.
+// ==========================================================
+// FÖLDGÖMB TEXTÚRÁK
+// ==========================================================
+// Mind NASA-eredetű KÖZKINCS (public domain) kép, a three-globe
+// CDN-jéről – ingyenes, kereskedelmi célra is használható.
+//
+// IGAZOLT fájlnevek (a globe.gl SAJÁT hivatalos példájában
+// szerepelnek, ezért biztosan léteznek):
+//   earth-blue-marble.jpg  NASA Blue Marble – valósághű, "Google
+//                          Earth"-szerű nappali kép
+//   earth-topology.png     domborzati bump-map: a hegyek plasztikusak
+//   earth-dark.jpg         sötét Föld (városfények NÉLKÜL)
+//   night-sky.png          csillagos háttér
+//
+// VÁROSFÉNYES ÉJSZAKAI KÉP: két jelöltet próbálunk sorban
+//   1. earth-night.jpg a CDN-ről (léte nem igazolt)
+//   2. NASA Earth Observatory, Black Marble 2012 (közvetlen URL,
+//      közkincs) – itt a CORS-fejléc hiánya lehet akadály
+// Egyik sem épül be fixen: a kód teszteli őket, és csak a valóban
+// betölthetőt használja. Ha egyik sem megy, az earth-dark.jpg marad,
+// tehát a földgömb sosem tud tőle elromlani.
+// ==========================================================
+const TEX_BASE  = 'https://unpkg.com/three-globe/example/img/';
+const TEX_DAY   = TEX_BASE + 'earth-blue-marble.jpg';
+const TEX_BUMP  = TEX_BASE + 'earth-topology.png';
+const TEX_NIGHT_FALLBACK = TEX_BASE + 'earth-dark.jpg';
+
+// Éjszakai textúra jelöltek, PRIORITÁSI SORRENDBEN.
+// Mindkét első jelölt NASA Black Marble (Earth at Night) – városfényekkel.
+// KÖZKINCS (public domain), kereskedelmi célra is szabadon használható.
+const TEX_NIGHT_CANDIDATES = [
+    // 1) A three-globe CDN-je – ha létezik, ez a leggyorsabb (nem igazolt)
+    TEX_BASE + 'earth-night.jpg',
+    // 2) Közvetlenül a NASA Earth Observatory-ról: Black Marble 2012,
+    //    3600x1800 px. Kockázat: a NASA szervere nem biztos, hogy küld
+    //    CORS-fejlécet, ami a WebGL-textúrához kell. Ha nem, a lánc
+    //    továbblép. Méret miatt mobilon lassabb lehet a betöltése.
+    'https://eoimages.gsfc.nasa.gov/images/imagerecords/79000/79765/dnb_land_ocean_ice.2012.3600x1800.jpg'
+];
+
+// Az éjszakai textúra kezdetben a biztos, városfények nélküli változat.
+let TEX_NIGHT = TEX_NIGHT_FALLBACK;
+
+// Öntesztelő láncolt betöltés: sorra megpróbáljuk a jelölteket, és az
+// ELSŐ MŰKÖDŐT használjuk. Ha egyik sem jön be, marad a tartalék.
+// A földgömb rajzolását ez nem blokkolja - a háttérben fut.
+(function probeNightTexture(index) {
+    index = index || 0;
+    if (index >= TEX_NIGHT_CANDIDATES.length) {
+        console.log('[RC360] Városfényes textúra nem elérhető, marad az earth-dark.jpg.');
+        return;
+    }
+    const url = TEX_NIGHT_CANDIDATES[index];
+    const probe = new Image();
+    probe.crossOrigin = 'anonymous';   // CORS-teszt: a WebGL is így kéri majd
+    probe.onload = function () {
+        TEX_NIGHT = url;
+        console.log('[RC360] Városfényes éjszakai textúra betöltve:', url);
+        // Ha épp éjszakai módban vagyunk, azonnal frissítjük a gömböt
+        // Ha éjszakai textúrával indultunk, frissítjük a gömböt a
+        // most elérhetővé vált, városfényes változatra.
+        if (typeof world !== 'undefined' && world && pickGlobeTexture() !== TEX_DAY) {
+            world.globeImageUrl(TEX_NIGHT);
+        }
+    };
+    probe.onerror = function () {
+        console.log('[RC360] Nem használható éjszakai textúra:', url, '- próbálom a következőt.');
+        probeNightTexture(index + 1);
+    };
+    probe.src = url;
+})();
+
+// A polygonok magassága. Az emelkedés szándékosan kicsi és MINDIG
+// ugyanennyi, hogy a hatás egyenletes legyen minden országnál.
+const POLY_ALT_BASE  = 0.008;   // alaphelyzet: szinte a felszínen
+const POLY_ALT_HOVER = 0.025;   // rámutatásnál: finom, de érzékelhető
+
+function pickGlobeTexture() {
+    const hour = new Date().getHours();
+    const isDaytime = hour >= 6 && hour < 18;
+    return isDaytime ? TEX_DAY : TEX_NIGHT;
+}
+
+let world;
+try {
+    // Előbb ellenőrizzük, hogy a könyvtár egyáltalán betöltődött-e.
+    // Ez volt a korábbi hiba forrása: egy nem létező CDN-útvonal miatt
+    // a Globe egyszerűen nem létezett, és a hibaüzenet félrevezető volt.
+    if (typeof Globe === 'undefined') {
+        throw new Error('a globe.gl könyvtár nem töltődött be (CDN-hiba?)');
+    }
+world = Globe()
+    (document.getElementById('globeViz'))
+    .globeImageUrl(pickGlobeTexture())
+    .bumpImageUrl(TEX_BUMP)
+    .backgroundImageUrl(TEX_BASE + 'night-sky.png')
+    .lineHoverPrecision(0)
+    .polygonSideColor(() => 'rgba(56, 189, 248, 0.18)')
+    .polygonStrokeColor(feat => polygonStroke(feat))
+    .polygonCapColor(feat => polygonColor(feat, null))
+    .polygonAltitude(POLY_ALT_BASE)
+    .polygonLabel(({ properties }) => {
+        const iso = resolveIso(properties);
+        if (!DATA_ISO_CODES.includes(iso)) return null;
+        const meta = countryMeta[iso];
+        const count = trackDatabase[iso].length;
+        return `
+            <div style="background:#0f172a;color:white;padding:8px 12px;border-radius:8px;border:1px solid #334155;">
+                <strong>${meta ? meta.name : iso}</strong><br/>
+                <span style="color:#38bdf8;font-size:0.85rem;">🏁 ${count} dokumentált versenypálya</span>
+            </div>
+        `;
+    })
+    // Az emelkedés/szín változása animálva, hogy ne "pattogjon".
+    // 220 ms: érezhetően sima, de nem lomha.
+    .polygonsTransitionDuration(220)
+    .onPolygonHover(hoverD => {
+        world.polygonAltitude(d => {
+            const iso = resolveIso(d.properties);
+            if (!DATA_ISO_CODES.includes(iso)) return POLY_ALT_BASE;
+            // Finom, egyenletes kiemelkedés - mindig ugyanennyi,
+            // országtól függetlenül, hogy szabályos legyen a hatás.
+            return d === hoverD ? POLY_ALT_HOVER : POLY_ALT_BASE;
+        });
+        world.polygonCapColor(d => polygonColor(d, hoverD));
+        world.polygonStrokeColor(d => polygonStroke(d));
+    })
+    .onPolygonClick(polygon => {
+        const iso = resolveIso(polygon.properties);
+        if (!DATA_ISO_CODES.includes(iso)) return;
+        goToCountry(iso);
+    });
+} catch (err) {
+    // Ha a 3D földgömb bármi miatt nem tud elindulni, a hiba NE állítsa
+    // meg a szkriptet: a menük, a 2D térkép és az adatlapok működjenek.
+    console.error('[RC360] A 3D földgömb inicializálása nem sikerült:', err);
+    // A hibát az oldalon is kiírjuk, hogy fejlesztői konzol nélkül is látszódjon
+    window.addEventListener('DOMContentLoaded', function () {
+        const el = document.getElementById('geoStatus');
+        if (el) {
+            el.textContent = 'A 3D földgömb nem indult el: ' + err.message;
+            el.className = 'fail';
+        }
+    });
+}
+
+// ==========================================================
+// A FÖLDGÖMB MEGJELENÍTÉSI LOGIKÁJA
+// ==========================================================
+// Rögzített felhasználói folyamat:
+//
+//  1. MEGÉRKEZÉS (alapállapot, nincs aktív szűrő)
+//     A látogató egy átlátszó, "hártya" jellegű réteget lát a
+//     földgömbön, amelyen CSAK az országhatárok vonalai látszanak.
+//     Nincs kitöltés, nincs színezés - a Föld textúrája szabadon
+//     átüt. Így semmi nem sugall félrevezető adatot.
+//
+//  2. ÜGETŐ SZŰRŐ BEKAPCSOLÁSA
+//     Ekkor - és csak ekkor - jelenik meg a kék szín azokon az
+//     országokon, amelyekhez tényleges pálya-adatunk van.
+//     A többi ország marad a hártya-állapotban.
+//
+//  3. KATTINTÁS
+//     A kijelölt országra kattintva a földgömb belezoomol, majd
+//     átúszik az ország 2D térképére a pályákkal.
+//
+//  GALOPP SZŰRŐ: adatfeltöltésig KIKAPCSOLVA (lásd setFilter).
+// ==========================================================
+
+function polygonColor(feat, hoverD) {
+    const iso = resolveIso(feat.properties);
+    const hasData = DATA_ISO_CODES.includes(iso);
+
+    // Rámutatás: finom arany visszajelzés, de CSAK ott, ahol van adat
+    // (különben félrevezető lenne, hogy kattinthatónak tűnik)
+    if (hasData && feat === hoverD) return 'rgba(125, 211, 252, 0.7)';
+
+    // ÜGETŐ SZŰRŐ AKTÍV: az adatolt országok kék kitöltést kapnak
+    if (currentFilter === 'trot') {
+        const meta = countryMeta[iso] || {};
+        if (hasData && meta.hasTrot) return 'rgba(56, 189, 248, 0.5)';
+        return 'rgba(0, 0, 0, 0)';   // a többi marad hártya
+    }
+
+    // ALAPÁLLAPOT: teljesen átlátszó kitöltés minden országon.
+    // A "hártya" hatást a határvonalak adják (lásd polygonStroke).
+    return 'rgba(0, 0, 0, 0)';
+}
+
+// A határvonalak adják a "hártya" hatást: alapállapotban MINDEN ország
+// körvonala látszik halványan, így a látogató érzékeli a réteget.
+function polygonStroke(feat) {
+    const iso = resolveIso(feat.properties);
+    const hasData = DATA_ISO_CODES.includes(iso);
+
+    // Szűrő aktív: az adatolt országok határa kiemelten világít,
+    // a többi visszahalványul, hogy a kijelölés egyértelmű legyen.
+    if (currentFilter === 'trot') {
+        return hasData ? '#7dd3fc' : 'rgba(148, 163, 184, 0.18)';
+    }
+
+    // Alapállapot: egységes, halvány határvonal MINDEN országon.
+    // Ez a "hártya" - jelzi, hogy interaktív réteg van a gömbön,
+    // de nem tesz különbséget adat szerint.
+    return 'rgba(148, 163, 184, 0.45)';
+}
+
+// Határvonal színe. EZ a fő vizuális jelzés arról, hogy egy ország
+// kattintható-e: az adatolt országok világos kék körvonalat kapnak,
+// a többi országnak nincs látható határa.
+
+// ==========================================================
+// ORSZÁGHATÁROK (GeoJSON)
+// ==========================================================
+// FONTOS TANULSÁG: a korábbi verzióban a letöltés és a MEGJELENÍTÉS
+// ugyanabban a .then() blokkban volt. Ha a megjelenítés hibázott,
+// azt a .catch() letöltési hibának hitte, és továbblépett a
+// következő forrásra - így mind a négy forrás "elhasalt", pedig a
+// letöltés valójában sikerült.
+//
+// Ezért most a két lépés SZÉT VAN VÁLASZTVA:
+//   - a fetch hibája  -> következő forrás
+//   - a rajzolás hibája -> külön jelzés, NEM vált forrást
+// ==========================================================
+const GEOJSON_SOURCES = [
+    'https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson',
+    'https://cdn.jsdelivr.net/gh/vasturiano/globe.gl@master/example/datasets/ne_110m_admin_0_countries.geojson',
+    'https://cdn.statically.io/gh/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson',
+    'data/countries.geojson'
+];
+
+function setGeoStatus(text, cls) {
+    const el = document.getElementById('geoStatus');
+    if (!el) return;
+    el.textContent = text;
+    el.className = cls || '';
+}
+
+// A LETÖLTÖTT adat kirajzolása. Külön függvény, hogy az itt keletkező
+// hiba SOHA ne keveredjen össze a hálózati hibával.
+function renderCountries(countries, url, index) {
+    try {
+        if (!world) {
+            setGeoStatus('A határok letöltődtek, de a 3D földgömb nem jött létre. '
+                + 'A Pályák menü és a 2D térkép működik.', 'warn');
+            return;
+        }
+
+        world.polygonsData(countries.features);
+
+        const recognised = countries.features
+            .filter(f => DATA_ISO_CODES.includes(resolveIso(f.properties))).length;
+
+        const msg = 'Betöltve: ' + countries.features.length + ' poligon | felismert: '
+                  + recognised + '/' + DATA_ISO_CODES.length + ' | forrás ' + (index + 1);
+        console.log('[RC360] ' + msg, url);
+
+        if (recognised === 0) {
+            setGeoStatus(msg + ' — FIGYELEM: egyetlen országot sem sikerült azonosítani.', 'warn');
+        } else {
+            setGeoStatus(msg, 'ok');
+            setTimeout(() => {
+                const el = document.getElementById('geoStatus');
+                if (el) { el.style.transition = 'opacity 1s'; el.style.opacity = '0'; }
+            }, 10000);
+        }
+    } catch (err) {
+        // Rajzolási hiba: NEM váltunk forrást, mert az adat megvan
+        console.error('[RC360] A határok kirajzolása nem sikerült:', err);
+        setGeoStatus('A határok letöltődtek, de a kirajzolás hibára futott: '
+            + err.message, 'fail');
+    }
+}
+
+function loadCountries(index) {
+    index = index || 0;
+
+    if (index >= GEOJSON_SOURCES.length) {
+        setGeoStatus('Egyetlen forrás sem elérhető (hálózati hiba). '
+            + 'A Pályák menü és a 2D térkép működik.', 'fail');
+        return;
+    }
+
+    const url = GEOJSON_SOURCES[index];
+    setGeoStatus('Letöltés (' + (index + 1) + '/' + GEOJSON_SOURCES.length + ')…');
+
+    fetch(url)
+        .then(res => {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.json();
+        })
+        .then(countries => {
+            if (!countries || !countries.features) throw new Error('hibás GeoJSON szerkezet');
+            // A rajzolást SETTIMEOUT-tal indítjuk: így kikerül ebből a
+            // Promise-láncból, és egy rajzolási hiba nem tudja többé
+            // "letöltési hibának" álcázni magát.
+            setTimeout(() => renderCountries(countries, url, index), 0);
+        })
+        .catch(err => {
+            console.log('[RC360] Forrás nem elérhető:', url, '-', err.message);
+            loadCountries(index + 1);
+        });
+}
+
+// Globális hibafigyelő: ha bárhol futásidejű hiba keletkezik, az
+// állapotjelzőben megjelenik. Így a hibakeresés konzol nélkül is megy.
+window.addEventListener('error', function (e) {
+    const el = document.getElementById('geoStatus');
+    if (el && !el.classList.contains('ok')) {
+        el.textContent = 'JS hiba: ' + e.message + ' (' + (e.filename || '').split('/').pop() + ':' + e.lineno + ')';
+        el.className = 'fail';
+    }
+});
+
+loadCountries();
+
+// ================================================================
+// 4) VEZÉRLÉS - EGYSZERŰ, JÓL BEVÁLT BEÁLLÍTÁSOK
+// Szándékosan nincs egyedi eseménykezelő-trükk (pl. auto-forgás
+// leállítása kattintásra) - ez a szabványos three.js OrbitControls
+// autoRotate + enableDamping kombináció, ami magától is helyesen
+// kezeli a felhasználói húzást/nagyítást auto-forgás mellett.
+// ================================================================
+// Domborzat-mélység: a globe.gl saját globeMaterial() API-ján
+// keresztül, KÜLSŐ THREE KÖNYVTÁR NÉLKÜL. (A vízcsillogás-effekt
+// szándékosan kimaradt: ahhoz globális THREE kellene, ami korábban
+// ütközött a globe.gl beépített three-jével és megölte a földgömböt.)
+if (world && world.globeMaterial) {
+    try {
+        const gm = world.globeMaterial();
+        if (gm) gm.bumpScale = 10;
+    } catch (err) {
+        console.log('[RC360] A domborzat-mélység beállítása kihagyva:', err.message);
+    }
+}
+
+// Csak akkor állítjuk a vezérlést, ha a földgömb tényleg létrejött
+if (world && world.controls) {
+    world.controls().autoRotate = true;
+    world.controls().autoRotateSpeed = 0.4;
+    world.controls().enableDamping = true;
+    world.controls().dampingFactor = 0.1;
+}
+
+// ================================================================
+// 4b) KÉPERNYŐ-FORGATÁS / ÁTMÉRETEZÉS KEZELÉSE
+// Enélkül a Globe.gl vászna (canvas) a régi, elforgatás előtti
+// méretben ragad be, és a képernyő fele feketén marad. Ezt javítja:
+// a földgömb ÉS a Leaflet térkép is újra méretezi magát, amikor a
+// böngésző ablakmérete vagy a telefon tájolása megváltozik.
+// ================================================================
+// ==========================================================
+// KÉPERNYŐ-ÁTMÉRETEZÉS ÉS -ELFORDÍTÁS KEZELÉSE
+// ==========================================================
+// A WebGL-vászon nem méretezi át magát automatikusan. Ha ez
+// elmarad, a képernyő egy része feketén marad.
+//
+// Miért ilyen összetett: mobilon az elfordítás után a böngésző
+// NEM azonnal jelenti be az új méretet - van, ahol 100 ms,
+// van, ahol 600 ms is kell hozzá. Egyetlen késleltetett
+// hívás ezért kevés. Ezért:
+//   1. a KONTÉNER tényleges méretét olvassuk (nem a window-t)
+//   2. több időpontban is újrapróbálunk
+//   3. ResizeObserver-rel a tényleges méretváltozásra is figyelünk
+// ==========================================================
+function applyViewportSize() {
+    const container = document.getElementById('globeViz');
+    if (!container) return;
+
+    // A konténer TÉNYLEGES mérete a mérvadó, nem a window.innerWidth:
+    // mobilon az utóbbi az elfordítás után egy ideig még a régi értéket adja.
+    const w = container.clientWidth  || window.innerWidth;
+    const h = container.clientHeight || window.innerHeight;
+
+    if (world && w > 0 && h > 0) {
+        world.width(w).height(h);
+    }
+    if (leafletMap) {
+        leafletMap.invalidateSize();
+    }
+}
+
+// Több időpontban újrapróbálunk, mert a böngésző késve jelenti
+// be a végleges méretet elfordítás után.
+function handleViewportResize() {
+    applyViewportSize();
+    [80, 250, 500, 900].forEach(ms => setTimeout(applyViewportSize, ms));
+}
+
+window.addEventListener('resize', handleViewportResize);
+window.addEventListener('orientationchange', handleViewportResize);
+
+// A Screen Orientation API pontosabb jelzést ad, ahol elérhető
+if (screen.orientation && screen.orientation.addEventListener) {
+    screen.orientation.addEventListener('change', handleViewportResize);
+}
+
+// A legmegbízhatóbb: közvetlenül a konténer méretváltozására figyelünk.
+// Ez akkor is elsül, ha semmilyen esemény nem jelezte a változást
+// (pl. böngésző-címsor eltűnése görgetéskor mobilon).
+if (typeof ResizeObserver !== 'undefined') {
+    const globeContainer = document.getElementById('globeViz');
+    if (globeContainer) {
+        new ResizeObserver(() => applyViewportSize()).observe(globeContainer);
+    }
+}
+
+// ================================================================
+// 5) ORSZÁG KÖZÉPPONT SZÁMÍTÁSA A SAJÁT ADATAINKBÓL
+// ================================================================
+function getCountryCenter(iso) {
+    const tracks = trackDatabase[iso];
+    const avgLat = tracks.reduce((s, t) => s + t.lat, 0) / tracks.length;
+    const avgLng = tracks.reduce((s, t) => s + t.lng, 0) / tracks.length;
+    return { lat: avgLat, lng: avgLng };
+}
+
+// ================================================================
+// 6) ÁTVÁLTÁS 3D FÖLDGÖMBRŐL 2D TÉRKÉPRE
+// ================================================================
+function goToCountry(iso) {
+    // Új munkamenet indul: a nyitott menük és panelek bezáródnak
+    closeAllDropdowns();
+    closeTracksMenu();
+
+    currentIso = iso;
+    const center = getCountryCenter(iso);
+
+    document.getElementById('filterContainer').classList.add('disabled');
+    document.getElementById('instructionBar').style.opacity = '0';
+
+    // ---- 1. FÁZIS: a földgömb "belezoomol" a kiválasztott országba ----
+    // Enyhén rövidebb, mint korábban, hogy ne érződjön lomhának.
+    const ZOOM_MS = 1300;
+    if (world) world.pointOfView({ lat: center.lat, lng: center.lng, altitude: 0.32 }, ZOOM_MS);
+
+    // ---- 2. FÁZIS: a 2D térkép ELŐKÉSZÍTÉSE, még láthatatlanul ----
+    // Ez a kulcs a szakadásmentes átmenethez: mire a térkép megjelenik,
+    // már a helyes nézeten áll, tehát nincs látható "beugrás".
+    // 250 ms-mal a zoom vége előtt indítjuk, hogy a csempéknek legyen
+    // idejük betölteni.
+    setTimeout(() => prepareMap(iso), Math.max(0, ZOOM_MS - 250));
+
+    // ---- 3. FÁZIS: átúsztatás ----
+    setTimeout(() => revealMap(), ZOOM_MS);
+}
+
+// ================================================================
+// 7) 2D LEAFLET TÉRKÉP
+// ================================================================
+let leafletMap = null;
+let currentTileLayer = null;
+let labelsLayer = null;
+const markerLayerGroup = L.layerGroup();
+
+// TÉRKÉP-CSEMPÉK - kizárólag szabadon, kereskedelmi célra is használható
+// források, megfelelő attribúcióval:
+//  - OpenStreetMap standard: ODbL licenc, attribúcióval kereskedelmi célra is szabad
+//  - OpenTopoMap: OSM adat + SRTM domborzat, CC-BY-SA, szintén szabad
+// (A korábbi Esri World Imagery műholdréteg eltávolítva: az ArcGIS Online
+//  felhasználási feltételei kereskedelmi használatnál külön tisztázást igényelnek.)
+// ==========================================================
+// TÉRKÉPCSEMPÉK
+// ==========================================================
+// FONTOS JOGI MEGJEGYZÉS: az OpenStreetMap saját csempeszervere
+// (tile.openstreetmap.org) INGYENES, DE a használati szabályzata
+// kifejezetten korlátozza a nagy forgalmú és kereskedelmi
+// felhasználást – blokkolhatnak. Reklámbevételes oldalnál ez
+// valós kockázat.
+//
+// Éles, növekvő forgalomnál javasolt saját/fizetett csempeszolgáltató
+// (pl. MapTiler, Stadia Maps, Thunderforest – mindegyiknek van
+// ingyenes kvótája), vagy Cloudflare-proxy cache-eléssel.
+//
+// Amíg ez nem történik meg, tartalékként a szabadon használható
+// OSM-tükröket használjuk láncban.
+const TILE_STREET = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+const TILE_STREET_FALLBACK = 'https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png';
+const ATTR_STREET = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+function initLeafletIfNeeded() {
+    if (leafletMap) return;
+    leafletMap = L.map('mapViz', { zoomControl: false, attributionControl: true }).setView([50, 10], 5);
+    L.control.zoom({ position: 'bottomleft' }).addTo(leafletMap);
+    markerLayerGroup.addTo(leafletMap);
+    setBaseLayer('street');
+}
+
+// Egyetlen alapréteg: OpenStreetMap (ODbL, kereskedelmi célra is szabad).
+// A domborzati váltó eltávolítva - nem adott érdemi információt.
+function setBaseLayer() {
+    initLeafletIfNeeded();
+    if (currentTileLayer) leafletMap.removeLayer(currentTileLayer);
+
+    let tileErrors = 0;
+    let switched = false;
+
+    currentTileLayer = L.tileLayer(TILE_STREET, { attribution: ATTR_STREET, maxZoom: 19 });
+
+    // Ha egymás után több csempe is hibára fut, átváltunk a tartalék
+    // szerverre. Így egy szolgáltató-kimaradás nem üríti ki a térképet.
+    currentTileLayer.on('tileerror', function () {
+        tileErrors++;
+        if (tileErrors > 6 && !switched) {
+            switched = true;
+            console.log('[RC360] Sok csempehiba – átváltás a tartalék csempeszerverre.');
+            leafletMap.removeLayer(currentTileLayer);
+            currentTileLayer = L.tileLayer(TILE_STREET_FALLBACK, {
+                attribution: ATTR_STREET, maxZoom: 19, subdomains: 'abc'
+            }).addTo(leafletMap);
+        }
+    });
+
+    currentTileLayer.addTo(leafletMap);
+}
+
+// A térkép felépítése MÉG LÁTHATATLANUL: markerek, adatlapok és a
+// helyes nézet beállítása. Így a megjelenítés pillanatában már minden
+// a helyén van - nincs villanás, nincs beugró pásztázás.
+function prepareMap(iso) {
+    initLeafletIfNeeded();
+
+    const tracks = trackDatabase[iso];
+    const meta = countryMeta[iso] || { name: iso };
+
+    markerLayerGroup.clearLayers();
+    const bounds = [];
+    tracks.forEach(t => {
+        const statusClass = t.status || 'active';
+        const icon = L.divIcon({ className: '', html: `<div class="track-marker ${statusClass}"></div>`, iconSize: [16, 16] });
+        const marker = L.marker([t.lat, t.lng], { icon }).addTo(markerLayerGroup);
+        marker.bindPopup(buildPopupHtml(t, meta));
+        bounds.push([t.lat, t.lng]);
+    });
+
+    // A konténer opacity:0, de a méretei megvannak, ezért a Leaflet
+    // helyesen tud méretezni és nézetet illeszteni már most.
+    leafletMap.invalidateSize();
+    if (bounds.length) {
+        // animate: false - a beállítás NE legyen látható mozgás,
+        // hiszen a térkép még nem látszik.
+        leafletMap.fitBounds(bounds, { padding: [60, 60], maxZoom: 7, animate: false });
+    }
+}
+
+// Az előkészített térkép megjelenítése: a földgömb és a térkép
+// EGYSZERRE úsztat (CSS opacity-átmenet), így nincs fekete villanás.
+function revealMap() {
+    document.getElementById('globeLayer').classList.add('hidden');
+    document.getElementById('mapLayer').classList.add('visible');
+    document.getElementById('backBtn').classList.add('visible');
+
+    // Az átúsztatás után egy utolsó méret-ellenőrzés: ha a látogató
+    // közben átméretezte az ablakot vagy forgatta a telefont, ez
+    // helyrehozza. Nem mozgatja a nézetet, csak a vásznat igazítja.
+    setTimeout(() => { if (leafletMap) leafletMap.invalidateSize(); }, 650);
+}
+
+// Visszafelé kompatibilis belépési pont (a Pályák menü ezt hívja):
+// előkészít ÉS azonnal meg is jelenít.
+function showMap(iso) {
+    prepareMap(iso);
+    revealMap();
+}
+
+// Egy pálya felugró adatlapjának felépítése: két fül -
+// "Általános" (zászló, alapítás, hossz, szervezet, honlap) és
+// "Történet és érdekességek" (a note mező szövege)
+function buildPopupHtml(t, meta) {
+    // ================================================================
+    // ADATLAP
+    // 1. fül ("Általános"): teljes adattal, a hármas link-struktúrával
+    // 2. fül ("Történet"): SZÁNDÉKOSAN INAKTÍV - a történeti leírások
+    //    kézi visszaellenőrzése folyamatban van. Ha egy pálya történetét
+    //    ellenőrizted, vedd fel az adott sorhoz a "historyVerified: true"
+    //    mezőt, és a fül automatikusan aktívvá válik.
+    // ================================================================
+
+    const statusLabels = {
+        active: "Aktív",
+        inactive: "Inaktív / felfüggesztve",
+        unknown: "Ismeretlen – ellenőrzés szükséges",
+        closed: "Végleg bezárt"
+    };
+    const status = t.status || "active";
+    const statusLabel = statusLabels[status] || "Aktív";
+
+    const lengthText = t.length ? `${t.length} m` : "nincs adat";
+    const foundedText = t.founded ? t.founded : "nincs pontos adat";
+
+    // 1. szint: a pálya saját honlapja
+    const ownSiteText = t.ownSite
+        ? `<a href="${t.ownSite}" target="_blank" rel="noopener">${t.ownSite.replace(/^https?:\/\//, '')}</a>`
+        : "nincs saját honlap";
+
+    // 2. szint: üzemeltető honlapja (csak ha van ilyen adat)
+    const operatorRow = t.operatorSite
+        ? `<div class="popup-row"><b>Üzemeltető honlapja:</b> <a href="${t.operatorSite}" target="_blank" rel="noopener">${t.operatorSite.replace(/^https?:\/\//, '')}</a>${t.operatorName ? ` <span style="color:#64748b;font-size:0.72rem;">(${t.operatorName})</span>` : ''}</div>`
+        : '';
+
+    // 3. szint: országos versenyszervezet - mindig megjelenik
+    const orgSiteText = meta.orgSite
+        ? `<a href="${meta.orgSite}" target="_blank" rel="noopener">${meta.orgSite.replace(/^https?:\/\//, '')}</a>`
+        : "nincs adat";
+
+    const altSiteRow = meta.orgSiteAlt
+        ? `<div class="popup-row" style="font-size:0.72rem;color:#64748b;"><b>${meta.orgSiteAltLabel || 'Egyéb hivatalos link'}:</b> <a href="${meta.orgSiteAlt}" target="_blank" rel="noopener" style="color:#64748b;">${meta.orgSiteAlt.replace(/^https?:\/\//, '')}</a></div>`
+        : '';
+
+    // Történet-fül: csak akkor kattintható, ha a történet ellenőrzött
+    const histReady = !!t.historyVerified;
+    const histBtn = histReady
+        ? `<button class="popup-tab-btn" onclick="switchPopupTab(this, 'history')">Történet</button>`
+        : `<button class="popup-tab-btn disabled" title="A történeti leírás ellenőrzése folyamatban van">Történet</button>`;
+    const histContent = histReady
+        ? `<div class="popup-row">${t.note}</div>`
+        : `<div class="popup-row" style="color:#94a3b8;font-size:0.78rem;">A pálya történeti leírásának ellenőrzése folyamatban van.</div>`;
+
+    return `
+        <div class="popup-card">
+            <span class="popup-status ${status}" title="${statusLabel}"></span>
+            <span class="popup-flag">${meta.flag || ''}</span>
+            <div class="popup-title">${t.name}</div>
+            <div class="popup-tabs">
+                <button class="popup-tab-btn active" onclick="switchPopupTab(this, 'general')">Általános</button>
+                ${histBtn}
+            </div>
+            <div class="popup-tab-content active" data-tab="general">
+                <div class="popup-row"><b>Státusz:</b> ${statusLabel}</div>
+                <div class="popup-row"><b>Település:</b> ${t.city}</div>
+                <div class="popup-row"><b>Alapítás éve:</b> ${foundedText}</div>
+                <div class="popup-row"><b>Pálya hossza:</b> ${lengthText}</div>
+                <div class="popup-row"><b>Szervezet:</b> ${t.org}</div>
+                <div class="popup-row"><b>Pálya honlapja:</b> ${ownSiteText}</div>
+                ${operatorRow}
+                <div class="popup-row"><b>${meta.orgSiteLabel || 'Versenyszervezet'}:</b> ${orgSiteText}</div>
+                ${altSiteRow}
+            </div>
+            <div class="popup-tab-content" data-tab="history">
+                ${histContent}
+            </div>
+        </div>
+    `;
+}
+
+function switchPopupTab(btnEl, tabName) {
+    if (btnEl.classList.contains('disabled')) return; // inaktív fül: nincs teendő
+    const card = btnEl.closest('.popup-card');
+    card.querySelectorAll('.popup-tab-btn').forEach(b => b.classList.remove('active'));
+    btnEl.classList.add('active');
+    card.querySelectorAll('.popup-tab-content').forEach(c => {
+        c.classList.toggle('active', c.dataset.tab === tabName);
+    });
+}
+
+// ================================================================
+// 8) SZŰRŐ
+// ================================================================
+function setFilter(type, btn) {
+    // ==========================================================
+    // GALOPP SZŰRŐ: KIKAPCSOLVA ADATFELTÖLTÉSIG
+    // ==========================================================
+    // Az adatbázisunk jelenleg KIZÁRÓLAG ügetőpályákat tartalmaz.
+    // Amíg nincs megbízható, ország-szintű galopp-adatunk, a gomb
+    // szándékosan nem csinál semmit - nem állítunk olyat, amit nem
+    // tudunk alátámasztani. A gomb helye viszont megvan a jövőre.
+    // AKTIVÁLÁSHOZ: töröld az alábbi sort, és vedd fel a galopp-
+    // adatokat a countryMeta hasGallop mezőibe + a trackDatabase-be.
+    if (type === 'gallop') return;
+
+    // Kapcsoló (toggle) viselkedés: ha ugyanarra az already aktív gombra
+    // kattintasz, visszaáll az alapállapotra (mindkét szakág, saját színén)
+    if (currentFilter === type) {
+        currentFilter = 'all';
+        btn.classList.remove('active');
+    } else {
+        currentFilter = type;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    if (world) {
+        world.polygonStrokeColor(d => polygonStroke(d));
+        world.polygonsData(world.polygonsData());
+    }
+}
+
+// ================================================================
+// 9) VISSZA A FÖLDGÖMBHÖZ
+// ================================================================
+function resetToGlobe() {
+    // Munkamenet vége: minden nyitott felület bezáródik
+    closeAllDropdowns();
+    closeTracksMenu();
+
+    currentIso = null;
+
+    // A földgömb kameráját MÁR MOST visszaindítjuk, még a keresztúsztatás
+    // alatt - így mire a gömb láthatóvá válik, már úton van kifelé,
+    // nem pedig ott ragad, ahol a belezoomolás véget ért.
+    if (world) world.pointOfView({ lat: 20, lng: 0, altitude: 2.2 }, 1500);
+
+    document.getElementById('mapLayer').classList.remove('visible');
+    document.getElementById('globeLayer').classList.remove('hidden');
+    document.getElementById('backBtn').classList.remove('visible');
+    document.getElementById('filterContainer').classList.remove('disabled');
+    document.getElementById('instructionBar').style.opacity = '1';
+}
+
+// ================================================================
+// 10) COOKIE-CONSENT KEZELÉS
+// A döntést localStorage-ben tároljuk (ez a szokásos, elvárt módszer
+// cookie-hozzájárulás perzisztálására - ez a fájl a saját szerveren
+// fut majd, nem a Claude előnézetben).
+// ================================================================
+
+// KAPCSOLÓ: ha beállítottad a CookieYes-t (lásd a <head>-ben lévő
+// utasítást), állítsd ezt true-ra - ekkor a saját, egyszerű bannerünk
+// automatikusan nem jelenik meg, mert a CookieYes saját, TCF-kompatibilis
+// bannere veszi át a szerepét. Amíg false, a saját bannerünk fut
+// (jó a Booking-affiliate jelzésre, de ÖNMAGÁBAN NEM elég AdSense-hez).
+const USE_COOKIEYES = true;
+
+const COOKIE_CONSENT_KEY = 'rc360_cookie_consent'; // értéke: "accepted" | "rejected"
+
+function initCookieBanner() {
+    if (USE_COOKIEYES) return; // a CookieYes saját bannere kezeli ezt
+
+    let stored = null;
+    try { stored = localStorage.getItem(COOKIE_CONSENT_KEY); } catch (e) { /* localStorage nem elérhető */ }
+
+    if (!stored) {
+        document.getElementById('cookieBanner').classList.add('visible');
+    } else if (stored === 'accepted') {
+        loadAdsAndAffiliateScripts();
+    }
+    // ha "rejected": nem csinálunk semmit, a hirdetési/affiliate scriptek nem töltődnek be
+}
+
+function setCookieConsent(accepted) {
+    try { localStorage.setItem(COOKIE_CONSENT_KEY, accepted ? 'accepted' : 'rejected'); } catch (e) { /* nem elérhető */ }
+    document.getElementById('cookieBanner').classList.remove('visible');
+    if (accepted) loadAdsAndAffiliateScripts();
+}
+
+// A GDPR megköveteli, hogy a hozzájárulás visszavonása/módosítása
+// ugyanolyan könnyű legyen, mint a megadása - ez a gomb bármikor,
+// bárhonnan (lábléc, jogi modal) újra megnyitja a döntési sávot.
+function reopenCookieBanner() {
+    closeLegal();
+    if (USE_COOKIEYES) {
+        // A CookieYes saját "Cookie Settings" felülete nyílik meg,
+        // ha a CookieYes widget be van állítva (window.cookieyes API)
+        if (window.cookieyes) { window.cookieyes.showSettings(); }
+        return;
+    }
+    document.getElementById('cookieBanner').classList.add('visible');
+}
+
+// Ide kell majd behelyettesíteni a tényleges hirdetési/affiliate scripteket
+// (pl. Google AdSense, Booking.com affiliate pixel). Ez a függvény
+// KIZÁRÓLAG akkor fut le, ha a látogató elfogadta a sütiket - eddig a
+// pontig szándékosan üres/placeholder.
+function loadAdsAndAffiliateScripts() {
+    console.log('[RC360] Hirdetési/affiliate hozzájárulás megadva - ide kerülnek majd a valós script-betöltések.');
+    // Példa (kikommentezve, cseréld a saját azonosítóidra):
+    // const s = document.createElement('script');
+    // s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX';
+    // s.async = true;
+    // document.head.appendChild(s);
+}
+
+// ================================================================
+// 11) JOGI MODAL (Adatvédelem / Impresszum)
+// ================================================================
+function openLegal(tab) {
+    closeAllDropdowns();   // új munkamenet: a menük bezáródnak
+    document.getElementById('legalModal').classList.add('visible');
+    switchLegalTab(tab || 'privacy');
+}
+
+function closeLegal() {
+    document.getElementById('legalModal').classList.remove('visible');
+}
+
+function switchLegalTab(tab) {
+    document.getElementById('legalTabPrivacy').classList.toggle('active', tab === 'privacy');
+    document.getElementById('legalTabImpresszum').classList.toggle('active', tab === 'impresszum');
+    document.getElementById('legalTabTerms').classList.toggle('active', tab === 'terms');
+    document.querySelectorAll('.legal-tab-content').forEach(el => {
+        el.classList.toggle('active', el.dataset.legal === tab);
+    });
+}
+
+// Modal bezárása háttérre kattintva
+document.getElementById('legalModal').addEventListener('click', (e) => {
+    if (e.target.id === 'legalModal') closeLegal();
+});
+
+// ================================================================
+// 12) LEGÖRDÜLŐ MENÜK (nyelvválasztó + hamburger)
+// ================================================================
+function toggleDropdown(id) {
+    const menu = document.getElementById(id);
+    const isOpen = menu.classList.contains('open');
+    // Minden más dropdown bezárása, mielőtt megnyitnánk az újat
+    document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
+    if (!isOpen) menu.classList.add('open');
+}
+
+// ==========================================================
+// A LEGÖRDÜLŐ MENÜK ZÁRÓDÁSA
+// ==========================================================
+// NEM automatikus (nem záródik magától időzítővel vagy azzal, hogy
+// az egér elhagyja). Csak akkor csukódik be, ha a látogató
+// ténylegesen máshová figyel:
+//   1. mellékattintás / -koppintás
+//   2. Escape billentyű
+//   3. másik munkamenet indul az oldalon (ország kiválasztása,
+//      pálya megnyitása, modal, visszatérés a földgömbhöz)
+// ==========================================================
+
+function closeAllDropdowns() {
+    document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
+}
+
+// 1) Mellékattintás
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.dropdown-wrap')) closeAllDropdowns();
+});
+
+// 2) Escape billentyű - a nyitott panelekre és modalokra is
+document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    closeAllDropdowns();
+    const tracks = document.getElementById('tracksPanel');
+    if (tracks && tracks.classList.contains('open')) closeTracksMenu();
+    const legal = document.getElementById('legalModal');
+    if (legal && legal.classList.contains('visible')) closeLegal();
+    const info = document.getElementById('infoModal');
+    if (info && info.classList.contains('visible')) closeInfo();
+});
+
+// ================================================================
+// 13) RÓLUNK / KONTAKT MODAL
+// ================================================================
+function openInfo(tab) {
+    closeAllDropdowns();   // új munkamenet: a menük bezáródnak
+    document.getElementById('infoModal').classList.add('visible');
+    switchInfoTab(tab || 'about');
+}
+function closeInfo() {
+    document.getElementById('infoModal').classList.remove('visible');
+}
+function switchInfoTab(tab) {
+    document.getElementById('infoTabAbout').classList.toggle('active', tab === 'about');
+    document.getElementById('infoTabContact').classList.toggle('active', tab === 'contact');
+    document.querySelectorAll('.legal-tab-content[data-info]').forEach(el => {
+        el.classList.toggle('active', el.dataset.info === tab);
+    });
+}
+document.getElementById('infoModal').addEventListener('click', (e) => {
+    if (e.target.id === 'infoModal') closeInfo();
+});
+
+// ================================================================
+// 14) NYELVVÁLASZTÁS
+// Fontos, őszinte korlát: ez a felhasználói felület kulcs-elemeit
+// (gombok, feliratok) fordítja le, NEM a pálya-adatbázis részletes
+// leírásait (100+ pálya jegyzete) - az egy külön, nagy volumenű
+// fordítási feladat lenne.
+// ================================================================
+const translations = {
+    hu: { back: "Vissza a földgömbhöz", legalTitle: "Adatvédelem / Impresszum", menu: "Menü", lang: "Nyelv / Language",
+          menuTracks: "Pályák", menuAbout: "Rólunk", menuContact: "Kontakt", instruction: "Kapcsold be az Ügető szűrőt a pályákkal rendelkező országok megjelenítéséhez" },
+    en: { back: "Back to the globe", legalTitle: "Privacy / Legal", menu: "Menu", lang: "Language",
+          menuTracks: "Pályák", menuAbout: "About us", menuContact: "Contact", instruction: "Enable the Trotting filter to reveal countries with racecourse data" },
+    de: { back: "Zurück zum Globus", legalTitle: "Datenschutz / Impressum", menu: "Menü", lang: "Sprache",
+          menuTracks: "Pályák", menuAbout: "Über uns", menuContact: "Kontakt", instruction: "Aktiviere den Trab-Filter, um Länder mit Rennbahndaten anzuzeigen" },
+    fr: { back: "Retour au globe", legalTitle: "Confidentialité / Mentions légales", menu: "Menu", lang: "Langue",
+          menuTracks: "Pályák", menuAbout: "À propos", menuContact: "Contact", instruction: "Activez le filtre Trot pour afficher les pays avec des données" },
+    sv: { back: "Tillbaka till jordgloben", legalTitle: "Integritet / Juridisk info", menu: "Meny", lang: "Språk",
+          menuTracks: "Pályák", menuAbout: "Om oss", menuContact: "Kontakt", instruction: "Aktivera travfiltret för att visa länder med banor" },
+    es: { back: "Volver al globo", legalTitle: "Privacidad / Aviso legal", menu: "Menú", lang: "Idioma",
+          menuTracks: "Pályák", menuAbout: "Sobre nosotros", menuContact: "Contacto", instruction: "Activa el filtro de trote para mostrar los países con datos" },
+    it: { back: "Torna al globo", legalTitle: "Privacy / Note legali", menu: "Menu", lang: "Lingua",
+          menuTracks: "Pályák", menuAbout: "Chi siamo", menuContact: "Contatti", instruction: "Attiva il filtro Trotto per mostrare i paesi con dati" },
+    ja: { back: "地球儀に戻る", legalTitle: "プライバシー / 法的情報", menu: "メニュー", lang: "言語",
+          menuTracks: "Pályák", menuAbout: "私たちについて", menuContact: "お問い合わせ", instruction: "「速歩」フィルターをオンにすると、データのある国が表示されます" },
+    zh: { back: "返回地球", legalTitle: "隐私 / 法律信息", menu: "菜单", lang: "语言",
+          menuTracks: "Pályák", menuAbout: "关于我们", menuContact: "联系我们", instruction: "开启「快步」筛选以显示有数据的国家" },
+    ar: { back: "العودة إلى الكرة الأرضية", legalTitle: "الخصوصية / قانوني", menu: "القائمة", lang: "اللغة",
+          menuTracks: "Pályák", menuAbout: "من نحن", menuContact: "اتصل بنا", instruction: "شغّل مرشح الهرولة لعرض الدول التي تتوفر لها بيانات" }
+};
+
+function setLanguage(code, btn, isManual = true) {
+    const t = translations[code] || translations.hu;
+
+    // Segédfüggvények: ha egy elem hiányzik (pl. mert a felület
+    // átalakult), NE dobjon hibát - egyszerűen kihagyja.
+    // Korábban itt egy nem létező '#backBtn .full-text' elemre
+    // hivatkoztunk, ami MINDEN nyelvváltást összeomlasztott volna.
+    const setTitle = (id, val) => {
+        const el = document.getElementById(id);
+        if (el && val) el.title = val;
+    };
+    const setText = (sel, val) => {
+        const el = document.querySelector(sel);
+        if (el && val) el.textContent = val;
+    };
+
+    // A "Vissza" gomb csak ikon, szöveg nélkül - a fordítás a
+    // tooltipbe kerül.
+    setTitle('backBtn', t.back);
+    setTitle('legalInfoBtn', t.legalTitle);
+    setTitle('hamburgerBtn', t.menu);
+    setTitle('langBtn', t.lang);
+
+    setText('[data-i18n="menuTracks"]', t.menuTracks);
+    setText('[data-i18n="menuAbout"]', t.menuAbout);
+    setText('[data-i18n="menuContact"]', t.menuContact);
+    setText('#instructionBar', t.instruction);
+
+    // Arab nyelvnél jobbról-balra irányítás a fejléc jobb oldali csoportjára
+    document.documentElement.dir = (code === 'ar') ? 'rtl' : 'ltr';
+
+    document.querySelectorAll('#langMenu button').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
+
+    // Ha a látogató KÉZZEL választott nyelvet, azt eltároljuk, hogy a
+    // következő látogatáskor ezt tiszteletben tartsuk, és NE írja felül
+    // az automatikus országfelismerés.
+    if (isManual) {
+        try { localStorage.setItem('rc360_lang_manual', code); } catch (e) { /* nem elérhető */ }
+    }
+}
+
+// ================================================================
+// 15) AUTOMATIKUS ORSZÁG-FELISMERÉS ÉS NYELVVÁLASZTÁS
+// Ingyenes, kulcs nélküli IP-geolokációs szolgáltatással (ipwho.is)
+// megállapítjuk, melyik országból érkezik a látogató, és ez alapján
+// automatikusan beállítjuk a felület nyelvét - kivéve, ha korábban
+// már kézzel választott nyelvet (azt mindig tiszteletben tartjuk).
+// ================================================================
+const COUNTRY_TO_LANG = {
+    HU: 'hu', GB: 'en', US: 'en', IE: 'en', AU: 'en', CA: 'en',
+    DE: 'de', AT: 'de', CH: 'de',
+    FR: 'fr', BE: 'fr',
+    SE: 'sv',
+    ES: 'es', MX: 'es', AR: 'es',
+    IT: 'it',
+    JP: 'ja',
+    CN: 'zh', TW: 'zh', HK: 'zh',
+    SA: 'ar', AE: 'ar', EG: 'ar', QA: 'ar'
+};
+
+async function detectAndSetLanguage() {
+    let manual = null;
+    try { manual = localStorage.getItem('rc360_lang_manual'); } catch (e) { /* nem elérhető */ }
+
+    if (manual) {
+        // A látogató korábban már kézzel választott nyelvet - azt használjuk,
+        // nem írjuk felül automatikus felismeréssel.
+        setLanguage(manual, null, false);
+        return;
+    }
+
+    try {
+        // Időtúllépés: ha a geolokációs szolgáltatás lassú vagy nem
+        // válaszol, 3 másodperc után feladjuk. Enélkül a kérés
+        // percekig lóghatna a háttérben.
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), 3000);
+        const res = await fetch('https://ipwho.is/', { signal: ctrl.signal });
+        clearTimeout(timer);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        if (data && data.success !== false && data.country_code) {
+            const langCode = COUNTRY_TO_LANG[data.country_code] || 'en';
+            setLanguage(langCode, null, false);
+        }
+    } catch (e) {
+        // Ha a geolokációs szolgáltatás nem elérhető, egyszerűen
+        // magyar marad az alapértelmezett felület - nincs hibaüzenet,
+        // a felhasználó ettől még bármikor kézzel válthat nyelvet.
+        console.log('[RC360] Automatikus nyelvfelismerés nem elérhető, alapértelmezett marad.');
+    }
+}
+
+
+// ================================================================
+// 16) PÁLYÁK BÖNGÉSZŐ (hamburger menü -> Pályák)
+// Háromszintű: menü -> országok -> pályák. Oldalról nyílik be,
+// hogy ne fedje el a térkép közepét.
+// ================================================================
+
+function buildTracksMenu() {
+    const body = document.getElementById('tracksPanelBody');
+    if (!body) { console.error('[RC360] tracksPanelBody nem található'); return; }
+
+    const isos = Object.keys(trackDatabase).sort((a, b) => {
+        const na = (countryMeta[a] && countryMeta[a].name) || a;
+        const nb = (countryMeta[b] && countryMeta[b].name) || b;
+        return na.localeCompare(nb);
+    });
+
+    const html = isos.map(iso => {
+        const meta = countryMeta[iso] || { name: iso };
+        const tracks = trackDatabase[iso] || [];
+        const rows = tracks.map((t, idx) => {
+            const st = STATUS_TEXT[t.status || 'active'] || STATUS_TEXT.active;
+            return '<button class="tp-track" onclick="jumpToTrack(\'' + iso + '\',' + idx + ')">'
+                 + '<span class="tp-tname">' + t.name + '</span>'
+                 + '<span class="tp-tmeta">' + t.city + '</span>'
+                 + '<span class="tp-status ' + st.cls + '"><span class="tp-dot"></span>' + st.label + '</span>'
+                 + '</button>';
+        }).join('');
+        // Zászló szándékosan nincs - a kérésnek megfelelően csak az országnév
+        return '<button class="tp-country" onclick="toggleCountryGroup(this)">'
+             + '<span>' + meta.name + '</span>'
+             + '<span><span class="tp-count">' + tracks.length + ' pálya</span> <span class="tp-arrow">&#9654;</span></span>'
+             + '</button>'
+             + '<div class="tp-tracks">' + rows + '</div>';
+    }).join('');
+
+    body.innerHTML = html;
+}
+
+function toggleCountryGroup(btnEl) {
+    const list = btnEl.nextElementSibling;
+    const isOpen = list.classList.contains('open');
+    // Csak egy ország legyen nyitva egyszerre - átláthatóbb
+    document.querySelectorAll('#tracksPanelBody .tp-tracks').forEach(el => el.classList.remove('open'));
+    document.querySelectorAll('#tracksPanelBody .tp-country').forEach(el => el.classList.remove('open'));
+    if (!isOpen) { list.classList.add('open'); btnEl.classList.add('open'); }
+}
+
+function openTracksMenu() {
+    try {
+        document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
+        buildTracksMenu();   // mindig újraépítjük, hogy friss legyen
+        const panel = document.getElementById('tracksPanel');
+        if (panel) panel.classList.add('open');
+    } catch (err) {
+        console.error('[RC360] A Pályák menü megnyitása nem sikerült:', err);
+    }
+}
+function closeTracksMenu() {
+    document.getElementById('tracksPanel').classList.remove('open');
+}
+
+// Egy konkrét pályára navigál: ha kell, előbb betölti az ország
+// térképnézetét, majd rázoomol és megnyitja a felugró adatlapot.
+function jumpToTrack(iso, idx) {
+    closeTracksMenu();
+    const t = trackDatabase[iso][idx];
+
+    const openIt = () => {
+        leafletMap.setView([t.lat, t.lng], 12, { animate: true });
+        markerLayerGroup.eachLayer(m => {
+            const ll = m.getLatLng();
+            if (Math.abs(ll.lat - t.lat) < 0.0001 && Math.abs(ll.lng - t.lng) < 0.0001) m.openPopup();
+        });
+    };
+
+    if (currentIso === iso && document.getElementById('mapLayer').classList.contains('visible')) {
+        openIt();
+    } else {
+        currentIso = iso;
+        document.getElementById('filterContainer').classList.add('disabled');
+        document.getElementById('instructionBar').style.opacity = '0';
+        showMap(iso);
+        setTimeout(openIt, 500);
+    }
+}
+
+// ================================================================
+// A NAPPALI / ÉJSZAKAI KÉZI VÁLTÓ ELTÁVOLÍTVA
+// A hold ikon kikerült a felületről, ezért a hozzá tartozó kód is.
+// A textúra továbbra is a látogató HELYI IDEJE szerint áll be
+// induláskor - lásd pickGlobeTexture(). Ha később mégis kellene
+// kézi váltó, elég egy gomb + egy world.globeImageUrl() hívás.
+// ================================================================
+
+// Indításkor ellenőrizzük a cookie-hozzájárulás állapotát
+initCookieBanner();
+
+// Indításkor megpróbáljuk automatikusan felismerni a látogató országát/nyelvét
+detectAndSetLanguage();
