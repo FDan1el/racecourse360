@@ -1,0 +1,128 @@
+name: Koordináta-gyűjtés
+
+# ============================================================
+#  MIT CSINÁL
+#  Négy forrásból (szövetségi adatlap, postai cím, Wikidata,
+#  OpenStreetMap) koordinátát keres, és összeveti őket.
+#  Csak akkor javasol értéket, ha 2+ forrás egyetért 1 km-en belül.
+#
+#  MIRE VALÓ
+#  Az adatbázis bővítésének a koordináta a szűk keresztmetszete.
+#  Az uj_palyak.json-ban 75 olyan pálya van, amit hivatalos
+#  szövetségi forrásokban megtaláltunk, de koordináta híján
+#  még nem vettünk fel.
+#
+#  NEM AUTOMATIKUS
+#  Szándékosan NINCS ütemezve – kézzel kell indítani az Actions
+#  fülről. Ez nem havi feladat, hanem bővítési kampány.
+#
+#  MIT NEM CSINÁL
+#  Soha nem ír az app.js-be. Kész, beilleszthető rekordokat
+#  generál, de a beillesztés emberi döntés.
+# ============================================================
+
+on:
+  workflow_dispatch:
+    inputs:
+      mod:
+        description: 'Mit ellenőrizzen'
+        required: true
+        type: choice
+        default: 'only-new'
+        options:
+          - only-new      # csak az új, még fel nem vett pályák (gyors)
+          - new           # meglévő + új együtt
+          - meglevo       # csak a meglévő koordináták ellenőrzése
+      orszagok:
+        description: 'Országkódok szóközzel (pl. "GBR FIN CHE"), üresen: mind'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  koordinatak:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Repo letöltése
+        uses: actions/checkout@v4
+
+      - name: Node.js beállítása
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fájlok keresése
+        id: fajlok
+        run: |
+          echo "=== Repo tartalma ==="
+          ls -la
+          echo ""
+          echo "=== verify.mjs keresése ==="
+          SCRIPT=$(find . -name 'verify.mjs' -not -path './node_modules/*' | head -1)
+          if [ -z "$SCRIPT" ]; then
+            echo "NEM TALÁLOM a verify.mjs-t sehol a repóban!"
+            echo ""
+            echo "Ezek a .mjs és .js fájlok vannak:"
+            find . -name '*.mjs' -o -name '*.js' | grep -v node_modules | head -20
+            echo ""
+            echo "MEGOLDÁS: töltsd fel a verify.mjs-t a tools/ mappába."
+            echo "FIGYELJ a kiterjesztésre: .mjs (nem .js, nem .mjs.txt)"
+            exit 1
+          fi
+          echo "Megtaláltam: $SCRIPT"
+          echo "script=$SCRIPT" >> $GITHUB_OUTPUT
+          echo ""
+          echo "=== Egyéb szükséges fájlok ==="
+          for x in app.js uj_palyak.json; do
+            F=$(find . -name "$x" -not -path './node_modules/*' | head -1)
+            if [ -n "$F" ]; then echo "  OK       $x  ->  $F"; else echo "  HIÁNYZIK $x"; fi
+          done
+
+      - name: Kapcsoló összeállítása
+        id: kapcsolo
+        run: |
+          case "${{ github.event.inputs.mod }}" in
+            only-new) echo "flag=--coords --only-new" >> $GITHUB_OUTPUT ;;
+            new)      echo "flag=--coords --new"      >> $GITHUB_OUTPUT ;;
+            meglevo)  echo "flag=--coords"            >> $GITHUB_OUTPUT ;;
+          esac
+
+      - name: Koordináta-gyűjtés futtatása
+        run: |
+          node ${{ steps.fajlok.outputs.script }} ${{ steps.kapcsolo.outputs.flag }} ${{ github.event.inputs.orszagok }}
+
+      - name: Eredmények letölthető csomagként
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: koordinatak-${{ github.run_number }}
+          path: eredmeny/
+          retention-days: 90
+
+      - name: Összegzés a futás oldalán
+        if: always()
+        run: |
+          {
+            echo "## Koordináta-gyűjtés lefutott"
+            echo ""
+            echo "**Mód:** \`${{ github.event.inputs.mod }}\`"
+            echo "**Országok:** \`${{ github.event.inputs.orszagok || 'mind' }}\`"
+            echo ""
+            if [ -f eredmeny/beilleszthető_rekordok.js ]; then
+              DB=$(grep -c '{ name:' eredmeny/beilleszthető_rekordok.js || echo 0)
+              echo "### $DB beilleszthető rekord készült"
+              echo ""
+              echo "Töltsd le az **Artifacts** szekcióból a \`beilleszthető_rekordok.js\` fájlt."
+              echo ""
+              echo "> **Mielőtt beilleszted:** nyisd meg a koordinátákat térképen."
+              echo "> A gép nem lát, csak számol – ha két forrás egyetért, attól még"
+              echo "> lehet, hogy mindkettő ugyanazt a rossz helyet találta meg."
+            else
+              echo "Nem készült beilleszthető rekord – nézd meg a \`koordinatak.csv\`-t"
+              echo "az Artifacts szekcióban, hogy mi az akadály."
+            fi
+          } >> $GITHUB_STEP_SUMMARY
