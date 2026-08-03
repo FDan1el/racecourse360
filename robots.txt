@@ -1,0 +1,175 @@
+# ==========================================================
+# Racecourse360 – robots.txt
+# ==========================================================
+# A keresőmotorok normál indexelése ENGEDÉLYEZETT – ez fontos,
+# mert az organikus keresési forgalom a projekt egyik alapja.
+#
+# Az automatizált adatgyűjtő (scraper) és AI-tréning botok
+# hozzáférése TILTOTT: az oldalon szereplő versenypálya-adatbázis
+# saját, jelentős befektetéssel létrehozott szerkesztői összeállítás.
+#
+# ----------------------------------------------------------
+# FONTOS SZERKEZETI SZABÁLY – EZT KÖNNYŰ ELRONTANI
+# ----------------------------------------------------------
+# Egy bot KIZÁRÓLAG a rá vonatkozó, legspecifikusabb csoportot
+# olvassa, és a "User-agent: *" blokkot teljesen FIGYELMEN KÍVÜL
+# HAGYJA. Ezért minden nevesített botnál MEG KELL ISMÉTELNI a
+# Disallow sorokat – nem elég egyszer, a csillagos blokkba írni.
+#
+# Korábban ez a hiba benne volt: a Googlebot csoportja csak egy
+# "Allow: /" sort tartalmazott, így a Google jogosultnak tekintette
+# magát a belső munkafájlok (uj_palyak.json, javaslatok.json,
+# tools/verify.mjs) indexelésére is.
+#
+# A robots.txt önmagában amúgy sem technikai kényszer, csak jelzés.
+# A tényleges védelmet a worker.js útvonalszűrője adja, ami ezekre
+# az útvonalakra 404-et ad – azt egyetlen bot sem tudja megkerülni.
+# Ez a fájl a jóhiszemű keresőmotoroknak szól, hogy ne is próbálják.
+# ==========================================================
+
+
+# --- Normál keresőmotorok: indexelés engedélyezve, munkafájlok tiltva ---
+
+User-agent: Googlebot
+Disallow: /uj_palyak.json
+Disallow: /javaslatok.json
+Disallow: /tools/
+Disallow: /.github/
+Allow: /
+
+User-agent: Bingbot
+Disallow: /uj_palyak.json
+Disallow: /javaslatok.json
+Disallow: /tools/
+Disallow: /.github/
+Allow: /
+
+User-agent: DuckDuckBot
+Disallow: /uj_palyak.json
+Disallow: /javaslatok.json
+Disallow: /tools/
+Disallow: /.github/
+Allow: /
+
+User-agent: Applebot
+Disallow: /uj_palyak.json
+Disallow: /javaslatok.json
+Disallow: /tools/
+Disallow: /.github/
+Allow: /
+
+User-agent: YandexBot
+Disallow: /uj_palyak.json
+Disallow: /javaslatok.json
+Disallow: /tools/
+Disallow: /.github/
+Allow: /
+
+
+# --- SEO/marketing-elemző botok: tiltva (nagy terhelés, nincs haszon) ---
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+User-agent: DataForSeoBot
+Disallow: /
+
+
+# --- AI-tréning és tartalomgyűjtő botok: tiltva ---
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: OAI-SearchBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+User-agent: ImagesiftBot
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: YouBot
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: Timpibot
+Disallow: /
+
+User-agent: Scrapy
+Disallow: /
+
+
+# --- Minden más bot: alapból engedélyezve, de lassítva ---
+
+User-agent: *
+Disallow: /uj_palyak.json
+Disallow: /javaslatok.json
+Disallow: /tools/
+Disallow: /.github/
+Allow: /
+Crawl-delay: 10
+
+
+# --- Sitemap ---
+# MEGJEGYZÉS: ez a sor csak akkor hasznos, ha a sitemap.xml tényleg
+# létezik. Ha még nincs, a sor nem okoz hibát (a keresőmotor egyszerűen
+# nem talál semmit), de érdemes elkészíteni – az organikus forgalom
+# a projekt egyik alapja, a sitemap pedig gyorsítja az indexelést.
+Sitemap: https://racecourse360.com/sitemap.xml
