@@ -1,0 +1,46 @@
+name: Koordináta-keresés (Excel alapján)
+
+on:
+  workflow_dispatch:
+    inputs:
+      excel:
+        description: 'Excel útvonala a repóban'
+        required: true
+        default: 'tools/Racecourse_360.xlsx'
+      munkalap:
+        description: 'Munkalap neve'
+        required: true
+        default: 'Franciaország'
+
+jobs:
+  koordinata:
+    runs-on: ubuntu-latest
+    # A GitHub Actions maximuma 6 óra (360 perc). Bőven hagyunk időt,
+    # de a szkript soronként ment, így egy levágott futás sem vész el.
+    timeout-minutes: 350
+
+    steps:
+      - name: Repó letöltése
+        uses: actions/checkout@v4
+
+      - name: Node.js beállítása
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Függőség telepítése
+        run: npm install xlsx
+
+      - name: Koordináta-keresés futtatása
+        run: node tools/koordinata.mjs "${{ inputs.excel }}" "${{ inputs.munkalap }}"
+
+      # FONTOS: if always() — akkor is feltölti az eredményt, ha a futás
+      # timeoutolt vagy hibára futott. Így a részeredmény sosem vész el.
+      - name: Eredmény feltöltése
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: koordinatak
+          path: eredmeny/
+          retention-days: 30
+          if-no-files-found: warn
