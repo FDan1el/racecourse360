@@ -1,0 +1,128 @@
+name: Generátor
+
+# ============================================================
+# Racecourse360 — statikus oldalgenerátor futtatása
+# ------------------------------------------------------------
+# Mobilról indítható: Actions fül → "Generátor" → Run workflow.
+#
+# Három mód közül lehet választani:
+#
+#   ellenoriz  – csak validál (slugok, ütközések, országadatok).
+#                Nem ír semmit. Ezt futtatja push-ra is.
+#
+#   slugok     – slug-javaslatot készít, és a tools/ mappába
+#                commitolja. NEM nyúl az app.js-hez: a slug
+#                véglegesítése kézi döntés, mert utána fagyasztott.
+#
+#   general    – validál, majd a repó GYÖKERÉBE generálja a nyelvi
+#                mappákat (hu/, en/, …) és a sitemapeket, és
+#                commitolja. Csak akkor fut le, ha a validálás
+#                hibátlan.
+#
+#                A gyökérbe generálás oka: a wrangler.jsonc-ben az
+#                assets.directory értéke ".", vagyis a Worker a repó
+#                gyökerét szolgálja ki. Egy dist/ almappa esetén az
+#                oldalak /dist/hu/tracks/... címen lennének, miközben
+#                a canonical /hu/tracks/...-ra mutat.
+#
+# A push-ra induló futás SZÁNDÉKOSAN csak ellenőriz. Így egy
+# hibás adatfelvétel azonnal kiderül, de semmi nem generálódik
+# automatikusan a hibás állapotból.
+# ============================================================
+
+on:
+  workflow_dispatch:
+    inputs:
+      mod:
+        description: 'Mit csináljon?'
+        required: true
+        default: 'ellenoriz'
+        type: choice
+        options:
+          - ellenoriz
+          - slugok
+          - general
+  push:
+    branches: [main]
+    paths:
+      - 'js/app.js'
+      - 'tools/**'
+
+permissions:
+  contents: write
+
+jobs:
+  futtat:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repó letöltése
+        uses: actions/checkout@v4
+
+      - name: Node beállítása
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # A push-ra induló futás mindig csak ellenőriz.
+      # A kézi indításnál a választott mód érvényesül.
+      - name: Mód meghatározása
+        id: mod
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "ertek=ellenoriz" >> "$GITHUB_OUTPUT"
+          else
+            echo "ertek=${{ inputs.mod }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generátor futtatása
+        run: node tools/generator.mjs --${{ steps.mod.outputs.ertek }}
+
+      # Csak akkor commitol, ha a mód ezt igényli ÉS tényleg
+      # változott valami. Üres commitot nem hozunk létre.
+      - name: Eredmény commitolása
+        if: steps.mod.outputs.ertek != 'ellenoriz'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if [ "${{ steps.mod.outputs.ertek }}" = "slugok" ]; then
+            git add tools/slug-javaslat.json
+          else
+            # A generátor a repó GYÖKERÉBE ír (mert a wrangler.jsonc
+            # assets.directory értéke "."), nem egy dist/ mappába.
+            # Ezért a nyelvi mappákat és a sitemapeket kell hozzáadni.
+            # A -A kapcsoló a TÖRLÉSEKET is követi: ha egy pálya
+            # kikerül az adatbázisból, az oldala is eltűnik a repóból.
+            git add -A hu en de fr sv es it ja zh ar
+            git add -A sitemap.xml sitemap-*.xml
+          fi
+
+          if git diff --cached --quiet; then
+            echo "Nincs változás – nincs commit."
+          else
+            git commit -m "generator: ${{ steps.mod.outputs.ertek }} [skip ci]"
+            # Ha közben érkezett másik commit, ne szálljon el:
+            git pull --rebase origin "${{ github.ref_name }}"
+            git push
+          fi
+
+      # A kimenet artifactként is letölthető, ha nem akarod
+      # commitolni – a futás oldalán, alul jelenik meg.
+      - name: Kimenet artifactként
+        if: steps.mod.outputs.ertek == 'general'
+        uses: actions/upload-artifact@v4
+        with:
+          name: statikus-oldalak
+          path: |
+            hu
+            en
+            de
+            fr
+            sv
+            es
+            it
+            ja
+            zh
+            ar
+            sitemap*.xml
+          retention-days: 7
