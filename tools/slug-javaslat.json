@@ -5,231 +5,231 @@
       "city": "Malmö",
       "region": null,
       "slug": "jagersro",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Solvalla",
       "city": "Stockholm",
       "region": null,
       "slug": "solvalla",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Åbytravet",
       "city": "Mölndal",
       "region": null,
       "slug": "abytravet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Färjestad",
       "city": "Karlstad",
       "region": null,
       "slug": "farjestad",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Bergsåkers travbana",
       "city": "Sundsvall",
       "region": null,
       "slug": "bergsakers-travbana",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Axevalla travbana",
       "city": "Axvall",
       "region": null,
       "slug": "axevalla-travbana",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Sundbyholms travbana",
       "city": "Eskilstuna",
       "region": null,
       "slug": "sundbyholms-travbana",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Bodentravet",
       "city": "Boden",
       "region": null,
       "slug": "bodentravet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Gävletravet",
       "city": "Gävle",
       "region": null,
       "slug": "gavletravet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hagmyren",
       "city": "Hudiksvall",
       "region": null,
       "slug": "hagmyren",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Halmstadtravet",
       "city": "Halmstad",
       "region": null,
       "slug": "halmstadtravet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hotingtravet",
       "city": "Hoting",
       "region": null,
       "slug": "hotingtravet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Kalmartravet",
       "city": "Kalmar",
       "region": null,
       "slug": "kalmartravet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Karlshamnstravet",
       "city": "Asarum",
       "region": null,
       "slug": "karlshamnstravet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Fornaboda travbana",
       "city": "Lindesberg",
       "region": null,
       "slug": "fornaboda-travbana",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Lyckseletravet",
       "city": "Lycksele",
       "region": null,
       "slug": "lyckseletravet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Mantorp Hästsportarena",
       "city": "Mantorp",
       "region": null,
       "slug": "mantorp-hastsportarena",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ovallatravet",
       "city": "Oviken",
       "region": null,
       "slug": "ovallatravet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Romme travbana",
       "city": "Borlänge",
       "region": null,
       "slug": "romme-travbana",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Rättviks travbana",
       "city": "Rättvik",
       "region": null,
       "slug": "rattviks-travbana",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Skellefteåtravet",
       "city": "Skellefteå",
       "region": null,
       "slug": "skellefteatravet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Solänget",
       "city": "Örnsköldsvik",
       "region": null,
       "slug": "solanget",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Tingsrydtravet",
       "city": "Tingsryd",
       "region": null,
       "slug": "tingsrydtravet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Umåkers travbana",
       "city": "Umeå",
       "region": null,
       "slug": "umakers-travbana",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Vaggerydstravet",
       "city": "Vaggeryd",
       "region": null,
       "slug": "vaggerydstravet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Visbytravet",
       "city": "Gotland",
       "region": null,
       "slug": "visbytravet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Åmålstravet",
       "city": "Åmål",
       "region": null,
       "slug": "amalstravet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Årjängstravet",
       "city": "Årjäng",
       "region": null,
       "slug": "arjangstravet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Örebrotravet",
       "city": "Örebro",
       "region": null,
       "slug": "orebrotravet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Östersundstravet",
       "city": "Östersund",
       "region": null,
       "slug": "ostersundstravet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Bollnästravet",
       "city": "Bollnäs",
       "region": null,
       "slug": "bollnastravet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Dannero travbana",
       "city": "Kramfors",
       "region": null,
       "slug": "dannero-travbana",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Arvika travbana",
       "city": "Arvika",
       "region": null,
       "slug": "arvika-travbana",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "FRA": [
@@ -238,1561 +238,1561 @@
       "city": "Abbeville",
       "region": "Nord",
       "slug": "hippodrome-de-la-prairie-malicorne",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome d'Agen",
       "city": "Agen-La Garenne",
       "region": "Sud-Ouest",
       "slug": "hippodrome-d-agen",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Martinet",
       "city": "Agon-Coutainville",
       "region": "Basse-Normandie",
       "slug": "hippodrome-du-martinet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Marlioz",
       "city": "Aix-Les-Bains",
       "region": "Centre-Est",
       "slug": "hippodrome-de-marlioz",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Vignetta",
       "city": "Ajaccio",
       "region": "Corse",
       "slug": "hippodrome-de-vignetta",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome d'Alençon",
       "city": "Alencon",
       "region": "Basse-Normandie",
       "slug": "hippodrome-d-alencon",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Petit Saint-Jean",
       "city": "Amiens",
       "region": "Nord",
       "slug": "hippodrome-du-petit-saint-jean",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome d'Eventard",
       "city": "Angers",
       "region": "Anjou-Maine",
       "slug": "hippodrome-d-eventard",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Tourette",
       "city": "Angouleme",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-la-tourette",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Pays d'Argentan",
       "city": "Argentan",
       "region": "Basse-Normandie",
       "slug": "hippodrome-du-pays-d-argentan",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome des Hauts Blancs-Monts",
       "city": "Arras",
       "region": "Nord",
       "slug": "hippodrome-des-hauts-blancs-monts",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome La Ribère",
       "city": "Auch",
       "region": "Sud-Ouest",
       "slug": "hippodrome-la-ribere",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Georges du Breil",
       "city": "Aurillac",
       "region": "Sud-Ouest",
       "slug": "hippodrome-georges-du-breil",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Roberty",
       "city": "Avignon - Le Pontet",
       "region": "Sud-Est",
       "slug": "hippodrome-de-roberty",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome des Grèves",
       "city": "Avranches",
       "region": "Basse-Normandie",
       "slug": "hippodrome-des-greves",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Pierreville",
       "city": "Bacqueville-En-Caux",
       "region": "Île-de-France – Haute-Normandie",
       "slug": "hippodrome-de-pierreville",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Luchon",
       "city": "Bagneres-De-Luchon",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-luchon",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Bagnoles-de-l'Orne",
       "city": "Bagnoles De L'Orne",
       "region": "Basse-Normandie",
       "slug": "hippodrome-de-bagnoles-de-l-orne",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Borde-Vieille",
       "city": "Beaumont De Lomagne",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-borde-vieille",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Prée",
       "city": "Beaupreau",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-la-pree",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Molière",
       "city": "Berck-Sur-Mer",
       "region": "Nord",
       "slug": "hippodrome-de-la-moliere",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Victor Lebrun",
       "city": "Bernay",
       "region": "Île-de-France – Haute-Normandie",
       "slug": "hippodrome-victor-lebrun",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome des Fleurs",
       "city": "Biarritz",
       "region": "Sud-Ouest",
       "slug": "hippodrome-des-fleurs",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Casatorra",
       "city": "Biguglia",
       "region": "Corse",
       "slug": "hippodrome-de-casatorra",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome des Trois Pipes",
       "city": "Bihorel-Les-Rouen",
       "region": "Île-de-France – Haute-Normandie",
       "slug": "hippodrome-des-trois-pipes",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Bouvron",
       "city": "Blain-Bouvron-Le Gavre",
       "region": "Ouest",
       "slug": "hippodrome-de-bouvron",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Levade",
       "city": "Bollene",
       "region": "Sud-Est",
       "slug": "hippodrome-de-la-levade",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Bouscat",
       "city": "Bordeaux - Le Bouscat",
       "region": "Sud-Ouest",
       "slug": "hippodrome-du-bouscat",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Bourigny",
       "city": "Bourigny",
       "region": "Basse-Normandie",
       "slug": "hippodrome-de-bourigny",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Gabriel Lefranc",
       "city": "Brehal",
       "region": "Basse-Normandie",
       "slug": "hippodrome-gabriel-lefranc",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Cabourg",
       "city": "Cabourg",
       "region": "Basse-Normandie",
       "slug": "hippodrome-de-cabourg",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Prairie",
       "city": "Caen",
       "region": "Basse-Normandie",
       "slug": "hippodrome-de-la-prairie",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Côte d'Azur",
       "city": "Cagnes-Sur-Mer",
       "region": "Sud-Est",
       "slug": "hippodrome-de-la-cote-d-azur",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Fajeole",
       "city": "Carcassonne",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-la-fajeole",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Russie",
       "city": "Carentan",
       "region": "Basse-Normandie",
       "slug": "hippodrome-de-la-russie",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Penalan",
       "city": "Carhaix",
       "region": "Ouest",
       "slug": "hippodrome-de-penalan",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Saint-Ponchon",
       "city": "Carpentras",
       "region": "Sud-Est",
       "slug": "hippodrome-de-saint-ponchon",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Marchès",
       "city": "Castelsarrasin",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-marches",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Baron",
       "city": "Castera-Verduzan",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-baron",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Sarlande",
       "city": "Castillonnes",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-sarlande",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Cavaillon",
       "city": "Cavaillon",
       "region": "Sud-Est",
       "slug": "hippodrome-de-cavaillon",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Douze",
       "city": "Cazaubon",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-la-douze",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome des Noues",
       "city": "Challans",
       "region": "Ouest",
       "slug": "hippodrome-des-noues",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Mont-Choisy",
       "city": "Chalons-En-Champagne",
       "region": "Est",
       "slug": "hippodrome-du-mont-choisy",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Chartres",
       "city": "Chartres",
       "region": "Île-de-France – Haute-Normandie",
       "slug": "hippodrome-de-chartres",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Bonlieu",
       "city": "Chateau-Du-Loir",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-bonlieu",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome La Maroutière - St-Fort",
       "city": "Chateau-Gontier",
       "region": "Anjou-Maine",
       "slug": "hippodrome-la-maroutiere-st-fort",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Métairie Neuve",
       "city": "Chateaubriant",
       "region": "Ouest",
       "slug": "hippodrome-de-la-metairie-neuve",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Petit Valençay",
       "city": "Chateauroux",
       "region": "Centre-Est",
       "slug": "hippodrome-du-petit-valencay",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Haut-Rillon",
       "city": "Chatelaillon-La Rochelle",
       "region": "Sud-Ouest",
       "slug": "hippodrome-du-haut-rillon",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Bel Air",
       "city": "Chatillon-Sur-Chalaronne",
       "region": "Centre-Est",
       "slug": "hippodrome-de-bel-air",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Glacerie",
       "city": "Cherbourg",
       "region": "Basse-Normandie",
       "slug": "hippodrome-de-la-glacerie",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Grigny",
       "city": "Chinon - Richelieu",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-grigny",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Clenet",
       "city": "Cholet",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-clenet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Bellecroix",
       "city": "Cluny",
       "region": "Centre-Est",
       "slug": "hippodrome-de-bellecroix",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Putois",
       "city": "Compiegne",
       "region": "Nord",
       "slug": "hippodrome-du-putois",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Loire",
       "city": "Cordemais",
       "region": "Ouest",
       "slug": "hippodrome-de-la-loire",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Touche",
       "city": "Craon",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-la-touche",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Clairefontaine",
       "city": "Deauville-Clairefontaine",
       "region": "Basse-Normandie",
       "slug": "hippodrome-de-clairefontaine",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Rouxmesnil-Bouteilles",
       "city": "Dieppe",
       "region": "Île-de-France – Haute-Normandie",
       "slug": "hippodrome-de-rouxmesnil-bouteilles",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de l'Aublette",
       "city": "Dinan",
       "region": "Ouest",
       "slug": "hippodrome-de-l-aublette",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Grand Genève-Divonne",
       "city": "Divonne-Les-Bains",
       "region": "Centre-Est",
       "slug": "hippodrome-du-grand-geneve-divonne",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Croix des Landes",
       "city": "Domfront",
       "region": "Basse-Normandie",
       "slug": "hippodrome-de-la-croix-des-landes",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome d'Angerville",
       "city": "Dozule",
       "region": "Basse-Normandie",
       "slug": "hippodrome-d-angerville",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Flonville",
       "city": "Dreux",
       "region": "Île-de-France – Haute-Normandie",
       "slug": "hippodrome-de-flonville",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Carrière",
       "city": "Durtal",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-la-carriere",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Bergeyre",
       "city": "Eauze",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-la-bergeyre",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Pierre Provost",
       "city": "Ecommoy",
       "region": "Anjou-Maine",
       "slug": "hippodrome-pierre-provost",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome d'Enghien-Soisy",
       "city": "Enghien",
       "region": "Île-de-France – Haute-Normandie",
       "slug": "hippodrome-d-enghien-soisy",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Les Bigodières",
       "city": "Erbray",
       "region": "Ouest",
       "slug": "hippodrome-les-bigodieres",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome d'Evreux-Navarre",
       "city": "Evreux-Navarre",
       "region": "Île-de-France – Haute-Normandie",
       "slug": "hippodrome-d-evreux-navarre",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Parc",
       "city": "Feurs",
       "region": "Centre-Est",
       "slug": "hippodrome-du-parc",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Réchou",
       "city": "Fleurance",
       "region": "Sud-Ouest",
       "slug": "hippodrome-du-rechou",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Solle",
       "city": "Fontainebleau",
       "region": "Île-de-France – Haute-Normandie",
       "slug": "hippodrome-de-la-solle",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Grande Marche",
       "city": "Fougeres",
       "region": "Ouest",
       "slug": "hippodrome-de-la-grande-marche",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Georges Pinsard",
       "city": "Francheville-La Barre",
       "region": "Île-de-France – Haute-Normandie",
       "slug": "hippodrome-georges-pinsard",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Marais",
       "city": "Gabarret",
       "region": "Sud-Ouest",
       "slug": "hippodrome-du-marais",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Pérauderie",
       "city": "Gemozac",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-la-perauderie",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Genêts",
       "city": "Genets",
       "region": "Basse-Normandie",
       "slug": "hippodrome-de-genets",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Mont Louvet",
       "city": "Gournay-En-Bray",
       "region": "Île-de-France – Haute-Normandie",
       "slug": "hippodrome-du-mont-louvet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome \"le Vieux Château\"",
       "city": "Graignes",
       "region": "Basse-Normandie",
       "slug": "hippodrome-le-vieux-chateau",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Tumulus",
       "city": "Gramat",
       "region": "Sud-Ouest",
       "slug": "hippodrome-du-tumulus",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Belle Etoile",
       "city": "Grand Fougeray",
       "region": "Ouest",
       "slug": "hippodrome-de-la-belle-etoile",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Longueville-Bréville",
       "city": "Granville",
       "region": "Basse-Normandie",
       "slug": "hippodrome-de-longueville-breville",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Marianne",
       "city": "Grenade-Sur-Garonne",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-marianne",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Hattaie-Guer",
       "city": "Guer-Coetquidan",
       "region": "Ouest",
       "slug": "hippodrome-de-la-hattaie-guer",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Ar Plijadur",
       "city": "Guerlesquin",
       "region": "Ouest",
       "slug": "hippodrome-ar-plijadur",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Bel Orme",
       "city": "Guingamp",
       "region": "Ouest",
       "slug": "hippodrome-du-bel-orme",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Plage",
       "city": "Hyeres",
       "region": "Sud-Est",
       "slug": "hippodrome-de-la-plage",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Rochardière",
       "city": "Jallais",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-la-rochardiere",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Quint",
       "city": "Jarnac",
       "region": "Sud-Ouest",
       "slug": "hippodrome-du-quint",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Saint-Jean-des-Près",
       "city": "Josselin",
       "region": "Ouest",
       "slug": "hippodrome-de-saint-jean-des-pres",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Lachamps",
       "city": "Jullianges",
       "region": "Centre-Est",
       "slug": "hippodrome-de-lachamps",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Cale",
       "city": "Jullouville-Les-Pins",
       "region": "Basse-Normandie",
       "slug": "hippodrome-de-la-cale",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Régional de Guadeloupe",
       "city": "Karukera (Guadeloupe)",
       "region": "DROM-COM",
       "slug": "hippodrome-regional-de-guadeloupe",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Saint-Gervais",
       "city": "L'Isle Sur La Sorgue",
       "region": "Sud-Est",
       "slug": "hippodrome-de-saint-gervais",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Thiérache",
       "city": "La Capelle",
       "region": "Nord",
       "slug": "hippodrome-de-la-thierache",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome \"les Glerches\"",
       "city": "La Chartre-Sur-Le-Loir",
       "region": "Anjou-Maine",
       "slug": "hippodrome-les-glerches",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Montgelly",
       "city": "La Clayette",
       "region": "Centre-Est",
       "slug": "hippodrome-de-montgelly",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Pipe-Souris",
       "city": "La Ferte-Vidame",
       "region": "Île-de-France – Haute-Normandie",
       "slug": "hippodrome-de-pipe-souris",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Pré-Naval",
       "city": "La Gacilly",
       "region": "Ouest",
       "slug": "hippodrome-de-pre-naval",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Montboury",
       "city": "La Guerche De Bretagne",
       "region": "Ouest",
       "slug": "hippodrome-de-montboury",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Mijéma",
       "city": "La Reole",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-mijema",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Gâtinière",
       "city": "La Roche-Posay",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-la-gatiniere",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome des Terres-Noires",
       "city": "La Roche-Sur-Yon",
       "region": "Ouest",
       "slug": "hippodrome-des-terres-noires",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Béquet",
       "city": "La Teste",
       "region": "Sud-Ouest",
       "slug": "hippodrome-du-bequet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Croas-al-Leurion",
       "city": "Landivisiau",
       "region": "Ouest",
       "slug": "hippodrome-de-croas-al-leurion",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Bidane",
       "city": "Langon-Libourne",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-la-bidane",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Demi-Lune",
       "city": "Lannemezan-Vic Bigorre",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-la-demi-lune",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Laon",
       "city": "Laon",
       "region": "Nord",
       "slug": "hippodrome-de-laon",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Bellevue-la-Forêt",
       "city": "Laval",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-bellevue-la-foret",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Serge Charles",
       "city": "Le Croise-Laroche",
       "region": "Nord",
       "slug": "hippodrome-serge-charles",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Sagne",
       "city": "Le Dorat",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-la-sagne",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de l'Isle-Briand",
       "city": "Le Lion D'Angers",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-l-isle-briand",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome des Hunaudières",
       "city": "Le Mans",
       "region": "Anjou-Maine",
       "slug": "hippodrome-des-hunaudieres",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de l'Anse de Moidrey",
       "city": "Le Mont-Saint-Michel-Pontorson",
       "region": "Basse-Normandie",
       "slug": "hippodrome-de-l-anse-de-moidrey",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Henri Bonnel",
       "city": "Le Neubourg",
       "region": "Île-de-France – Haute-Normandie",
       "slug": "hippodrome-henri-bonnel",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Chaussée",
       "city": "Le Pertre",
       "region": "Ouest",
       "slug": "hippodrome-de-la-chaussee",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Bergerie",
       "city": "Le Pin-Au-Haras",
       "region": "Basse-Normandie",
       "slug": "hippodrome-de-la-bergerie",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Fontaine",
       "city": "Le Sap",
       "region": "Basse-Normandie",
       "slug": "hippodrome-de-la-fontaine",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Touquet",
       "city": "Le Touquet",
       "region": "Nord",
       "slug": "hippodrome-du-touquet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome René Tomasini",
       "city": "Les Andelys",
       "region": "Île-de-France – Haute-Normandie",
       "slug": "hippodrome-rene-tomasini",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de La Malbrande",
       "city": "Les Sables D'Olonne",
       "region": "Ouest",
       "slug": "hippodrome-de-la-malbrande",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Lignières-en-Berry",
       "city": "Lignieres En Berry",
       "region": "Centre-Est",
       "slug": "hippodrome-de-lignieres-en-berry",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Limoges - Texonniéras",
       "city": "Limoges",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-limoges-texonnieras",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Lisieux Normandie",
       "city": "Lisieux",
       "region": "Basse-Normandie",
       "slug": "hippodrome-de-lisieux-normandie",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Calouet",
       "city": "Loudeac",
       "region": "Ouest",
       "slug": "hippodrome-de-calouet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de La Chataîgneraie",
       "city": "Luxe",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-la-chataigneraie",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Lyon-La Soie",
       "city": "Lyon (A La Soie)",
       "region": "Centre-Est",
       "slug": "hippodrome-de-lyon-la-soie",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Parilly",
       "city": "Lyon (A Parilly)",
       "region": "Centre-Est",
       "slug": "hippodrome-de-parilly",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome des Chaumes",
       "city": "Machecoul",
       "region": "Ouest",
       "slug": "hippodrome-des-chaumes",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Départemental de Carrère",
       "city": "Madinina (Martinique)",
       "region": "DROM-COM",
       "slug": "hippodrome-departemental-de-carrere",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Champion",
       "city": "Mansle",
       "region": "Sud-Ouest",
       "slug": "hippodrome-du-champion",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Parc Borély",
       "city": "Marseille (A Borely)",
       "region": "Sud-Est",
       "slug": "hippodrome-du-parc-borely",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Pont de Vivaux",
       "city": "Marseille (A Vivaux)",
       "region": "Sud-Est",
       "slug": "hippodrome-du-pont-de-vivaux",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Mauquenchy",
       "city": "Mauquenchy",
       "region": "Île-de-France – Haute-Normandie",
       "slug": "hippodrome-de-mauquenchy",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "L'hippodrome Maure De Bretagne",
       "city": "Maure De Bretagne",
       "region": "Ouest",
       "slug": "l-hippodrome-maure-de-bretagne",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome \"les Vélizes\"",
       "city": "Mauron",
       "region": "Ouest",
       "slug": "hippodrome-les-velizes",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome des Feux",
       "city": "Meral",
       "region": "Anjou-Maine",
       "slug": "hippodrome-des-feux",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Bretonnière",
       "city": "Meslay-Du-Maine",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-la-bretonniere",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Bouilhaguet",
       "city": "Miramont De Guyenne",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-bouilhaguet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Château",
       "city": "Molieres",
       "region": "Anjou-Maine",
       "slug": "hippodrome-du-chateau",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome des Collines du Perche",
       "city": "Mondoubleau",
       "region": "Anjou-Maine",
       "slug": "hippodrome-des-collines-du-perche",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Coulon",
       "city": "Monflanquin",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-coulon",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Lucien Pradié Marsalès",
       "city": "Monpazier",
       "region": "Sud-Ouest",
       "slug": "hippodrome-lucien-pradie-marsales",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Brune",
       "city": "Mont-de-Marsan",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-la-brune",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome \"les Allègres\"",
       "city": "Montauban",
       "region": "Sud-Ouest",
       "slug": "hippodrome-les-allegres",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Crouée",
       "city": "Montier-En-Der",
       "region": "Est",
       "slug": "hippodrome-de-la-crouee",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome René Gounin",
       "city": "Montignac-Charente",
       "region": "Sud-Ouest",
       "slug": "hippodrome-rene-gounin",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Montluçon-Communauté",
       "city": "Montlucon-Neris Les Bains",
       "region": "Centre-Est",
       "slug": "hippodrome-montlucon-communaute",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Perche Sarthois",
       "city": "Montmirail",
       "region": "Anjou-Maine",
       "slug": "hippodrome-du-perche-sarthois",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Langolvas",
       "city": "Morlaix",
       "region": "Ouest",
       "slug": "hippodrome-de-langolvas",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome des Gâteaux",
       "city": "Moulins",
       "region": "Centre-Est",
       "slug": "hippodrome-des-gateaux",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Jean Gabin",
       "city": "Moulins-La-Marche",
       "region": "Basse-Normandie",
       "slug": "hippodrome-jean-gabin",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Nancy-Brabois",
       "city": "Nancy",
       "region": "Est",
       "slug": "hippodrome-de-nancy-brabois",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Petit Port",
       "city": "Nantes",
       "region": "Ouest",
       "slug": "hippodrome-du-petit-port",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Poillé",
       "city": "Neuille-Pont-Pierre",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-poille",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome des Courbiers",
       "city": "Nimes",
       "region": "Sud-Est",
       "slug": "hippodrome-des-courbiers",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Romague",
       "city": "Niort",
       "region": "Ouest",
       "slug": "hippodrome-de-romague",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Beaumont",
       "city": "Nort-Sur-Erdre",
       "region": "Ouest",
       "slug": "hippodrome-de-beaumont",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Ligonnière",
       "city": "Nuille-Sur-Vicoin",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-la-ligonniere",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome d'Oraison",
       "city": "Oraison",
       "region": "Sud-Est",
       "slug": "hippodrome-d-oraison",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de l'Ile Arrault",
       "city": "Orleans",
       "region": "Île-de-France – Haute-Normandie",
       "slug": "hippodrome-de-l-ile-arrault",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Varenne",
       "city": "Paray-Le-Monial",
       "region": "Centre-Est",
       "slug": "hippodrome-de-la-varenne",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Parc de Fresnay",
       "city": "Plesse",
       "region": "Ouest",
       "slug": "hippodrome-du-parc-de-fresnay",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Saint-Efflam",
       "city": "Plestin-Les-Greves",
       "region": "Ouest",
       "slug": "hippodrome-saint-efflam",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Malleville",
       "city": "Ploermel",
       "region": "Ouest",
       "slug": "hippodrome-de-malleville",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la plage Saint-Sieu",
       "city": "Ploubalay",
       "region": "Ouest",
       "slug": "hippodrome-de-la-plage-saint-sieu",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Baie de Kernic",
       "city": "Plouescat",
       "region": "Ouest",
       "slug": "hippodrome-de-la-baie-de-kernic",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Calvaire - Magdeleine",
       "city": "Pontchateau",
       "region": "Ouest",
       "slug": "hippodrome-du-calvaire-magdeleine",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Kernivinen",
       "city": "Pontivy",
       "region": "Ouest",
       "slug": "hippodrome-de-kernivinen",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Côte d'Amour",
       "city": "Pornichet",
       "region": "Ouest",
       "slug": "hippodrome-de-la-cote-d-amour",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome des Pins",
       "city": "Portbail",
       "region": "Basse-Normandie",
       "slug": "hippodrome-des-pins",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Calzarello",
       "city": "Prunelli Di Fium'Orbo",
       "region": "Corse",
       "slug": "hippodrome-de-calzarello",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Resto",
       "city": "Questembert",
       "region": "Ouest",
       "slug": "hippodrome-du-resto",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Villeneuve",
       "city": "Rambouillet",
       "region": "Île-de-France – Haute-Normandie",
       "slug": "hippodrome-de-la-villeneuve",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Rânes",
       "city": "Ranes",
       "region": "Basse-Normandie",
       "slug": "hippodrome-de-ranes",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Rive",
       "city": "Redon",
       "region": "Ouest",
       "slug": "hippodrome-de-la-rive",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Champagne",
       "city": "Reims",
       "region": "Est",
       "slug": "hippodrome-de-la-champagne",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Fleuri du Val de Loire",
       "city": "Rochefort-Sur-Loire",
       "region": "Anjou-Maine",
       "slug": "hippodrome-fleuri-du-val-de-loire",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Quenropers",
       "city": "Rostrenen",
       "region": "Ouest",
       "slug": "hippodrome-de-quenropers",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de La Palmyre",
       "city": "Royan-Atlantique",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-la-palmyre",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Prairie du Château",
       "city": "Sable-Sur-Sarthe",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-la-prairie-du-chateau",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome des Brûlins",
       "city": "Saint-Aubin-Les-Elbeuf",
       "region": "Île-de-France – Haute-Normandie",
       "slug": "hippodrome-des-brulins",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Baie",
       "city": "Saint-Brieuc",
       "region": "Ouest",
       "slug": "hippodrome-de-la-baie",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Joseph Desjoyaux",
       "city": "Saint-Galmier",
       "region": "Centre-Est",
       "slug": "hippodrome-joseph-desjoyaux",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de l'Atlantique",
       "city": "Saint-Jean-De-Monts",
       "region": "Ouest",
       "slug": "hippodrome-de-l-atlantique",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Marville",
       "city": "Saint-Malo",
       "region": "Ouest",
       "slug": "hippodrome-de-marville",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome des Bruyères",
       "city": "Saint-Omer",
       "region": "Nord",
       "slug": "hippodrome-des-bruyeres",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome le Tilleul",
       "city": "Saint-Pierre-La-Cour",
       "region": "Anjou-Maine",
       "slug": "hippodrome-le-tilleul",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Madeleine",
       "city": "Sainte-Marie-Du-Mont",
       "region": "Basse-Normandie",
       "slug": "hippodrome-de-la-madeleine",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Crau",
       "city": "Salon De Provence",
       "region": "Sud-Est",
       "slug": "hippodrome-de-la-crau",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Sault",
       "city": "Sault",
       "region": "Sud-Est",
       "slug": "hippodrome-de-sault",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Verrie",
       "city": "Saumur",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-verrie",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Touchelais",
       "city": "Savenay",
       "region": "Ouest",
       "slug": "hippodrome-de-la-touchelais",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome des Patis",
       "city": "Savigny-Sur-Braye",
       "region": "Anjou-Maine",
       "slug": "hippodrome-des-patis",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Lorie",
       "city": "Segre",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-la-lorie",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Boudré",
       "city": "Seiches-Sur-Le-Loir",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-boudre",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Senonnes-Pouancé",
       "city": "Senonnes",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-senonnes-pouance",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Forêt",
       "city": "Sille-Le-Guillaume",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-la-foret",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Hoerdt",
       "city": "Strasbourg",
       "region": "Est",
       "slug": "hippodrome-de-hoerdt",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Villeneuve",
       "city": "Thouars",
       "region": "Ouest",
       "slug": "hippodrome-de-villeneuve",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de La Cépière",
       "city": "Toulouse",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-la-cepiere",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome les Genets",
       "city": "Tours-Chambray",
       "region": "Anjou-Maine",
       "slug": "hippodrome-les-genets",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Soulancerre",
       "city": "Trie-Sur-Baise",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-soulancerre",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Flaran",
       "city": "Valence-Sur-Baise",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-flaran",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Claire Fontaine",
       "city": "Valognes",
       "region": "Basse-Normandie",
       "slug": "hippodrome-claire-fontaine",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome André Cadoret",
       "city": "Vannes",
       "region": "Ouest",
       "slug": "hippodrome-andre-cadoret",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Portillon",
       "city": "Vertou",
       "region": "Ouest",
       "slug": "hippodrome-du-portillon",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la Forêt de Vibraye",
       "city": "Vibraye",
       "region": "Anjou-Maine",
       "slug": "hippodrome-de-la-foret-de-vibraye",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome des Acacias",
       "city": "Vic-Bigorre",
       "region": "Sud-Ouest",
       "slug": "hippodrome-des-acacias",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Gimat",
       "city": "Vic-Fezensac",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-gimat",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Vichy-Bellerive",
       "city": "Vichy",
       "region": "Centre-Est",
       "slug": "hippodrome-de-vichy-bellerive",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Saultchevreuil",
       "city": "Villedieu-Les-Poeles",
       "region": "Basse-Normandie",
       "slug": "hippodrome-de-saultchevreuil",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Sangruère",
       "city": "Villeneuve-Sur-Lot",
       "region": "Sud-Ouest",
       "slug": "hippodrome-de-sangruere",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome du Pesquié-Bas",
       "city": "Villereal",
       "region": "Sud-Ouest",
       "slug": "hippodrome-du-pesquie-bas",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Vincennes Hippodrome de Paris",
       "city": "Vincennes",
       "region": "Île-de-France – Haute-Normandie",
       "slug": "vincennes-hippodrome-de-paris",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Robert Auvray",
       "city": "Vire Normandie",
       "region": "Basse-Normandie",
       "slug": "hippodrome-robert-auvray",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome Saint-Etienne",
       "city": "Vitre",
       "region": "Ouest",
       "slug": "hippodrome-saint-etienne",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Marcilly",
       "city": "Vitteaux",
       "region": "Centre-Est",
       "slug": "hippodrome-de-marcilly",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Vittel",
       "city": "Vittel",
       "region": "Est",
       "slug": "hippodrome-de-vittel",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de la hardt",
       "city": "Wissembourg",
       "region": null,
       "slug": "hippodrome-de-la-hardt",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome de Viseo",
       "city": "Zonza",
       "region": "Corse",
       "slug": "hippodrome-de-viseo",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "ITA": [
@@ -1801,182 +1801,182 @@
       "city": "Mori (Trentino)",
       "region": null,
       "slug": "ippodromo-mori",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo di Agnano",
       "city": "Napoli",
       "region": null,
       "slug": "ippodromo-di-agnano",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo Snai San Siro (trotto)",
       "city": "Milánó",
       "region": null,
       "slug": "ippodromo-snai-san-siro-trotto",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo dell'Arcoveggio",
       "city": "Bologna",
       "region": null,
       "slug": "ippodromo-dell-arcoveggio",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo delle Capannelle",
       "city": "Róma",
       "region": null,
       "slug": "ippodromo-delle-capannelle",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo del Mediterraneo",
       "city": "Siracusa",
       "region": null,
       "slug": "ippodromo-del-mediterraneo",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo di Vinovo (Stupinigi)",
       "city": "Vinovo (Torino)",
       "region": null,
       "slug": "ippodromo-di-vinovo-stupinigi",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo San Paolo",
       "city": "Montegiorgio",
       "region": null,
       "slug": "ippodromo-san-paolo",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo dei Sauri",
       "city": "Castelluccio dei Sauri (Foggia)",
       "region": null,
       "slug": "ippodromo-dei-sauri",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo del Savio",
       "city": "Cesena",
       "region": null,
       "slug": "ippodromo-del-savio",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo Paolo VI",
       "city": "Taranto",
       "region": null,
       "slug": "ippodromo-paolo-vi",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo della Favorita",
       "city": "Palermo",
       "region": null,
       "slug": "ippodromo-della-favorita",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo dei Pini",
       "city": "Follonica",
       "region": null,
       "slug": "ippodromo-dei-pini",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo della Ghirlandina",
       "city": "Modena",
       "region": null,
       "slug": "ippodromo-della-ghirlandina",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo Euroitalia",
       "city": "Casarano (Lecce)",
       "region": null,
       "slug": "ippodromo-euroitalia",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo Snai Sesana",
       "city": "Montecatini Terme",
       "region": null,
       "slug": "ippodromo-snai-sesana",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo Sant'Artemio",
       "city": "Treviso",
       "region": null,
       "slug": "ippodromo-sant-artemio",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo del Garigliano",
       "city": "Santi Cosma e Damiano (Latina)",
       "region": null,
       "slug": "ippodromo-del-garigliano",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo del Visarno Cesare Meli",
       "city": "Firenze",
       "region": null,
       "slug": "ippodromo-del-visarno-cesare-meli",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo dei Fiori",
       "city": "Villanova d'Albenga (Savona)",
       "region": null,
       "slug": "ippodromo-dei-fiori",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo delle Padovanelle (V.S. Breda)",
       "city": "Padova",
       "region": null,
       "slug": "ippodromo-delle-padovanelle-v-s-breda",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo Valentinia",
       "city": "Pontecagnano Faiano (Salerno)",
       "region": null,
       "slug": "ippodromo-valentinia",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo Montebello",
       "city": "Trieste",
       "region": null,
       "slug": "ippodromo-montebello",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo Cirigliano",
       "city": "Aversa (Caserta)",
       "region": null,
       "slug": "ippodromo-cirigliano",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo San Marone",
       "city": "Civitanova Marche (Macerata)",
       "region": null,
       "slug": "ippodromo-san-marone",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ippodromo Cesare Fiaschi",
       "city": "Ferrara",
       "region": null,
       "slug": "ippodromo-cesare-fiaschi",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "FIN": [
@@ -1985,259 +1985,259 @@
       "city": "Turku",
       "region": null,
       "slug": "metsamaki-racetrack",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Haapajärven ravirata",
       "city": "Haapajärvi",
       "region": null,
       "slug": "haapajarven-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Halsuan ravirata",
       "city": "Halsua",
       "region": null,
       "slug": "halsuan-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Härmän ravirata",
       "city": "Härmä",
       "region": null,
       "slug": "harman-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Kannuksen ravirata",
       "city": "Kannus",
       "region": null,
       "slug": "kannuksen-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Kokkolan ravirata",
       "city": "Kokkola",
       "region": null,
       "slug": "kokkolan-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Suonenjoen ravirata",
       "city": "Suonenjoki",
       "region": null,
       "slug": "suonenjoen-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "PowerParkin ravirata",
       "city": "Kauhava",
       "region": null,
       "slug": "powerparkin-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Kaukosen ravirata",
       "city": "Kaukonen",
       "region": null,
       "slug": "kaukosen-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Kausalan ravirata",
       "city": "Kausala",
       "region": null,
       "slug": "kausalan-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Kokemäen ravirata",
       "city": "Kokemäki",
       "region": null,
       "slug": "kokemaen-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Kurtakon ravirata",
       "city": "Kolari",
       "region": null,
       "slug": "kurtakon-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Lieksan ravirata",
       "city": "Lieksa",
       "region": null,
       "slug": "lieksan-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Loviisan ravirata",
       "city": "Loviisa",
       "region": null,
       "slug": "loviisan-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ålandstravet",
       "city": "Mariehamn",
       "region": null,
       "slug": "alandstravet",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Riihimäen ravirata",
       "city": "Riihimäki",
       "region": null,
       "slug": "riihimaen-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Sodankylän ravirata",
       "city": "Sodankylä",
       "region": null,
       "slug": "sodankylan-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Vieremän ravirata",
       "city": "Vieremä",
       "region": null,
       "slug": "viereman-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Vermo Areena",
       "city": "Espoo (Helsinki)",
       "region": null,
       "slug": "vermo-areena",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Pilvenmäki",
       "city": "Forssa",
       "region": null,
       "slug": "pilvenmaki",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Joensuun ravirata (Linnunlahti)",
       "city": "Joensuu",
       "region": null,
       "slug": "joensuun-ravirata-linnunlahti",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Killeri",
       "city": "Jyväskylä",
       "region": null,
       "slug": "killeri",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Kainuun ravirata",
       "city": "Kajaani",
       "region": null,
       "slug": "kainuun-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Kaustinen (Nikula)",
       "city": "Kaustinen",
       "region": null,
       "slug": "kaustinen-nikula",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Kouvolan ravirata",
       "city": "Kouvola",
       "region": null,
       "slug": "kouvolan-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Kuopion ravirata (Sorsasalo)",
       "city": "Kuopio",
       "region": null,
       "slug": "kuopion-ravirata-sorsasalo",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Jokimaa",
       "city": "Lahti",
       "region": null,
       "slug": "jokimaa",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Lappeen ravirata",
       "city": "Lappeenranta",
       "region": null,
       "slug": "lappeen-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Mikkelin ravirata",
       "city": "Mikkeli",
       "region": null,
       "slug": "mikkelin-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Äimäraution ravirata",
       "city": "Oulu",
       "region": null,
       "slug": "aimaraution-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Porin ravirata",
       "city": "Pori",
       "region": null,
       "slug": "porin-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Rovaniemen ravirata (Mäntyvaara)",
       "city": "Rovaniemi",
       "region": null,
       "slug": "rovaniemen-ravirata-mantyvaara",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Seinäjoen ravikeskus",
       "city": "Seinäjoki",
       "region": null,
       "slug": "seinajoen-ravikeskus",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Teivon ravirata",
       "city": "Tampere (Ylöjärvi)",
       "region": null,
       "slug": "teivon-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Laivakankaan ravirata",
       "city": "Tornio",
       "region": null,
       "slug": "laivakankaan-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Metsämäen ravirata",
       "city": "Turku",
       "region": null,
       "slug": "metsamaen-ravirata",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ylivieskan ravirata (Keskinen)",
       "city": "Ylivieska",
       "region": null,
       "slug": "ylivieskan-ravirata-keskinen",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "NOR": [
@@ -2246,77 +2246,77 @@
       "city": "Oslo",
       "region": null,
       "slug": "bjerke-travbane",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Bergen Travpark",
       "city": "Breistein (Bergen)",
       "region": null,
       "slug": "bergen-travpark",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Biri Travbane",
       "city": "Biri",
       "region": null,
       "slug": "biri-travbane",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Forus Travbane",
       "city": "Stavanger",
       "region": null,
       "slug": "forus-travbane",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Harstad Travpark",
       "city": "Harstad",
       "region": null,
       "slug": "harstad-travpark",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Jarlsberg Travbane",
       "city": "Sem (Tønsberg)",
       "region": null,
       "slug": "jarlsberg-travbane",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Klosterskogen Travbane",
       "city": "Skien",
       "region": null,
       "slug": "klosterskogen-travbane",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Momarken Travbane",
       "city": "Mysen",
       "region": null,
       "slug": "momarken-travbane",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Sørlandets Travpark",
       "city": "Kristiansand",
       "region": null,
       "slug": "sorlandets-travpark",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Leangen Travbane",
       "city": "Trondheim",
       "region": null,
       "slug": "leangen-travbane",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Drammen Travbane",
       "city": "Drammen",
       "region": null,
       "slug": "drammen-travbane",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "POL": [
@@ -2325,28 +2325,28 @@
       "city": "Varsó",
       "region": null,
       "slug": "tor-wyscigow-konnych-sluzewiec",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Wrocławski Tor Wyścigów Konnych – Partynice",
       "city": "Wrocław",
       "region": null,
       "slug": "wroclawski-tor-wyscigow-konnych-partynice",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hipodrom Sopot",
       "city": "Sopot",
       "region": null,
       "slug": "hipodrom-sopot",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Krakowski Tor Wyścigów Konnych (Buczków)",
       "city": "Buczków (Krakkó mellett)",
       "region": null,
       "slug": "krakowski-tor-wyscigow-konnych-buczkow",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "CZE": [
@@ -2355,14 +2355,14 @@
       "city": "Prága",
       "region": null,
       "slug": "velka-chuchle-chuchle-arena-praha",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hipodrom Bravantice",
       "city": "Bravantice (Ostrava mellett)",
       "region": null,
       "slug": "hipodrom-bravantice",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "SVK": [
@@ -2371,7 +2371,7 @@
       "city": "Pozsony",
       "region": null,
       "slug": "zavodisko-bratislava-stary-haj-petrzalka",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "HUN": [
@@ -2380,7 +2380,7 @@
       "city": "Budapest",
       "region": null,
       "slug": "kincsem-park",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "EST": [
@@ -2389,7 +2389,7 @@
       "city": "Tallinn",
       "region": null,
       "slug": "tallinna-hipodroom",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "USA": [
@@ -2398,259 +2398,259 @@
       "city": "Batavia, NY",
       "region": "NY",
       "slug": "batavia-downs",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Buffalo Raceway",
       "city": "Hamburg, NY",
       "region": "NY",
       "slug": "buffalo-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "The Mint Gaming Hall – Cumberland Run",
       "city": "Corbin, KY",
       "region": "KY",
       "slug": "the-mint-gaming-hall-cumberland-run",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "First Tracks Cumberland",
       "city": "Cumberland, ME",
       "region": "ME",
       "slug": "first-tracks-cumberland",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Dover Downs",
       "city": "Dover, DE",
       "region": "DE",
       "slug": "dover-downs",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Harrah's Hoosier Park",
       "city": "Anderson, IN",
       "region": "IN",
       "slug": "harrah-s-hoosier-park",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Harrah's Philadelphia",
       "city": "Chester, PA",
       "region": "PA",
       "slug": "harrah-s-philadelphia",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Harrington Raceway",
       "city": "Harrington, DE",
       "region": "DE",
       "slug": "harrington-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hawthorne Race Course",
       "city": "Cicero, IL",
       "region": "IL",
       "slug": "hawthorne-race-course",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Historic Track – Goshen",
       "city": "Goshen, NY",
       "region": "NY",
       "slug": "historic-track-goshen",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hollywood Casino at The Meadows",
       "city": "Washington, PA",
       "region": "PA",
       "slug": "hollywood-casino-at-the-meadows",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hollywood Gaming at Dayton Raceway",
       "city": "Dayton, OH",
       "region": "OH",
       "slug": "hollywood-gaming-at-dayton-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Bangor Raceway",
       "city": "Bangor, ME",
       "region": "ME",
       "slug": "bangor-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Little Brown Jug Race Track",
       "city": "Delaware, OH",
       "region": "OH",
       "slug": "little-brown-jug-race-track",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Meadowlands Racetrack",
       "city": "East Rutherford, NJ",
       "region": "NJ",
       "slug": "meadowlands-racetrack",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Miami Valley Raceway",
       "city": "Lebanon, OH",
       "region": "OH",
       "slug": "miami-valley-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Mohegan Sun Pocono (Pocono Downs)",
       "city": "Wilkes-Barre, PA",
       "region": "PA",
       "slug": "mohegan-sun-pocono-pocono-downs",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Monticello Raceway",
       "city": "Monticello, NY",
       "region": "NY",
       "slug": "monticello-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Northfield Park",
       "city": "Northfield, OH",
       "region": "OH",
       "slug": "northfield-park",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Northville Downs (Barry Expo Center)",
       "city": "Hastings, MI",
       "region": "MI",
       "slug": "northville-downs-barry-expo-center",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Oak Grove Racing, Gaming & Hotel",
       "city": "Oak Grove, KY",
       "region": "KY",
       "slug": "oak-grove-racing-gaming-hotel",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ocean Downs",
       "city": "Berlin, MD",
       "region": "MD",
       "slug": "ocean-downs",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Plainridge Park",
       "city": "Plainville, MA",
       "region": "MA",
       "slug": "plainridge-park",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "The Red Mile",
       "city": "Lexington, KY",
       "region": "KY",
       "slug": "the-red-mile",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Rosecroft Raceway",
       "city": "Fort Washington, MD",
       "region": "MD",
       "slug": "rosecroft-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Running Aces Casino, Hotel & Racetrack",
       "city": "Columbus, MN",
       "region": "MN",
       "slug": "running-aces-casino-hotel-racetrack",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Saratoga Harness Racing",
       "city": "Saratoga Springs, NY",
       "region": "NY",
       "slug": "saratoga-harness-racing",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Eldorado Gaming Scioto Downs",
       "city": "Columbus, OH",
       "region": "OH",
       "slug": "eldorado-gaming-scioto-downs",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Shenandoah Downs",
       "city": "Woodstock, VA",
       "region": "VA",
       "slug": "shenandoah-downs",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Tioga Downs",
       "city": "Nichols, NY",
       "region": "NY",
       "slug": "tioga-downs",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Vernon Downs",
       "city": "Vernon, NY",
       "region": "NY",
       "slug": "vernon-downs",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Yonkers Raceway (Empire City)",
       "city": "Yonkers, NY",
       "region": "NY",
       "slug": "yonkers-raceway-empire-city",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Cal Expo",
       "city": "Sacramento, CA",
       "region": "CA",
       "slug": "cal-expo",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Big Fresno Fair (Fresno Fairgrounds)",
       "city": "Fresno, CA",
       "region": "CA",
       "slug": "big-fresno-fair-fresno-fairgrounds",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Indiana State Fairgrounds",
       "city": "Indianapolis, IN",
       "region": "IN",
       "slug": "indiana-state-fairgrounds",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Illinois State Fairgrounds",
       "city": "Springfield, IL",
       "region": "IL",
       "slug": "illinois-state-fairgrounds",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Freehold Raceway",
       "city": "Freehold, NJ",
       "region": "NJ",
       "slug": "freehold-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "CAN": [
@@ -2659,203 +2659,203 @@
       "city": "Campbellville, ON",
       "region": "ON",
       "slug": "woodbine-mohawk-park",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "The Raceway at Western Fair District",
       "city": "London, ON",
       "region": "ON",
       "slug": "the-raceway-at-western-fair-district",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Flamboro Downs",
       "city": "Dundas (Hamilton), ON",
       "region": "ON",
       "slug": "flamboro-downs",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Georgian Downs",
       "city": "Innisfil, ON",
       "region": "ON",
       "slug": "georgian-downs",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Grand River Raceway",
       "city": "Elora, ON",
       "region": "ON",
       "slug": "grand-river-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hanover Raceway",
       "city": "Hanover, ON",
       "region": "ON",
       "slug": "hanover-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Clinton Raceway",
       "city": "Clinton, ON",
       "region": "ON",
       "slug": "clinton-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Dresden Raceway",
       "city": "Dresden, ON",
       "region": "ON",
       "slug": "dresden-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Kawartha Downs",
       "city": "Cavan-Monaghan (Peterborough), ON",
       "region": "ON",
       "slug": "kawartha-downs",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Leamington Raceway",
       "city": "Leamington, ON",
       "region": "ON",
       "slug": "leamington-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hiawatha Horse Park",
       "city": "Sarnia, ON",
       "region": "ON",
       "slug": "hiawatha-horse-park",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Rideau Carleton Raceway",
       "city": "Ottawa, ON",
       "region": "ON",
       "slug": "rideau-carleton-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome 3R",
       "city": "Trois-Rivières, QC",
       "region": "QC",
       "slug": "hippodrome-3r",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Century Downs Racetrack and Casino",
       "city": "Rocky View County (Calgary), AB",
       "region": "AB",
       "slug": "century-downs-racetrack-and-casino",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Century Mile Racetrack and Casino",
       "city": "Edmonton International Airport, AB",
       "region": "AB",
       "slug": "century-mile-racetrack-and-casino",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "The Track on 2",
       "city": "Lacombe County, AB",
       "region": "AB",
       "slug": "the-track-on-2",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Fraser Downs (Elements Casino Surrey)",
       "city": "Surrey, BC",
       "region": "BC",
       "slug": "fraser-downs-elements-casino-surrey",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Marquis Downs",
       "city": "Saskatoon, SK",
       "region": "SK",
       "slug": "marquis-downs",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Yorkton Exhibition",
       "city": "Yorkton, SK",
       "region": "SK",
       "slug": "yorkton-exhibition",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "The Loop",
       "city": "Winnipeg, MB",
       "region": "MB",
       "slug": "the-loop",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Red Shores Racetrack & Casino",
       "city": "Charlottetown, PE",
       "region": "PE",
       "slug": "red-shores-racetrack-casino",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Red Shores Summerside Raceway",
       "city": "Summerside, PE",
       "region": "PE",
       "slug": "red-shores-summerside-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Truro Raceway",
       "city": "Truro, NS",
       "region": "NS",
       "slug": "truro-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Inverness Raceway",
       "city": "Inverness, NS",
       "region": "NS",
       "slug": "inverness-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Northside Downs",
       "city": "North Sydney, NS",
       "region": "NS",
       "slug": "northside-downs",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Exhibition Park Raceway",
       "city": "Saint John, NB",
       "region": "NB",
       "slug": "exhibition-park-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Fredericton Raceway",
       "city": "Fredericton, NB",
       "region": "NB",
       "slug": "fredericton-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Woodstock Connell Park",
       "city": "Woodstock, NB",
       "region": "NB",
       "slug": "woodstock-connell-park",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "St. John's Racing & Entertainment Centre",
       "city": "Goulds (St. John's), NL",
       "region": "NL",
       "slug": "st-john-s-racing-entertainment-centre",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "AUS": [
@@ -2864,294 +2864,294 @@
       "city": "Melton, VIC",
       "region": "VIC",
       "slug": "melton-entertainment-park-tabcorp-park",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Club Menangle (Menangle Park Paceway)",
       "city": "Menangle Park, NSW",
       "region": "NSW",
       "slug": "club-menangle-menangle-park-paceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Albion Park Raceway",
       "city": "Brisbane, QLD",
       "region": "QLD",
       "slug": "albion-park-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Gloucester Park",
       "city": "East Perth, WA",
       "region": "WA",
       "slug": "gloucester-park",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Globe Derby Park",
       "city": "Adelaide, SA",
       "region": "SA",
       "slug": "globe-derby-park",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Redcliffe Paceway",
       "city": "Redcliffe, QLD",
       "region": "QLD",
       "slug": "redcliffe-paceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Bathurst Paceway",
       "city": "Bathurst, NSW",
       "region": "NSW",
       "slug": "bathurst-paceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Newcastle Paceway",
       "city": "New Lambton, NSW",
       "region": "NSW",
       "slug": "newcastle-paceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Bendigo Harness Racing Club",
       "city": "Junortoun, VIC",
       "region": "VIC",
       "slug": "bendigo-harness-racing-club",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ballarat & District Trotting Club",
       "city": "Redan (Ballarat), VIC",
       "region": "VIC",
       "slug": "ballarat-district-trotting-club",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Shepparton Harness Racing Club",
       "city": "Kialla, VIC",
       "region": "VIC",
       "slug": "shepparton-harness-racing-club",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Cranbourne Harness Racing Club",
       "city": "Cranbourne, VIC",
       "region": "VIC",
       "slug": "cranbourne-harness-racing-club",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Pinjarra Paceway",
       "city": "Pinjarra, WA",
       "region": "WA",
       "slug": "pinjarra-paceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Bunbury Trotting Club",
       "city": "Carey Park (Bunbury), WA",
       "region": "WA",
       "slug": "bunbury-trotting-club",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Northam Race Club",
       "city": "Northam, WA",
       "region": "WA",
       "slug": "northam-race-club",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Mowbray Racecourse",
       "city": "Launceston, TAS",
       "region": "TAS",
       "slug": "mowbray-racecourse",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Elwick Racecourse",
       "city": "Glenorchy (Hobart), TAS",
       "region": "TAS",
       "slug": "elwick-racecourse",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Devonport Racing Club",
       "city": "Spreyton, TAS",
       "region": "TAS",
       "slug": "devonport-racing-club",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Cowra",
       "city": "Cowra, NSW",
       "region": "NSW",
       "slug": "cowra",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Gawler",
       "city": "Gawler, SA",
       "region": "SA",
       "slug": "gawler",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Kapunda",
       "city": "Kapunda, SA",
       "region": "SA",
       "slug": "kapunda",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Port Pirie",
       "city": "Port Pirie, SA",
       "region": "SA",
       "slug": "port-pirie",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Bacchus Marsh",
       "city": "Bacchus Marsh, VIC",
       "region": "VIC",
       "slug": "bacchus-marsh",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Bankstown Paceway",
       "city": "Bankstown, NSW",
       "region": "NSW",
       "slug": "bankstown-paceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Benalla",
       "city": "Benalla, VIC",
       "region": "VIC",
       "slug": "benalla",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Birchip",
       "city": "Birchip, VIC",
       "region": "VIC",
       "slug": "birchip",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Blayney",
       "city": "Blayney, NSW",
       "region": "NSW",
       "slug": "blayney",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Boort",
       "city": "Boort, VIC",
       "region": "VIC",
       "slug": "boort",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Bridgetown",
       "city": "Bridgetown, WA",
       "region": "WA",
       "slug": "bridgetown",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Broken Hill",
       "city": "Broken Hill, NSW",
       "region": "NSW",
       "slug": "broken-hill",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Bulli",
       "city": "Bulli, NSW",
       "region": "NSW",
       "slug": "bulli",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Burnie",
       "city": "Wivenhoe, TAS",
       "region": "TAS",
       "slug": "burnie",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Byford",
       "city": "Byford, WA",
       "region": "WA",
       "slug": "byford",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Canberra (EPIC)",
       "city": "Mitchell, ACT",
       "region": "ACT",
       "slug": "canberra-epic",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Carrick Park",
       "city": "Carrick, TAS",
       "region": "TAS",
       "slug": "carrick-park",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Charlton",
       "city": "Charlton, VIC",
       "region": "VIC",
       "slug": "charlton",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Cobram",
       "city": "Cobram, VIC",
       "region": "VIC",
       "slug": "cobram",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Collie",
       "city": "Collie, WA",
       "region": "WA",
       "slug": "collie",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Coolamon",
       "city": "Coolamon, NSW",
       "region": "NSW",
       "slug": "coolamon",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Donald",
       "city": "Donald, VIC",
       "region": "VIC",
       "slug": "donald",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Dubbo",
       "city": "Dubbo, NSW",
       "region": "NSW",
       "slug": "dubbo",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Kellerberrin",
       "city": "Kellerberrin, WA",
       "region": "WA",
       "slug": "kellerberrin",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "NZL": [
@@ -3160,63 +3160,63 @@
       "city": "Christchurch",
       "region": null,
       "slug": "addington-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Alexandra Park Raceway",
       "city": "Auckland",
       "region": null,
       "slug": "alexandra-park-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Cambridge Raceway",
       "city": "Cambridge",
       "region": null,
       "slug": "cambridge-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ashburton Raceway",
       "city": "Ashburton",
       "region": null,
       "slug": "ashburton-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ascot Park Raceway",
       "city": "Invercargill",
       "region": null,
       "slug": "ascot-park-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Methven Racecourse",
       "city": "Methven",
       "region": null,
       "slug": "methven-racecourse",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Rangiora Racecourse",
       "city": "Fernside (Rangiora)",
       "region": null,
       "slug": "rangiora-racecourse",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Central Southland Raceway",
       "city": "Winton",
       "region": null,
       "slug": "central-southland-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Forbury Park Raceway",
       "city": "Dunedin",
       "region": null,
       "slug": "forbury-park-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "DNK": [
@@ -3225,56 +3225,56 @@
       "city": "Charlottenlund (Koppenhága)",
       "region": null,
       "slug": "charlottenlund-travbane-lunden",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Jydsk Væddeløbsbane",
       "city": "Aarhus",
       "region": null,
       "slug": "jydsk-vaeddelobsbane",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Billund Trav",
       "city": "Billund",
       "region": null,
       "slug": "billund-trav",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Fyens Væddeløbsbane",
       "city": "Odense",
       "region": null,
       "slug": "fyens-vaeddelobsbane",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Skive Trav",
       "city": "Skive",
       "region": null,
       "slug": "skive-trav",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Racing Arena Aalborg",
       "city": "Aalborg",
       "region": null,
       "slug": "racing-arena-aalborg",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Nykøbing F. Travbane",
       "city": "Nykøbing Falster",
       "region": null,
       "slug": "nykobing-f-travbane",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Bornholms Brand Park",
       "city": "Aakirkeby (Bornholm)",
       "region": null,
       "slug": "bornholms-brand-park",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "DEU": [
@@ -3283,56 +3283,56 @@
       "city": "Pfarrkirchen",
       "region": null,
       "slug": "trabrennbahn-pfarrkirchen",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Trabrennbahn Berlin-Mariendorf",
       "city": "Berlin",
       "region": null,
       "slug": "trabrennbahn-berlin-mariendorf",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Trabrennbahn Berlin-Karlshorst",
       "city": "Berlin",
       "region": null,
       "slug": "trabrennbahn-berlin-karlshorst",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Trabrennbahn Gelsenkirchen",
       "city": "Gelsenkirchen",
       "region": null,
       "slug": "trabrennbahn-gelsenkirchen",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Trabrennbahn München-Daglfing",
       "city": "München",
       "region": null,
       "slug": "trabrennbahn-munchen-daglfing",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Trabrennbahn Mönchengladbach",
       "city": "Mönchengladbach",
       "region": null,
       "slug": "trabrennbahn-monchengladbach",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Trabrennbahn Bahrenfeld",
       "city": "Hamburg",
       "region": null,
       "slug": "trabrennbahn-bahrenfeld",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Trabrennbahn Straubing",
       "city": "Straubing",
       "region": null,
       "slug": "trabrennbahn-straubing",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "AUT": [
@@ -3341,14 +3341,14 @@
       "city": "Bécs",
       "region": null,
       "slug": "trabrennbahn-krieau",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Welser Trabrennbahn",
       "city": "Wels",
       "region": null,
       "slug": "welser-trabrennbahn",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "NLD": [
@@ -3357,14 +3357,14 @@
       "city": "Wolvega (Frízföld)",
       "region": null,
       "slug": "victoria-park-wolvega",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Alkmaar ZEturf Arena",
       "city": "Alkmaar (Észak-Holland)",
       "region": null,
       "slug": "alkmaar-zeturf-arena",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "ESP": [
@@ -3373,35 +3373,35 @@
       "city": "Dos Hermanas (Sevilla)",
       "region": null,
       "slug": "gran-hipodromo-de-andalucia",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hipódromo Son Pardo",
       "city": "Palma de Mallorca",
       "region": null,
       "slug": "hipodromo-son-pardo",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hipòdrom de Manacor",
       "city": "Manacor (Mallorca)",
       "region": null,
       "slug": "hipodrom-de-manacor",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hipòdrom Municipal de Maó",
       "city": "Maó (Menorca)",
       "region": null,
       "slug": "hipodrom-municipal-de-mao",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hipòdrom Torre del Ram",
       "city": "Ciutadella (Menorca)",
       "region": null,
       "slug": "hipodrom-torre-del-ram",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "BEL": [
@@ -3410,28 +3410,28 @@
       "city": "Ghlin (Mons)",
       "region": null,
       "slug": "hippodrome-de-wallonie",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodroom Kuurne",
       "city": "Kuurne",
       "region": null,
       "slug": "hippodroom-kuurne",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodroom Waregem",
       "city": "Waregem",
       "region": null,
       "slug": "hippodroom-waregem",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodroom Tongeren (Jeker)",
       "city": "Tongeren",
       "region": null,
       "slug": "hippodroom-tongeren-jeker",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "GBR": [
@@ -3440,91 +3440,91 @@
       "city": "Boughrood",
       "region": null,
       "slug": "boughrood",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Eardisley",
       "city": "Eardisley",
       "region": null,
       "slug": "eardisley",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Ivington",
       "city": "Ivington",
       "region": null,
       "slug": "ivington",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Kilnsey",
       "city": "Kilnsey",
       "region": null,
       "slug": "kilnsey",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Lampeter",
       "city": "Lampeter",
       "region": null,
       "slug": "lampeter",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Pikehall",
       "city": "Pikehall",
       "region": null,
       "slug": "pikehall",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Talgarreg",
       "city": "Talgarreg",
       "region": null,
       "slug": "talgarreg",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Tregaron",
       "city": "Tregaron",
       "region": null,
       "slug": "tregaron",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Wolsingham",
       "city": "Wolsingham",
       "region": null,
       "slug": "wolsingham",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Wolverhampton Racecourse",
       "city": "Wolverhampton",
       "region": null,
       "slug": "wolverhampton-racecourse",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Tir Prince Raceway",
       "city": "Towyn, Wales",
       "region": null,
       "slug": "tir-prince-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Corbiewood Stadium (Haugh Field)",
       "city": "Bannockburn (Stirling), Skócia",
       "region": null,
       "slug": "corbiewood-stadium-haugh-field",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Musselburgh Racecourse",
       "city": "Musselburgh, Skócia",
       "region": null,
       "slug": "musselburgh-racecourse",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "IRL": [
@@ -3533,14 +3533,14 @@
       "city": "Portmarnock (Dublin)",
       "region": null,
       "slug": "portmarnock-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Annaghmore Raceway",
       "city": "Craigavon, Észak-Írország",
       "region": null,
       "slug": "annaghmore-raceway",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "LTU": [
@@ -3549,7 +3549,7 @@
       "city": "Bukta, Lazdijai",
       "region": null,
       "slug": "lazdijai-hippodrome-bukta",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "MLT": [
@@ -3558,14 +3558,14 @@
       "city": "Xewkija (Gozo)",
       "region": null,
       "slug": "ta-xhajma-racetrack",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Marsa Racetrack (Malta Equidrome)",
       "city": "Marsa",
       "region": null,
       "slug": "marsa-racetrack-malta-equidrome",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "ROU": [
@@ -3574,14 +3574,14 @@
       "city": "Ploiești",
       "region": null,
       "slug": "hipodromul-ploiesti",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hipodromul Hergheliei Mangalia",
       "city": "Mangalia",
       "region": null,
       "slug": "hipodromul-hergheliei-mangalia",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "SRB": [
@@ -3590,14 +3590,14 @@
       "city": "Belgrád",
       "region": null,
       "slug": "beogradski-hipodrom",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hipodrom Subotica",
       "city": "Szabadka (Subotica)",
       "region": null,
       "slug": "hipodrom-subotica",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "SVN": [
@@ -3606,56 +3606,56 @@
       "city": "Ljutomer",
       "region": null,
       "slug": "hipodrom-ljutomer",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hipodrom Stožice",
       "city": "Ljubljana",
       "region": null,
       "slug": "hipodrom-stozice",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hipodrom Kamnica",
       "city": "Kamnica (Maribor)",
       "region": null,
       "slug": "hipodrom-kamnica",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hipodrom Šentjernej",
       "city": "Šentjernej",
       "region": null,
       "slug": "hipodrom-sentjernej",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hipodrom Brege (Krško)",
       "city": "Leskovec pri Krškem",
       "region": null,
       "slug": "hipodrom-brege-krsko",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hipodrom Komenda",
       "city": "Komenda",
       "region": null,
       "slug": "hipodrom-komenda",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hipodrom Polena",
       "city": "Lenart v Slovenskih goricah",
       "region": null,
       "slug": "hipodrom-polena",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hipodrom Ig (Iška vas)",
       "city": "Ig",
       "region": null,
       "slug": "hipodrom-ig-iska-vas",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "CHE": [
@@ -3664,35 +3664,35 @@
       "city": "Saignelégier",
       "region": null,
       "slug": "hippodrome-de-saignelegier",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Pferderennbahn Schachen Aarau",
       "city": "Aarau",
       "region": null,
       "slug": "pferderennbahn-schachen-aarau",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Parkrennbahn Zürich-Dielsdorf",
       "city": "Dielsdorf (Zürich)",
       "region": null,
       "slug": "parkrennbahn-zurich-dielsdorf",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Hippodrome IENA Avenches",
       "city": "Avenches",
       "region": null,
       "slug": "hippodrome-iena-avenches",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Pferderennbahn Frauenfeld",
       "city": "Frauenfeld",
       "region": null,
       "slug": "pferderennbahn-frauenfeld",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "UKR": [
@@ -3701,7 +3701,7 @@
       "city": "Kijev",
       "region": null,
       "slug": "kijivskij-ipodrom",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ],
   "RUS": [
@@ -3710,14 +3710,14 @@
       "city": "Moszkva",
       "region": null,
       "slug": "centralnyj-moskovskij-ippodrom",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     },
     {
       "name": "Омский ипподром",
       "city": "Omszk",
       "region": null,
       "slug": "omskij-ippodrom",
-      "mar_veglegesitve": false
+      "mar_veglegesitve": true
     }
   ]
 }
