@@ -42,11 +42,6 @@ on:
           - ellenoriz
           - slugok
           - general
-  push:
-    branches: [main]
-    paths:
-      - 'js/app.js'
-      - 'tools/**'
 
 permissions:
   contents: write
