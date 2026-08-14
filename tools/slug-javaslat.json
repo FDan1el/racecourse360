@@ -409,10 +409,10 @@
       "mar_veglegesitve": false
     },
     {
-      "name": "Hippodrome de la Forêt",
+      "name": "Hippodrome de Bouvron",
       "city": "Blain-Bouvron-Le Gavre",
       "region": "Ouest",
-      "slug": "hippodrome-de-la-foret",
+      "slug": "hippodrome-de-bouvron",
       "mar_veglegesitve": false
     },
     {
@@ -514,10 +514,10 @@
       "mar_veglegesitve": false
     },
     {
-      "name": "Hippodrome de la Durance",
+      "name": "Hippodrome de Cavaillon",
       "city": "Cavaillon",
       "region": "Sud-Est",
-      "slug": "hippodrome-de-la-durance",
+      "slug": "hippodrome-de-cavaillon",
       "mar_veglegesitve": false
     },
     {
@@ -780,10 +780,10 @@
       "mar_veglegesitve": false
     },
     {
-      "name": "Hippodrome des Grèves",
+      "name": "Hippodrome de Genêts",
       "city": "Genets",
       "region": "Basse-Normandie",
-      "slug": "hippodrome-des-greves",
+      "slug": "hippodrome-de-genets",
       "mar_veglegesitve": false
     },
     {
@@ -1361,10 +1361,10 @@
       "mar_veglegesitve": false
     },
     {
-      "name": "Hippodrome de la Durance",
+      "name": "Hippodrome d'Oraison",
       "city": "Oraison",
       "region": "Sud-Est",
-      "slug": "hippodrome-de-la-durance",
+      "slug": "hippodrome-d-oraison",
       "mar_veglegesitve": false
     },
     {
@@ -1697,10 +1697,10 @@
       "mar_veglegesitve": false
     },
     {
-      "name": "Hippodrome de la Forêt",
+      "name": "Hippodrome de la Forêt de Vibraye",
       "city": "Vibraye",
       "region": "Anjou-Maine",
-      "slug": "hippodrome-de-la-foret",
+      "slug": "hippodrome-de-la-foret-de-vibraye",
       "mar_veglegesitve": false
     },
     {
