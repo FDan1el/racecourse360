@@ -1037,3 +1037,20 @@ a[href^="mailto:"]:hover { color: var(--accent-strong); text-decoration: underli
   /* A nappal/éjszaka gomb ne lógjon bele a fejlécbe */
   #dayNightBtn { width: 34px; height: 34px; }
 }
+/* ============ ADATLAP-LINK A POPUPBAN ============
+   A földgömb/térkép popupjának alján: átvezetés a részletes,
+   kereshető statikus adatlapra. */
+.popup-adatlap {
+  border-bottom: none !important;
+  padding-top: 8px !important;
+  margin-top: 4px;
+  border-top: 1px solid rgba(var(--accent-rgb), 0.25);
+}
+.popup-adatlap a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.76rem;
+  letter-spacing: 0.02em;
+}
+.popup-adatlap a:hover { color: var(--accent-strong); text-decoration: underline; }
