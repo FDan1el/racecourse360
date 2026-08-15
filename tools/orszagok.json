@@ -1,0 +1,482 @@
+{
+  "SWE": {
+    "slug": "sweden",
+    "units": "metric",
+    "nev": {
+      "hu": "Svédország",
+      "en": "Sweden",
+      "de": "Schweden",
+      "fr": "Suède",
+      "sv": "Sverige",
+      "es": "Suecia",
+      "it": "Svezia",
+      "ja": "スウェーデン",
+      "zh": "瑞典",
+      "ar": "السويد"
+    }
+  },
+  "FRA": {
+    "slug": "france",
+    "units": "metric",
+    "nev": {
+      "hu": "Franciaország",
+      "en": "France",
+      "de": "Frankreich",
+      "fr": "France",
+      "sv": "Frankrike",
+      "es": "Francia",
+      "it": "Francia",
+      "ja": "フランス",
+      "zh": "法国",
+      "ar": "فرنسا"
+    }
+  },
+  "ITA": {
+    "slug": "italy",
+    "units": "metric",
+    "nev": {
+      "hu": "Olaszország",
+      "en": "Italy",
+      "de": "Italien",
+      "fr": "Italie",
+      "sv": "Italien",
+      "es": "Italia",
+      "it": "Italia",
+      "ja": "イタリア",
+      "zh": "意大利",
+      "ar": "إيطاليا"
+    }
+  },
+  "FIN": {
+    "slug": "finland",
+    "units": "metric",
+    "nev": {
+      "hu": "Finnország",
+      "en": "Finland",
+      "de": "Finnland",
+      "fr": "Finlande",
+      "sv": "Finland",
+      "es": "Finlandia",
+      "it": "Finlandia",
+      "ja": "フィンランド",
+      "zh": "芬兰",
+      "ar": "فنلندا"
+    }
+  },
+  "NOR": {
+    "slug": "norway",
+    "units": "metric",
+    "nev": {
+      "hu": "Norvégia",
+      "en": "Norway",
+      "de": "Norwegen",
+      "fr": "Norvège",
+      "sv": "Norge",
+      "es": "Noruega",
+      "it": "Norvegia",
+      "ja": "ノルウェー",
+      "zh": "挪威",
+      "ar": "النرويج"
+    }
+  },
+  "POL": {
+    "slug": "poland",
+    "units": "metric",
+    "nev": {
+      "hu": "Lengyelország",
+      "en": "Poland",
+      "de": "Polen",
+      "fr": "Pologne",
+      "sv": "Polen",
+      "es": "Polonia",
+      "it": "Polonia",
+      "ja": "ポーランド",
+      "zh": "波兰",
+      "ar": "بولندا"
+    }
+  },
+  "CZE": {
+    "slug": "czech-republic",
+    "units": "metric",
+    "nev": {
+      "hu": "Csehország",
+      "en": "Czech Republic",
+      "de": "Tschechien",
+      "fr": "Tchéquie",
+      "sv": "Tjeckien",
+      "es": "Chequia",
+      "it": "Cechia",
+      "ja": "チェコ",
+      "zh": "捷克",
+      "ar": "التشيك"
+    }
+  },
+  "SVK": {
+    "slug": "slovakia",
+    "units": "metric",
+    "nev": {
+      "hu": "Szlovákia",
+      "en": "Slovakia",
+      "de": "Slowakei",
+      "fr": "Slovaquie",
+      "sv": "Slovakien",
+      "es": "Eslovaquia",
+      "it": "Slovacchia",
+      "ja": "スロバキア",
+      "zh": "斯洛伐克",
+      "ar": "سلوفاكيا"
+    }
+  },
+  "HUN": {
+    "slug": "hungary",
+    "units": "metric",
+    "nev": {
+      "hu": "Magyarország",
+      "en": "Hungary",
+      "de": "Ungarn",
+      "fr": "Hongrie",
+      "sv": "Ungern",
+      "es": "Hungría",
+      "it": "Ungheria",
+      "ja": "ハンガリー",
+      "zh": "匈牙利",
+      "ar": "المجر"
+    }
+  },
+  "EST": {
+    "slug": "estonia",
+    "units": "metric",
+    "nev": {
+      "hu": "Észtország",
+      "en": "Estonia",
+      "de": "Estland",
+      "fr": "Estonie",
+      "sv": "Estland",
+      "es": "Estonia",
+      "it": "Estonia",
+      "ja": "エストニア",
+      "zh": "爱沙尼亚",
+      "ar": "إستونيا"
+    }
+  },
+  "USA": {
+    "slug": "united-states",
+    "units": "imperial",
+    "nev": {
+      "hu": "Egyesült Államok",
+      "en": "United States",
+      "de": "Vereinigte Staaten",
+      "fr": "États-Unis",
+      "sv": "USA",
+      "es": "Estados Unidos",
+      "it": "Stati Uniti",
+      "ja": "アメリカ合衆国",
+      "zh": "美国",
+      "ar": "الولايات المتحدة"
+    }
+  },
+  "CAN": {
+    "slug": "canada",
+    "units": "imperial",
+    "nev": {
+      "hu": "Kanada",
+      "en": "Canada",
+      "de": "Kanada",
+      "fr": "Canada",
+      "sv": "Kanada",
+      "es": "Canadá",
+      "it": "Canada",
+      "ja": "カナダ",
+      "zh": "加拿大",
+      "ar": "كندا"
+    }
+  },
+  "AUS": {
+    "slug": "australia",
+    "units": "metric",
+    "nev": {
+      "hu": "Ausztrália",
+      "en": "Australia",
+      "de": "Australien",
+      "fr": "Australie",
+      "sv": "Australien",
+      "es": "Australia",
+      "it": "Australia",
+      "ja": "オーストラリア",
+      "zh": "澳大利亚",
+      "ar": "أستراليا"
+    }
+  },
+  "NZL": {
+    "slug": "new-zealand",
+    "units": "metric",
+    "nev": {
+      "hu": "Új-Zéland",
+      "en": "New Zealand",
+      "de": "Neuseeland",
+      "fr": "Nouvelle-Zélande",
+      "sv": "Nya Zeeland",
+      "es": "Nueva Zelanda",
+      "it": "Nuova Zelanda",
+      "ja": "ニュージーランド",
+      "zh": "新西兰",
+      "ar": "نيوزيلندا"
+    }
+  },
+  "DNK": {
+    "slug": "denmark",
+    "units": "metric",
+    "nev": {
+      "hu": "Dánia",
+      "en": "Denmark",
+      "de": "Dänemark",
+      "fr": "Danemark",
+      "sv": "Danmark",
+      "es": "Dinamarca",
+      "it": "Danimarca",
+      "ja": "デンマーク",
+      "zh": "丹麦",
+      "ar": "الدنمارك"
+    }
+  },
+  "DEU": {
+    "slug": "germany",
+    "units": "metric",
+    "nev": {
+      "hu": "Németország",
+      "en": "Germany",
+      "de": "Deutschland",
+      "fr": "Allemagne",
+      "sv": "Tyskland",
+      "es": "Alemania",
+      "it": "Germania",
+      "ja": "ドイツ",
+      "zh": "德国",
+      "ar": "ألمانيا"
+    }
+  },
+  "AUT": {
+    "slug": "austria",
+    "units": "metric",
+    "nev": {
+      "hu": "Ausztria",
+      "en": "Austria",
+      "de": "Österreich",
+      "fr": "Autriche",
+      "sv": "Österrike",
+      "es": "Austria",
+      "it": "Austria",
+      "ja": "オーストリア",
+      "zh": "奥地利",
+      "ar": "النمسا"
+    }
+  },
+  "NLD": {
+    "slug": "netherlands",
+    "units": "metric",
+    "nev": {
+      "hu": "Hollandia",
+      "en": "Netherlands",
+      "de": "Niederlande",
+      "fr": "Pays-Bas",
+      "sv": "Nederländerna",
+      "es": "Países Bajos",
+      "it": "Paesi Bassi",
+      "ja": "オランダ",
+      "zh": "荷兰",
+      "ar": "هولندا"
+    }
+  },
+  "ESP": {
+    "slug": "spain",
+    "units": "metric",
+    "nev": {
+      "hu": "Spanyolország",
+      "en": "Spain",
+      "de": "Spanien",
+      "fr": "Espagne",
+      "sv": "Spanien",
+      "es": "España",
+      "it": "Spagna",
+      "ja": "スペイン",
+      "zh": "西班牙",
+      "ar": "إسبانيا"
+    }
+  },
+  "BEL": {
+    "slug": "belgium",
+    "units": "metric",
+    "nev": {
+      "hu": "Belgium",
+      "en": "Belgium",
+      "de": "Belgien",
+      "fr": "Belgique",
+      "sv": "Belgien",
+      "es": "Bélgica",
+      "it": "Belgio",
+      "ja": "ベルギー",
+      "zh": "比利时",
+      "ar": "بلجيكا"
+    }
+  },
+  "GBR": {
+    "slug": "great-britain",
+    "units": "imperial",
+    "nev": {
+      "hu": "Nagy-Britannia",
+      "en": "Great Britain",
+      "de": "Großbritannien",
+      "fr": "Grande-Bretagne",
+      "sv": "Storbritannien",
+      "es": "Gran Bretaña",
+      "it": "Gran Bretagna",
+      "ja": "イギリス",
+      "zh": "英国",
+      "ar": "بريطانيا العظمى"
+    }
+  },
+  "IRL": {
+    "slug": "ireland",
+    "units": "imperial",
+    "nev": {
+      "hu": "Írország",
+      "en": "Ireland",
+      "de": "Irland",
+      "fr": "Irlande",
+      "sv": "Irland",
+      "es": "Irlanda",
+      "it": "Irlanda",
+      "ja": "アイルランド",
+      "zh": "爱尔兰",
+      "ar": "أيرلندا"
+    }
+  },
+  "LTU": {
+    "slug": "lithuania",
+    "units": "metric",
+    "nev": {
+      "hu": "Litvánia",
+      "en": "Lithuania",
+      "de": "Litauen",
+      "fr": "Lituanie",
+      "sv": "Litauen",
+      "es": "Lituania",
+      "it": "Lituania",
+      "ja": "リトアニア",
+      "zh": "立陶宛",
+      "ar": "ليتوانيا"
+    }
+  },
+  "MLT": {
+    "slug": "malta",
+    "units": "metric",
+    "nev": {
+      "hu": "Málta",
+      "en": "Malta",
+      "de": "Malta",
+      "fr": "Malte",
+      "sv": "Malta",
+      "es": "Malta",
+      "it": "Malta",
+      "ja": "マルタ",
+      "zh": "马耳他",
+      "ar": "مالطا"
+    }
+  },
+  "SRB": {
+    "slug": "serbia",
+    "units": "metric",
+    "nev": {
+      "hu": "Szerbia",
+      "en": "Serbia",
+      "de": "Serbien",
+      "fr": "Serbie",
+      "sv": "Serbien",
+      "es": "Serbia",
+      "it": "Serbia",
+      "ja": "セルビア",
+      "zh": "塞尔维亚",
+      "ar": "صربيا"
+    }
+  },
+  "SVN": {
+    "slug": "slovenia",
+    "units": "metric",
+    "nev": {
+      "hu": "Szlovénia",
+      "en": "Slovenia",
+      "de": "Slowenien",
+      "fr": "Slovénie",
+      "sv": "Slovenien",
+      "es": "Eslovenia",
+      "it": "Slovenia",
+      "ja": "スロベニア",
+      "zh": "斯洛文尼亚",
+      "ar": "سلوفينيا"
+    }
+  },
+  "CHE": {
+    "slug": "switzerland",
+    "units": "metric",
+    "nev": {
+      "hu": "Svájc",
+      "en": "Switzerland",
+      "de": "Schweiz",
+      "fr": "Suisse",
+      "sv": "Schweiz",
+      "es": "Suiza",
+      "it": "Svizzera",
+      "ja": "スイス",
+      "zh": "瑞士",
+      "ar": "سويسرا"
+    }
+  },
+  "UKR": {
+    "slug": "ukraine",
+    "units": "metric",
+    "nev": {
+      "hu": "Ukrajna",
+      "en": "Ukraine",
+      "de": "Ukraine",
+      "fr": "Ukraine",
+      "sv": "Ukraina",
+      "es": "Ucrania",
+      "it": "Ucraina",
+      "ja": "ウクライナ",
+      "zh": "乌克兰",
+      "ar": "أوكرانيا"
+    }
+  },
+  "RUS": {
+    "slug": "russia",
+    "units": "metric",
+    "nev": {
+      "hu": "Oroszország",
+      "en": "Russia",
+      "de": "Russland",
+      "fr": "Russie",
+      "sv": "Ryssland",
+      "es": "Rusia",
+      "it": "Russia",
+      "ja": "ロシア",
+      "zh": "俄罗斯",
+      "ar": "روسيا"
+    }
+  },
+  "ROU": {
+    "slug": "romania",
+    "units": "metric",
+    "nev": {
+      "hu": "Románia",
+      "en": "Romania",
+      "de": "Rumänien",
+      "fr": "Roumanie",
+      "sv": "Rumänien",
+      "es": "Rumanía",
+      "it": "Romania",
+      "ja": "ルーマニア",
+      "zh": "罗马尼亚",
+      "ar": "رومانيا"
+    }
+  }
+}
