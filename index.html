@@ -138,26 +138,29 @@
         <div class="dropdown-wrap">
             <button id="langBtn" onclick="toggleDropdown('langMenu')" title="Nyelv / Language">HU</button>
             <div class="dropdown-menu" id="langMenu">
-                <button onclick="setLanguage('en', this)"><span class="flag h3" style="--c1:#012169;--c2:#ffffff;--c3:#C8102E"></span> English</button>
-                <button onclick="setLanguage('de', this)"><span class="flag h3" style="--c1:#000000;--c2:#DD0000;--c3:#FFCE00"></span> Deutsch</button>
-                <button onclick="setLanguage('fr', this)"><span class="flag v3" style="--c1:#002395;--c2:#ffffff;--c3:#ED2939"></span> Français</button>
-                <button onclick="setLanguage('sv', this)"><span class="flag h3" style="--c1:#006AA7;--c2:#FECC00;--c3:#006AA7"></span> Svenska</button>
-                <button onclick="setLanguage('es', this)"><span class="flag h3" style="--c1:#AA151B;--c2:#F1BF00;--c3:#AA151B"></span> Español</button>
-                <button onclick="setLanguage('it', this)"><span class="flag v3" style="--c1:#008C45;--c2:#F4F5F0;--c3:#CD212A"></span> Italiano</button>
-                <button onclick="setLanguage('ja', this)"><span class="flag h3" style="--c1:#ffffff;--c2:#BC002D;--c3:#ffffff"></span> 日本語</button>
-                <button onclick="setLanguage('zh', this)"><span class="flag h3" style="--c1:#DE2910;--c2:#DE2910;--c3:#DE2910"></span> 中文</button>
-                <button onclick="setLanguage('ar', this)"><span class="flag h3" style="--c1:#006C35;--c2:#006C35;--c3:#006C35"></span> العربية</button>
-                <button onclick="setLanguage('hu', this)"><span class="flag h3" style="--c1:#CE2939;--c2:#ffffff;--c3:#477050"></span> Magyar</button>
-            </div>
+<button onclick="setLanguage('en', this)"><span class="flag" data-lang-flag="en"></span> English</button>
+<button onclick="setLanguage('de', this)"><span class="flag" data-lang-flag="de"></span> Deutsch</button>
+<button onclick="setLanguage('fr', this)"><span class="flag" data-lang-flag="fr"></span> Français</button>
+<button onclick="setLanguage('sv', this)"><span class="flag" data-lang-flag="sv"></span> Svenska</button>
+<button onclick="setLanguage('es', this)"><span class="flag" data-lang-flag="es"></span> Español</button>
+<button onclick="setLanguage('it', this)"><span class="flag" data-lang-flag="it"></span> Italiano</button>
+<button onclick="setLanguage('ja', this)"><span class="flag" data-lang-flag="ja"></span> 日本語</button>
+<button onclick="setLanguage('zh', this)"><span class="flag" data-lang-flag="zh"></span> 中文</button>
+<button onclick="setLanguage('ar', this)"><span class="flag" data-lang-flag="ar"></span> العربية</button>
+<button onclick="setLanguage('hu', this)"><span class="flag" data-lang-flag="hu"></span> Magyar</button>
+</div>
         </div>
 
         <div class="dropdown-wrap">
             <button id="hamburgerBtn" onclick="toggleDropdown('hamburgerMenu')" title="Menü">☰</button>
             <div class="dropdown-menu" id="hamburgerMenu">
-                <button onclick="openTracksMenu()" data-i18n="menuTracks">Pályák</button>
-                <button onclick="openInfo('about')" data-i18n="menuAbout">Rólunk</button>
-                <button onclick="openInfo('contact')" data-i18n="menuContact">Kontakt</button>
-            </div>
+<a href="/hu/tracks/" data-szekcio="tracks" data-i18n="menuTracks" onclick="return jumpTracksPanel(event)">Pályák</a>
+<a href="/hu/history/" data-szekcio="history" data-i18n="menuHistory" onclick="szekcioMenuZar()">Történelem</a>
+<a href="/hu/races/" data-szekcio="races" data-i18n="menuRaces" onclick="szekcioMenuZar()">Versenyek</a>
+<a href="/hu/breeding/" data-szekcio="breeding" data-i18n="menuBreeding" onclick="szekcioMenuZar()">Fajtatörténet</a>
+<button onclick="openInfo('about')" data-i18n="menuAbout">Rólunk</button>
+<button onclick="openInfo('contact')" data-i18n="menuContact">Kontakt</button>
+</div>
         </div>
         </div>
     </div>
