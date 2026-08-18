@@ -53,6 +53,7 @@
     <a href="/it/tracks/united-states/">Stati Uniti</a>
   </nav>
   <h1>Eldorado Gaming Scioto Downs</h1>
+  <p class="rc-ido-sor"><span class="rc-ido-cimke">Ora locale</span><span class="rc-helyi-ido" data-tz="America/New_York">–</span></p>
   <table class="rc-adatok">
     <tbody>
       <tr><th>Località</th><td>Columbus, OH</td></tr>
@@ -76,8 +77,28 @@
     <div class="rc-reklam-keret"></div>
   </aside>
 </main>
+<script>
+(function(){
+  var elemek=document.querySelectorAll('.rc-helyi-ido[data-tz]');
+  if(!elemek.length) return;
+  var nyelv=document.documentElement.lang||'hu';
+  function frissit(){
+    var most=new Date();
+    for(var i=0;i<elemek.length;i++){
+      try{
+        elemek[i].textContent=new Intl.DateTimeFormat(nyelv,
+          {timeZone:elemek[i].dataset.tz,hour:'2-digit',minute:'2-digit'}).format(most);
+      }catch(e){ elemek[i].parentNode.style.display='none'; }
+    }
+    /* A következő perc fordulójáig várunk, nem fix 60 másodpercet. */
+    setTimeout(frissit,(60-most.getSeconds())*1000+50);
+  }
+  frissit();
+})();
+</script>
 <footer class="rc-lablec">
   <p>&copy; 2026 Racecourse360 &mdash; Candidus Solution Kft.</p>
+  <p class="rc-forrasjelzes"><a href="https://www.met.no/" rel="noopener" target="_blank">Meteo: MET Norway</a> &middot; CC BY 4.0</p>
 </footer>
 </body>
 </html>
