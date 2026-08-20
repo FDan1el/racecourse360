@@ -1,0 +1,700 @@
+{
+  "iso": "AUS",
+  "honapok": 12,
+  "eredmenyek": [
+    {
+      "nev": "Melton Entertainment Park (Tabcorp Park)",
+      "slug": "melton-entertainment-park-tabcorp-park",
+      "varos": "Melton, VIC",
+      "jelenlegi": "active",
+      "javaslat": "inactive",
+      "szin": "sárga",
+      "indok": "utolsó nyom 183 hónapja (2011-05-19)",
+      "csaladok": [
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Wikipédia (AUS ügető)"
+      ],
+      "legutobbi": "2011-05-19",
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Club Menangle (Menangle Park Paceway)",
+      "slug": "club-menangle-menangle-park-paceway",
+      "varos": "Menangle Park, NSW",
+      "jelenlegi": "active",
+      "javaslat": "closed",
+      "szin": "piros",
+      "indok": "Wikidata megszűnési dátum: http://www",
+      "csaladok": [
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Wikidata"
+      ],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Albion Park Raceway",
+      "slug": "albion-park-raceway",
+      "varos": "Brisbane, QLD",
+      "jelenlegi": "active",
+      "javaslat": "active",
+      "szin": "zöld",
+      "indok": "versenynyom: 2026-08-20",
+      "csaladok": [
+        "allami",
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Racing Queensland",
+        "Tasracing",
+        "Wikipédia (AUS ügető)",
+        "Wikidata"
+      ],
+      "legutobbi": "2026-08-20",
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Gloucester Park",
+      "slug": "gloucester-park",
+      "varos": "East Perth, WA",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Wikipédia (AUS ügető)",
+        "Wikidata"
+      ],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Globe Derby Park",
+      "slug": "globe-derby-park",
+      "varos": "Adelaide, SA",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Wikipédia (AUS ügető)",
+        "Wikidata"
+      ],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Redcliffe Paceway",
+      "slug": "redcliffe-paceway",
+      "varos": "Redcliffe, QLD",
+      "jelenlegi": "active",
+      "javaslat": "active",
+      "szin": "zöld",
+      "indok": "versenynyom: 2026-08-20",
+      "csaladok": [
+        "allami",
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Racing Queensland",
+        "Wikipédia (AUS ügető)",
+        "Wikidata"
+      ],
+      "legutobbi": "2026-08-20",
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Bathurst Paceway",
+      "slug": "bathurst-paceway",
+      "varos": "Bathurst, NSW",
+      "jelenlegi": "active",
+      "javaslat": "inactive",
+      "szin": "sárga",
+      "indok": "utolsó nyom 188 hónapja (2010-12-17)",
+      "csaladok": [
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Wikipédia (AUS ügető)"
+      ],
+      "legutobbi": "2010-12-17",
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Newcastle Paceway",
+      "slug": "newcastle-paceway",
+      "varos": "New Lambton, NSW",
+      "jelenlegi": "active",
+      "javaslat": "inactive",
+      "szin": "sárga",
+      "indok": "utolsó nyom 188 hónapja (2010-12-17)",
+      "csaladok": [
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Wikipédia (AUS ügető)",
+        "Wikidata"
+      ],
+      "legutobbi": "2010-12-17",
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Bendigo Harness Racing Club",
+      "slug": "bendigo-harness-racing-club",
+      "varos": "Junortoun, VIC",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Wikipédia (AUS ügető)"
+      ],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Ballarat & District Trotting Club",
+      "slug": "ballarat-district-trotting-club",
+      "varos": "Redan (Ballarat), VIC",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [],
+      "forrasok": [],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Shepparton Harness Racing Club",
+      "slug": "shepparton-harness-racing-club",
+      "varos": "Kialla, VIC",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Wikipédia (AUS ügető)"
+      ],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Cranbourne Harness Racing Club",
+      "slug": "cranbourne-harness-racing-club",
+      "varos": "Cranbourne, VIC",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Wikipédia (AUS ügető)"
+      ],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Pinjarra Paceway",
+      "slug": "pinjarra-paceway",
+      "varos": "Pinjarra, WA",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Wikipédia (AUS ügető)",
+        "Wikidata"
+      ],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Bunbury Trotting Club",
+      "slug": "bunbury-trotting-club",
+      "varos": "Carey Park (Bunbury), WA",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Wikipédia (AUS ügető)",
+        "Wikidata"
+      ],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Northam Race Club",
+      "slug": "northam-race-club",
+      "varos": "Northam, WA",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Wikipédia (AUS ügető)"
+      ],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Mowbray Racecourse",
+      "slug": "mowbray-racecourse",
+      "varos": "Launceston, TAS",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "2 forráscsalád említi, de versenydátum nélkül",
+      "csaladok": [
+        "allami",
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Tasracing",
+        "Wikipédia (AUS ügető)"
+      ],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Elwick Racecourse",
+      "slug": "elwick-racecourse",
+      "varos": "Glenorchy (Hobart), TAS",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Wikipédia (AUS ügető)"
+      ],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Devonport Racing Club",
+      "slug": "devonport-racing-club",
+      "varos": "Spreyton, TAS",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "2 forráscsalád említi, de versenydátum nélkül",
+      "csaladok": [
+        "allami",
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Tasracing",
+        "Wikipédia (AUS ügető)"
+      ],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Cowra",
+      "slug": "cowra",
+      "varos": "Cowra, NSW",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [],
+      "forrasok": [],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Gawler",
+      "slug": "gawler",
+      "varos": "Gawler, SA",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "2 forráscsalád említi, de versenydátum nélkül",
+      "csaladok": [
+        "allami",
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "SA Harness",
+        "Wikipédia (AUS ügető)"
+      ],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Kapunda",
+      "slug": "kapunda",
+      "varos": "Kapunda, SA",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [
+        "allami"
+      ],
+      "forrasok": [
+        "SA Harness"
+      ],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Port Pirie",
+      "slug": "port-pirie",
+      "varos": "Port Pirie, SA",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [],
+      "forrasok": [],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Bacchus Marsh",
+      "slug": "bacchus-marsh",
+      "varos": "Bacchus Marsh, VIC",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [],
+      "forrasok": [],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Bankstown Paceway",
+      "slug": "bankstown-paceway",
+      "varos": "Bankstown, NSW",
+      "jelenlegi": "active",
+      "javaslat": "inactive",
+      "szin": "sárga",
+      "indok": "utolsó nyom 188 hónapja (2010-12-17)",
+      "csaladok": [
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Wikipédia (AUS ügető)"
+      ],
+      "legutobbi": "2010-12-17",
+      "sajatHonlap": "kihagyva (robots.txt nem érhető el)"
+    },
+    {
+      "nev": "Benalla",
+      "slug": "benalla",
+      "varos": "Benalla, VIC",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [],
+      "forrasok": [],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Birchip",
+      "slug": "birchip",
+      "varos": "Birchip, VIC",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [],
+      "forrasok": [],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Blayney",
+      "slug": "blayney",
+      "varos": "Blayney, NSW",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [],
+      "forrasok": [],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Boort",
+      "slug": "boort",
+      "varos": "Boort, VIC",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [],
+      "forrasok": [],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Bridgetown",
+      "slug": "bridgetown",
+      "varos": "Bridgetown, WA",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [],
+      "forrasok": [],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Broken Hill",
+      "slug": "broken-hill",
+      "varos": "Broken Hill, NSW",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [],
+      "forrasok": [],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Bulli",
+      "slug": "bulli",
+      "varos": "Bulli, NSW",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [],
+      "forrasok": [],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Burnie",
+      "slug": "burnie",
+      "varos": "Wivenhoe, TAS",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Wikipédia (AUS ügető)"
+      ],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Byford",
+      "slug": "byford",
+      "varos": "Byford, WA",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [],
+      "forrasok": [],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Canberra (EPIC)",
+      "slug": "canberra-epic",
+      "varos": "Mitchell, ACT",
+      "jelenlegi": "active",
+      "javaslat": "closed",
+      "szin": "piros",
+      "indok": "Wikidata megszűnési dátum: 2002-06-09",
+      "csaladok": [
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Wikidata"
+      ],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Carrick Park",
+      "slug": "carrick-park",
+      "varos": "Carrick, TAS",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Wikipédia (AUS ügető)"
+      ],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Charlton",
+      "slug": "charlton",
+      "varos": "Charlton, VIC",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [],
+      "forrasok": [],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Cobram",
+      "slug": "cobram",
+      "varos": "Cobram, VIC",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [],
+      "forrasok": [],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Collie",
+      "slug": "collie",
+      "varos": "Collie, WA",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [
+        "enciklopedia"
+      ],
+      "forrasok": [
+        "Wikidata"
+      ],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Coolamon",
+      "slug": "coolamon",
+      "varos": "Coolamon, NSW",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [],
+      "forrasok": [],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Donald",
+      "slug": "donald",
+      "varos": "Donald, VIC",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [],
+      "forrasok": [],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Dubbo",
+      "slug": "dubbo",
+      "varos": "Dubbo, NSW",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [],
+      "forrasok": [],
+      "legutobbi": null,
+      "sajatHonlap": null
+    },
+    {
+      "nev": "Kellerberrin",
+      "slug": "kellerberrin",
+      "varos": "Kellerberrin, WA",
+      "jelenlegi": "active",
+      "javaslat": "unknown",
+      "szin": "sárga",
+      "indok": "nincs elég bizonyíték – kézi ellenőrzés kell",
+      "csaladok": [],
+      "forrasok": [],
+      "legutobbi": null,
+      "sajatHonlap": null
+    }
+  ],
+  "hasznaltForrasok": [
+    "Racing Queensland",
+    "Tasracing",
+    "SA Harness",
+    "Wikipédia (AUS ügető)",
+    "Wikidata"
+  ],
+  "naplo": [
+    "  KIHAGYVA: HRA eredmények 2026-08 – tiltva: /racing/",
+    "  KIHAGYVA: HRA eredmények 2026-07 – tiltva: /racing/",
+    "  KIHAGYVA: HRA eredmények 2026-06 – tiltva: /racing/",
+    "  KIHAGYVA: HRA eredmények 2026-05 – tiltva: /racing/",
+    "  KIHAGYVA: HRA eredmények 2026-04 – tiltva: /racing/",
+    "  KIHAGYVA: HRA eredmények 2026-03 – tiltva: /racing/",
+    "  KIHAGYVA: HRA eredmények 2026-02 – tiltva: /racing/",
+    "  KIHAGYVA: HRA eredmények 2026-01 – tiltva: /racing/",
+    "  KIHAGYVA: HRA eredmények 2025-12 – tiltva: /racing/",
+    "  KIHAGYVA: HRA eredmények 2025-11 – tiltva: /racing/",
+    "  KIHAGYVA: HRA eredmények 2025-10 – tiltva: /racing/",
+    "  KIHAGYVA: HRA eredmények 2025-09 – tiltva: /racing/",
+    "  KIHAGYVA: HRA pályajegyzék – tiltva: /racing/",
+    "  KIHAGYVA: HRA versenynaptár – tiltva: /racing/",
+    "  KIHAGYVA: Harness Racing NSW – robots.txt nem érhető el",
+    "  OK (5 kB): Racing Queensland",
+    "  OK (6 kB): Tasracing",
+    "  OK (3 kB): SA Harness",
+    "  KIHAGYVA: Punters.com.au – teljes tiltás",
+    "  KIHAGYVA: Racenet harness – teljes tiltás",
+    "  KIHAGYVA: OffTrackBetting – robots.txt nem érhető el",
+    "  KIHAGYVA: TAB harness – robots.txt nem érhető el",
+    "  OK (27 kB): Wikipédia (AUS ügető)",
+    "  OK (94 tétel): Wikidata",
+    "  HIBA: OpenStreetMap – This operation was aborted"
+  ]
+}
