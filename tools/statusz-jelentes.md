@@ -1,6 +1,6 @@
 # Státuszellenőrzés — AUS
 
-Futtatva: 2026-08-20 07:12 · vizsgált időszak: 12 hónap
+Futtatva: 2026-08-20 07:17 · vizsgált időszak: 12 hónap
 
 Pálya: **42** · Elérhető forrás: **5** · Forráscsalád: **2**
 
