@@ -248,6 +248,10 @@ function slugGyanus(eredeti, slug) {
 
 const MERFOLD_TABLA = {
     402:  '1/4 mile',
+    /* 3 furlong – a walesi Talsarn pálya mérete, a Wales & Border
+       pályajegyzék saját közlése szerint ("three furlong").
+       3 × 201,17 = 603 m. */
+    603:  '3 furlongs',
     805:  '1/2 mile',
     1006: '5/8 mile',
     /* 11/16 mérföld – ritka, de valós méret. A Century Downs (Alberta)
@@ -1396,7 +1400,7 @@ function palyaOldal({ nyelv, palya, iso, orszag, countryMeta, figyelmeztetesek, 
 
        Ugyanez a lista él az app.js-ben is (BOVITETT_ADATLAP) –
        ha egyik helyen bővíted, a másikat is frissítsd. */
-    const BOVITETT = ['FRA', 'AUS'];
+    const BOVITETT = ['FRA', 'AUS', 'ITA'];
 
     /* A talajérték az ADATBAN magyarul szerepel ("homok",
        "kőzúzalék") – ez a magyar nyelvű adatgyűjtés öröksége.
@@ -1456,11 +1460,21 @@ function palyaOldal({ nyelv, palya, iso, orszag, countryMeta, figyelmeztetesek, 
             addressLocality: palya.city ?? undefined,
             addressCountry: iso
         },
-        geo: {
-            '@type': 'GeoCoordinates',
-            latitude: palya.lat,
-            longitude: palya.lng
-        },
+        /* A geo blokk CSAK akkor kerül be, ha tényleg van koordináta:
+           hiányzó értéknél a "latitude": null érvénytelen strukturált adat.
+           A feltételes szétterítés azért van itt, az address és az url
+           KÖZÖTT, hogy a kulcssorrend ne változzon a korábbi kiadáshoz
+           képest – különben mind a 6000+ meglévő oldal diffje elmozdul,
+           pedig a tartalom azonos. */
+        ...((Number.isFinite(palya.lat) && Number.isFinite(palya.lng))
+            ? {
+                geo: {
+                    '@type': 'GeoCoordinates',
+                    latitude: palya.lat,
+                    longitude: palya.lng
+                }
+            }
+            : {}),
         url: `${BAZIS_URL}${kanonikus}`
     };
     if (palya.founded) jsonld.foundingDate = String(palya.founded);

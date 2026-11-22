@@ -478,5 +478,21 @@
       "zh": "罗马尼亚",
       "ar": "رومانيا"
     }
+  },
+  "LVA": {
+    "slug": "latvia",
+    "units": "metric",
+    "nev": {
+      "hu": "Lettország",
+      "en": "Latvia",
+      "de": "Lettland",
+      "fr": "Lettonie",
+      "sv": "Lettland",
+      "es": "Letonia",
+      "it": "Lettonia",
+      "ja": "ラトビア",
+      "zh": "拉脱维亚",
+      "ar": "لاتفيا"
+    }
   }
 }
