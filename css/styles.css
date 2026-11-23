@@ -445,6 +445,11 @@ a[href^="mailto:"]:hover { color: var(--accent-strong); text-decoration: underli
 .track-marker.closed { background: #ef4444; box-shadow: 0 0 8px rgba(239,68,68,0.8); }
 /* Történelmi helyszín: semleges szürke. A piros „bezárt” a friss
    veszteséget jelzi, a szürke a múltat – ezért nem ugyanaz a szín. */
+/* Kiemelt versenyek: egy verseny egy sorban, hogy a későbbi
+   linkesítés után is olvasható maradjon a felsorolás. */
+.popup-nagyverseny { display: block; margin-top: 2px; }
+.popup-verseny { display: block; padding-left: 2px; }
+
 .track-marker.historical { background: #9ca3af; box-shadow: 0 0 8px rgba(156,163,175,0.75); }
 
 /* ============ EGYEDI LEAFLET POPUP STÍLUS ============ */

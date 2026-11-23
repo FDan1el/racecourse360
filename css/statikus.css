@@ -773,3 +773,9 @@ a:focus-visible {
 }
 .rc-forrasjelzes a { color: var(--szoveg-halkabb); text-decoration: none; }
 .rc-forrasjelzes a:hover { color: var(--accent); text-decoration: underline; }
+
+/* Kiemelt versenyek az adatlap táblázatában: versenyenként
+   külön sor. A későbbi linkesítéshez saját elem kell, ezért
+   span és nem egyszerű sortörés. */
+.rc-verseny { display: block; }
+.rc-verseny + .rc-verseny { margin-top: 2px; }

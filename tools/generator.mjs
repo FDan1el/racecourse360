@@ -294,7 +294,7 @@ const SZOTAR = {
         city: "Település",
         helyiIdo: "Helyi idő",
         surface: "Pálya talaja",
-        nagyversenyek: "Nagyversenyek",
+        nagyversenyek: "Kiemelt versenyek",
         celegyenes: "Célegyenes",
         sfGrass: "fű",
         sfSand: "homok",
@@ -340,7 +340,7 @@ const SZOTAR = {
         city: "Town",
         helyiIdo: "Local time",
         surface: "Track surface",
-        nagyversenyek: "Major races",
+        nagyversenyek: "Featured races",
         celegyenes: "Home straight",
         sfGrass: "turf",
         sfSand: "sand",
@@ -386,7 +386,7 @@ const SZOTAR = {
         city: "Ort",
         helyiIdo: "Ortszeit",
         surface: "Bahnbelag",
-        nagyversenyek: "Große Rennen",
+        nagyversenyek: "Ausgewählte Rennen",
         celegyenes: "Zielgerade",
         sfGrass: "Gras",
         sfSand: "Sand",
@@ -432,7 +432,7 @@ const SZOTAR = {
         city: "Commune",
         helyiIdo: "Heure locale",
         surface: "Nature de la piste",
-        nagyversenyek: "Grandes courses",
+        nagyversenyek: "Courses phares",
         celegyenes: "Ligne droite",
         sfGrass: "herbe",
         sfSand: "sable",
@@ -478,7 +478,7 @@ const SZOTAR = {
         city: "Ort",
         helyiIdo: "Lokal tid",
         surface: "Banunderlag",
-        nagyversenyek: "Storlopp",
+        nagyversenyek: "Utvalda lopp",
         celegyenes: "Upplopp",
         sfGrass: "gräs",
         sfSand: "sand",
@@ -524,7 +524,7 @@ const SZOTAR = {
         city: "Localidad",
         helyiIdo: "Hora local",
         surface: "Superficie",
-        nagyversenyek: "Grandes carreras",
+        nagyversenyek: "Carreras destacadas",
         celegyenes: "Recta final",
         sfGrass: "hierba",
         sfSand: "arena",
@@ -570,7 +570,7 @@ const SZOTAR = {
         city: "Località",
         helyiIdo: "Ora locale",
         surface: "Fondo della pista",
-        nagyversenyek: "Grandi corse",
+        nagyversenyek: "Corse di rilievo",
         celegyenes: "Rettilineo finale",
         sfGrass: "erba",
         sfSand: "sabbia",
@@ -616,7 +616,7 @@ const SZOTAR = {
         city: "所在地",
         helyiIdo: "現地時刻",
         surface: "走路面",
-        nagyversenyek: "主要競走",
+        nagyversenyek: "注目の競走",
         celegyenes: "直線",
         sfGrass: "芝",
         sfSand: "砂",
@@ -662,7 +662,7 @@ const SZOTAR = {
         city: "所在地",
         helyiIdo: "当地时间",
         surface: "赛道地面",
-        nagyversenyek: "重要赛事",
+        nagyversenyek: "重点赛事",
         celegyenes: "终点直道",
         sfGrass: "草地",
         sfSand: "沙地",
@@ -708,7 +708,7 @@ const SZOTAR = {
         city: "البلدة",
         helyiIdo: "الوقت المحلي",
         surface: "أرضية المضمار",
-        nagyversenyek: "السباقات الكبرى",
+        nagyversenyek: "سباقات مميزة",
         celegyenes: "المستقيم الأخير",
         sfGrass: "عشب",
         sfSand: "رمل",
@@ -1449,12 +1449,22 @@ function palyaOldal({ nyelv, palya, iso, orszag, countryMeta, figyelmeztetesek, 
     /* NAGYVERSENYEK – tulajdonnevek, fordítás nélkül; a sor csak
        ott jelenik meg, ahol van adat (nem írunk ki üres N/A-t). */
     if (Array.isArray(palya.nagyversenyek) && palya.nagyversenyek.length) {
-        mezok.push([sz(nyelv, 'nagyversenyek'), palya.nagyversenyek.join(' · ')]);
+        /* Versenyenként külön sor a cellában. A lista HTML-je itt
+           épül, ezért a cellát NYERSEN adjuk át – az egyes neveket
+           külön-külön escape-eljük, tehát a nyers átadás nem nyit
+           rést. Ez a hely alakul majd linkké. */
+        const versenyLista = palya.nagyversenyek
+            .map(v => `<span class="rc-verseny">${esc(v)}</span>`)
+            .join('');
+        mezok.push([sz(nyelv, 'nagyversenyek'), versenyLista, true]);
     }
     mezok.push([sz(nyelv, 'status'), statusz]);
 
-    const sorok = mezok.map(([cimke, ertek]) =>
-        `      <tr><th>${esc(cimke)}</th><td>${esc(ertek ?? sz(nyelv, 'na'))}</td></tr>`
+    /* A harmadik elem (`nyers`) azt jelzi, hogy az érték MÁR
+       kész, escape-elt HTML – csak így lehet több soros cellát
+       építeni anélkül, hogy a többi mező escape-elése sérülne. */
+    const sorok = mezok.map(([cimke, ertek, nyers]) =>
+        `      <tr><th>${esc(cimke)}</th><td>${nyers ? ertek : esc(ertek ?? sz(nyelv, 'na'))}</td></tr>`
     ).join('\n');
 
     const honlap = palya.ownSite
