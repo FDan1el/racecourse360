@@ -532,19 +532,61 @@ function keresoKulcsok(palya) {
     return [...k].filter(x => x.length >= 4);
 }
 
-function datumokKornyezetbol(szoveg, kulcs) {
+/**
+ * Versenynapok a pályanév KÖRNYEZETÉBŐL.
+ *
+ * A MÁSIK PÁLYA NEVE LEZÁRJA AZ ABLAKOT
+ * ------------------------------------------------------------
+ * Az ablak 300 karakter, ami egy sűrű listaoldalon (versenynaptár
+ * táblázat, pályaválasztó legördülő) simán átnyúlik a SZOMSZÉD
+ * pálya sorába – és akkor a szomszéd versenynapját írjuk jóvá
+ * ennek a pályának.
+ *
+ * Pontosan ez történt 2026-11-23-án: a megszűnt római Tor di Valle
+ * "versenynyomot" kapott 2026-11-22-re, miközben a dátum a
+ * 2026 szeptemberében ÚJRANYITOTT Capannelléé volt.
+ *
+ * Ezért: ha a név és a dátum KÖZÖTT egy másik ismert pályanév áll,
+ * a dátum nem ezé a pályáé – eldobjuk. A dátum a hozzá legközelebbi
+ * pályanévhez tartozik, nem a 300 karakteren belül bármelyikhez.
+ */
+function datumokKornyezetbol(szoveg, kulcs, maskulcsok = []) {
     const datumok = [];
+    const lazaRe = (k) => new RegExp(k.split('').join('\\s*'), 'i');
     const re = new RegExp(kulcs.split('').join('\\s*'), 'gi');
     let m, n = 0;
     while ((m = re.exec(szoveg)) !== null && n++ < 40) {
-        const k = szoveg.slice(Math.max(0, m.index - 130), m.index + 170);
+        const eleje = Math.max(0, m.index - 130);
+        const k = szoveg.slice(eleje, m.index + 170);
+        /* A név helye az ablakon belül – ehhez képest nézzük, hogy a
+           dátum előtte vagy utána van, és mi áll közte. */
+        const nevTol = m.index - eleje;
+        const nevIg = nevTol + m[0].length;
+        /** Áll-e másik pályanév a név és a találat között? */
+        const masPalyaKozben = (tol, ig) => {
+            if (ig <= tol) return false;
+            const koz = k.slice(tol, ig);
+            return maskulcsok.some((mk) => mk && mk !== kulcs && lazaRe(mk).test(koz));
+        };
+        const elfogad = (idx, hossz) => {
+            if (idx < 0) return true;
+            return idx >= nevIg
+                ? !masPalyaKozben(nevIg, idx)
+                : !masPalyaKozben(idx + hossz, nevTol);
+        };
         const d1 = k.match(/\b(\d{1,2})\s+([A-Za-z]{3,9})\s+(\d{4})\b/);
         const d2 = k.match(/\b(\d{4})-(\d{2})-(\d{2})\b/);
         const d3 = k.match(/\b(\d{1,2})\/(\d{1,2})\/(\d{4})\b/);
-        let d = null;
-        if (d2) d = new Date(`${d2[1]}-${d2[2]}-${d2[3]}`);
-        else if (d1) d = new Date(`${d1[1]} ${d1[2]} ${d1[3]}`);
-        else if (d3) d = new Date(`${d3[3]}-${String(d3[2]).padStart(2,'0')}-${String(d3[1]).padStart(2,'0')}`);
+        let d = null, hol = -1, hossz = 0;
+        if (d2 && elfogad(d2.index, d2[0].length)) {
+            d = new Date(`${d2[1]}-${d2[2]}-${d2[3]}`); hol = d2.index; hossz = d2[0].length;
+        } else if (d1 && elfogad(d1.index, d1[0].length)) {
+            d = new Date(`${d1[1]} ${d1[2]} ${d1[3]}`); hol = d1.index; hossz = d1[0].length;
+        } else if (d3 && elfogad(d3.index, d3[0].length)) {
+            d = new Date(`${d3[3]}-${String(d3[2]).padStart(2,'0')}-${String(d3[1]).padStart(2,'0')}`);
+            hol = d3.index; hossz = d3[0].length;
+        }
+        void hol; void hossz;
         if (d && !isNaN(d) && d.getFullYear() > 2000) datumok.push(d);
     }
     return datumok;
@@ -687,8 +729,17 @@ async function futtat(iso, limit, honapok) {
 
     console.log(`\nKiértékelés: ${vizsgalt.length} pálya…`);
 
+    /* Minden pálya kulcsai előre, egyszer. Kell, mert a dátum
+       hozzárendelésénél azt is tudni akarjuk, hogy a név és a dátum
+       KÖZÖTT nem áll-e egy MÁSIK pálya neve. */
+    const kulcsTar = new Map();
+    for (const p of palyak) kulcsTar.set(p, keresoKulcsok(p));
+    const mindenKulcs = [...new Set([...kulcsTar.values()].flat())];
+
     for (const p of vizsgalt) {
-        const kulcsok = keresoKulcsok(p);
+        const kulcsok = kulcsTar.get(p) || keresoKulcsok(p);
+        const sajat = new Set(kulcsok);
+        const masKulcsok = mindenKulcs.filter((x) => !sajat.has(x));
         const csaladok = new Set();
         const forrasNevek = [];
         let legutobbi = null, bezaras = null, wdBezaras = null, osmElhagyott = false;
@@ -715,7 +766,7 @@ async function futtat(iso, limit, honapok) {
                     /* Havi naptárnál a HÓNAP maga a dátum – megbízhatóbb,
                        mint a szövegből kibányászott érték. */
                     if (f.datum && (!legutobbi || f.datum > legutobbi)) legutobbi = f.datum;
-                    for (const d of datumokKornyezetbol(f.szoveg, k)) {
+                    for (const d of datumokKornyezetbol(f.szoveg, k, masKulcsok)) {
                         if (d <= most && (!legutobbi || d > legutobbi)) legutobbi = d;
                     }
                 }
