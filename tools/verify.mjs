@@ -2246,8 +2246,24 @@ function appJsRekord(p, lat, lng, forrasSzoveg) {
   const n = (v) => (v == null || v === '' ? 'null' : Number(v));
   const jegyzet = [p.note, `Koordináta forrása: ${forrasSzoveg}`, p.forras ? `Pálya forrása: ${p.forras}` : null]
     .filter(Boolean).join('. ');
+  /* A STÁTUSZ EDDIG BE VOLT DRÓTOZVA "active"-ra, ami ellentmond a
+     fenti elvnek ("amit nem tudunk, az null marad"). Ez pont a
+     legkényesebb mezőnél volt találgatás.
+
+     Konkrétan rosszul sült el: a 2026-11-23-i futásban a Greenwood
+     Raceway és a Thorncliffe Park – két LEBONTOTT torontói pálya –
+     "active" státusszal generálódott, pedig a jegyzetük első szava az
+     volt, hogy MEGSZŰNT. Ha valaki beilleszti őket, két eltűnt pálya
+     kerül a térképre működőként.
+
+     Mostantól a gyűjtőlista "status" mezője dönt. Az "active" csak
+     AKKOR marad alapértelmezés, ha a bejegyzés nem mond semmit –
+     ez a bejegyzések többségénél helytálló, mert hivatalos, FRISS
+     versenynaptárból származnak. Megszűnt pályánál viszont a
+     gyűjtőlistán kötelező kiírni. */
+  const statusz = p.status || 'active';
   return `        { name: ${s(p.name)}, city: ${s(p.city)}, lat: ${lat}, lng: ${lng}, `
-    + `founded: ${n(p.founded)}, status: "active", length: ${n(p.length)}, `
+    + `founded: ${n(p.founded)}, status: ${s(statusz)}, length: ${n(p.length)}, `
     + `direction: ${s(p.direction)}, org: ${s(p.org)}, ownSite: ${s(p.ownSite)}, `
     + `operatorSite: ${s(p.operatorSite)}, operatorName: ${s(p.operatorName)}, `
     + `note: ${s(jegyzet)} },`;

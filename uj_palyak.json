@@ -320,7 +320,8 @@
     "note": "HOLLANDIA FŐ PÁLYÁJA, és az egyetlen holland versenypálya, amely SOHA NEM ZÁRT BE. 1906-ban nyílt. A Gouden Zweep 1991 óta itt fut; a Grote Prijs der Lage Landen, az UAE President Cup és a Derby Marathon is ide tartozik. NÉVJAVÍTÁS (2026-11-23): a bejegyzés eredetileg „Drafbaan Duindigt” néven szerepelt, az NDR versenynaptárából. A geokódoló erre NEM TALÁLT SEMMIT – a hivatalos név ugyanis „Draf- en Renbaan Duindigt”, ahogy a wassenaari önkormányzat elővásárlási hirdetménye nevezi. Ez jó példa arra, hogy a „nincs találat” gyakran a KERESETT NÉVRŐL szól, nem a pálya létezéséről. HIVATALOS CÍM az önkormányzat hirdetményéből: Waalsdorperlaan 29 és 29A, 2244 BN Wassenaar. Kataszter: Wassenaar, E szekció, 1801 (13 420 m2), 1943 (145 m2), 2053 (236 773 m2), 2119 (5740 m2) – a fő telek tehát kb. 23,7 hektár. TULAJDONVISZONY, FOLYAMATBAN: a pályát 2024 júliusában az amszterdami Villa Betty ingatlanbefektető vette meg, ami elhárította a kényszerárverést. 2026-ban az önkormányzat elővásárlási jogot alapított a területre (a hágai bíróság ezt 2026 szeptemberében jogszerűnek mondta ki), a 2026 júliusi ítélet szerint viszont az adásvétel érvényben marad. A versenyzés eközben folyik. KOORDINÁTA: még hiányzik, de a pontos cím és irányítószám most már megvan hozzá.",
     "forras": "Wassenaar önkormányzata – „Kennisgeving vestiging gemeentelijk voorkeursrecht Draf- en Renbaan Duindigt” (hivatalos hirdetmény, cím + kataszter) + NDR 2026-os versenynaptár + angol Wikipédia (1906, soha nem zárt be) + rechtspraak.nl 2026-07 és 2026-09 (tulajdonjogi helyzet)",
     "operatorSite": "https://ndr.nl/",
-    "operatorName": "Nederlandse Draf- en Rensport (NDR)"
+    "operatorName": "Nederlandse Draf- en Rensport (NDR)",
+    "status": "active"
   },
   {
     "countryCode": "NLD",
@@ -4333,7 +4334,8 @@
     "direction": null,
     "founded": 2015,
     "note": "MEGNYITÁS 2015. május 9-én, a RÉGI SAN SIRÓ-I ÜGETŐPÁLYA HELYÉBE. Az üzemeltető saját leírása szerint kifejezetten ügetőversenyre épült, és a San Siro történelmi pályájának talaját és altalaját használták fel hozzá. 17 hektár, 1050 m-es pálya (az üzemeltető szerint egy mérföldig bővíthető), 160 lovas istálló, 400 fős lelátó. A Gran Premio delle Nazioni és a Gran Premio Orsi Mangelli helyszíne volt. STÁTUSZ: a 2026-os milánói ügető-versenynapok MIND a San Sirón futnak (a Snai hírfolyamában La Maura 2026-ban elő sem fordul, a GP delle Nazioni 2024-ben már a San Sirón volt), a területet ma koncerthelyszínként használják. Tehát inactive, nem closed: a pálya áll. KOORDINÁTA HIÁNYZIK – a geokódoló pipeline oldja fel.",
-    "forras": "Snaitech hivatalos oldal (ippodromisnai.it, about-us + technical-area-milano-trot, 2026-11-23) + olasz Wikipédia (megnyitás dátuma) + Live Nation helyszínoldal (cím)"
+    "forras": "Snaitech hivatalos oldal (ippodromisnai.it, about-us + technical-area-milano-trot, 2026-11-23) + olasz Wikipédia (megnyitás dátuma) + Live Nation helyszínoldal (cím)",
+    "status": "inactive"
   },
   {
     "countryCode": "ITA",
@@ -6946,7 +6948,8 @@
     "direction": null,
     "founded": 1874,
     "note": "MEGSZŰNT, A PÁLYA ELTŰNT → historical. Eredeti neve Woodbine Race Course; az ügetőmeetingek idején hívták Greenwoodnak. 1874-ben nyílt, 1993 végén zárt be; 1994-ben a galopp és az ügető is az etobicoke-i Woodbine Racetrackre költözött. A lelátót lebontották, a déli felén ma a Woodbine Park van, az északi felét 2016-ban a Live Nation vette meg koncerthelyszínnek. PÁLYAADAT: az ügetőpálya 5 furlong (kb. 1006 m) KŐZÚZALÉK, a galopp-pályán BELÜL épült; a galopp-pálya 6 furlong (1207 m). NAGYVERSENYEK: Canadian Pacing Derby, North America Cup, Fan Hanover Stakes, Maple Leaf Trot, Canadian Trotting Classic. KOORDINÁTA: az angol Wikipédia 43°40′É, 79°18,7′Ny értéket ad (43.667, -79.3117) – ez beírás előtt térképen ellenőrizendő.",
-    "forras": "Angol Wikipédia (Greenwood Raceway) + Standardbred Canada archív cikkei, 2026-11-23"
+    "forras": "Angol Wikipédia (Greenwood Raceway) + Standardbred Canada archív cikkei, 2026-11-23",
+    "status": "historical"
   },
   {
     "countryCode": "CAN",
@@ -6963,7 +6966,8 @@
     "direction": null,
     "founded": 1907,
     "note": "MEGSZŰNT, A PÁLYA ELTŰNT → historical. 1907. június 4-én nyílt a Décarie sugárúton; 1995-ben, az SHDM általi megvásárlás után lett a neve Hippodrome de Montréal. A versenyzés 2008 júniusában állt le, amikor az Attractions Hippiques csődvédelmet kért, és a pálya 2009. október 13-án VÉGLEG bezárt. A lebontás közel egy évtized elhagyatottság után, 2018 nyarán kezdődött. ELŐZMÉNY: 1872-ben már állt egy hippodrom Coteau Saint-Pierre-ben. 1973-ig galoppversenyt is rendeztek, utána csak ügetőt. NAGYVERSENY: Prix d’Été. KOORDINÁTA: a forrás nem adja meg – térképen kell megkeresni a Décarie sugárút menti egykori telket.",
-    "forras": "Angol Wikipédia (Blue Bonnets raceway) + Standardbred Canada archív cikkei, 2026-11-23"
+    "forras": "Angol Wikipédia (Blue Bonnets raceway) + Standardbred Canada archív cikkei, 2026-11-23",
+    "status": "historical"
   },
   {
     "countryCode": "CAN",
@@ -6980,7 +6984,8 @@
     "direction": null,
     "founded": 1917,
     "note": "MEGSZŰNT, A PÁLYA ELTŰNT → historical. 1917. július 21-én nyílt. A galopp 1952. június 23-án, az ÜGETŐ 1953. augusztus 12-én ért véget. A kb. 400 holdas területet 1954-ben Leaside bekebelezte, a pályát lebontották, és a helyén épült fel a Thorncliffe Park városrész – az utcanevek (Thorncliffe Park Drive, Grandstand Place, Milepost Place) máig őrzik. SZEREPE: a pálya élesztette újra a torontói ügetősportot; alapítója, Robert T. Davies maga is ügetőlovakat futtatott. EGY ELTÉRÉS RÖGZÍTVE: a Wikipédia bevezetője szerint a pálya „1952-ig” működött, az infobox és a szöveg viszont 1953. augusztus 12-t ad az ügető utolsó napjaként. Az utóbbit vettem, mert az ügető a mi szakágunk. KOORDINÁTA: a forrás nem adja meg.",
-    "forras": "Angol Wikipédia (Thorncliffe Park Raceway) + Standardbred Canada archív cikkei, 2026-11-23"
+    "forras": "Angol Wikipédia (Thorncliffe Park Raceway) + Standardbred Canada archív cikkei, 2026-11-23",
+    "status": "historical"
   },
   {
     "countryCode": "CAN",
@@ -6997,6 +7002,7 @@
     "direction": null,
     "founded": 1894,
     "note": "MEGSZŰNT MINT VERSENYPÁLYA → historical, DE A PÁLYA FIZIKAILAG MEGVAN. A félmérföldes (kb. 805 m) pálya 1894-ben épült, a lelátót 1911-ben, a munka ünnepén avatták. A CANADIAN PACING DERBY ITT FUTOTT 1936 ÉS 1957 KÖZÖTT, évente – ez a pálya jelentősége. A Derby 1957-ben szűnt meg itt, és a Turf Club végül feloszlott. A parkot 1980-ban Norm S. Hill Parkra nevezték át; az 1947-es lelátó 2007-ben leégett, és falfestményekkel újjáépítették. A félmérföldes pálya MEGMARADT, ma főleg mozgatásra és helyi rendezvényekre használják. STÁTUSZDÖNTÉS, AMI VITATHATÓ: a „historical” azért, mert versenypályaként közel hetven éve megszűnt, és ma önkormányzati park. A szigorúan vett „áll-e még a pálya” szabály szerint inactive lenne – ez a határeset mutatja, hogy a closed/historical szabályt érdemes pontosítani.",
-    "forras": "Standardbred Canada – „The Origin Of The Canadian Pacing Derby”, 2026-11-23"
+    "forras": "Standardbred Canada – „The Origin Of The Canadian Pacing Derby”, 2026-11-23",
+    "status": "historical"
   }
 ]
