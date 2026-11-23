@@ -7004,5 +7004,24 @@
     "note": "MEGSZŰNT MINT VERSENYPÁLYA → historical, DE A PÁLYA FIZIKAILAG MEGVAN. A félmérföldes (kb. 805 m) pálya 1894-ben épült, a lelátót 1911-ben, a munka ünnepén avatták. A CANADIAN PACING DERBY ITT FUTOTT 1936 ÉS 1957 KÖZÖTT, évente – ez a pálya jelentősége. A Derby 1957-ben szűnt meg itt, és a Turf Club végül feloszlott. A parkot 1980-ban Norm S. Hill Parkra nevezték át; az 1947-es lelátó 2007-ben leégett, és falfestményekkel újjáépítették. A félmérföldes pálya MEGMARADT, ma főleg mozgatásra és helyi rendezvényekre használják. STÁTUSZDÖNTÉS, AMI VITATHATÓ: a „historical” azért, mert versenypályaként közel hetven éve megszűnt, és ma önkormányzati park. A szigorúan vett „áll-e még a pálya” szabály szerint inactive lenne – ez a határeset mutatja, hogy a closed/historical szabályt érdemes pontosítani.",
     "forras": "Standardbred Canada – „The Origin Of The Canadian Pacing Derby”, 2026-11-23",
     "status": "historical"
+  },
+  {
+    "countryCode": "ESP",
+    "countryCode2": "es",
+    "name": "Gran Hipódromo de Andalucía",
+    "city": "Dos Hermanas (Sevilla)",
+    "address": "Av. de las Universidades, s/n",
+    "postalCode": "41704",
+    "org": null,
+    "ownSite": null,
+    "operatorSite": null,
+    "operatorName": null,
+    "length": null,
+    "direction": null,
+    "founded": null,
+    "szakag": "galopp",
+    "status": "active",
+    "note": "GALOPP-PÁLYA, NEM ÜGETŐ – ezért került ki az ügető-adatbázisból (2026-11-23). BIZONYÍTÉK: a pálya versenylapjain zsokék („Monta”) indulnak, a súlyok kilogrammban vannak megadva, a távok 1500–2200 m, a futamok pedig gyep- és homokpályán (Pista Hierba / Pista Arena) mennek. Az első futam neve egy 2024. decemberi versenynapon: „Premio Asociación de Criadores de P.S.I. de España” – a P.S.I. = Pura Sangre Inglés, vagyis ANGOL TELIVÉR. Egyetlen ügetőfutam sincs a programban. MEGERŐSÍTŐ JEL: a Federació Balear de Trot hivatalos „Programas” menüje hét helyszínt sorol (Son Pardo, Manacor, Maó, Torre del Ram, Sant Rafel, Pista Es Cavaller, Antela) – a Gran Hipódromo de Andalucía NINCS köztük. MIÉRT VOLT FÉLREVEZETŐ: Spanyolországnál a countryMeta a Federació Balear de Trotot adja országos szervezetként, így az adatlapon egy sevillai galopp-pálya mellett a baleári ÜGETŐ-szövetség jelent meg. MEGŐRIZVE A JÖVŐBELI GALOPP SZAKÁGHOZ: 155 hektár, kb. 5000 fő befogadóképesség, a Junta de Andalucía támogatja; Av. de las Universidades, 41704 Dos Hermanas, Sevilla; koordináta 37.3152688, -5.9528704.",
+    "forras": "spanishturf versenylapok (P.S.I. futamok, zsokék, gyep/homok) + Federació Balear de Trot „Programas” menü (nem szerepel benne) + Google Places (cím, koordináta), 2026-11-23"
   }
 ]
