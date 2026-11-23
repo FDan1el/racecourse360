@@ -308,17 +308,19 @@
   {
     "countryCode": "NLD",
     "countryCode2": "nl",
-    "name": "Drafbaan Duindigt",
+    "name": "Draf- en Renbaan Duindigt",
     "city": "Wassenaar",
-    "address": null,
-    "postalCode": null,
+    "address": "Waalsdorperlaan 29",
+    "postalCode": "2244 BN",
     "org": null,
-    "ownSite": null,
+    "ownSite": "https://www.duindigt.nl/",
     "length": null,
     "direction": null,
-    "founded": null,
-    "note": "Hollandia egyik fő pályája; a Gouden Zweep, a Grote Prijs der Lage Landen, a UAE President Cup és a Derby Marathon otthona.",
-    "forras": "Nederlandse Draf- en Rensport (NDR) 2026-os versenynaptár"
+    "founded": 1906,
+    "note": "HOLLANDIA FŐ PÁLYÁJA, és az egyetlen holland versenypálya, amely SOHA NEM ZÁRT BE. 1906-ban nyílt. A Gouden Zweep 1991 óta itt fut; a Grote Prijs der Lage Landen, az UAE President Cup és a Derby Marathon is ide tartozik. NÉVJAVÍTÁS (2026-11-23): a bejegyzés eredetileg „Drafbaan Duindigt” néven szerepelt, az NDR versenynaptárából. A geokódoló erre NEM TALÁLT SEMMIT – a hivatalos név ugyanis „Draf- en Renbaan Duindigt”, ahogy a wassenaari önkormányzat elővásárlási hirdetménye nevezi. Ez jó példa arra, hogy a „nincs találat” gyakran a KERESETT NÉVRŐL szól, nem a pálya létezéséről. HIVATALOS CÍM az önkormányzat hirdetményéből: Waalsdorperlaan 29 és 29A, 2244 BN Wassenaar. Kataszter: Wassenaar, E szekció, 1801 (13 420 m2), 1943 (145 m2), 2053 (236 773 m2), 2119 (5740 m2) – a fő telek tehát kb. 23,7 hektár. TULAJDONVISZONY, FOLYAMATBAN: a pályát 2024 júliusában az amszterdami Villa Betty ingatlanbefektető vette meg, ami elhárította a kényszerárverést. 2026-ban az önkormányzat elővásárlási jogot alapított a területre (a hágai bíróság ezt 2026 szeptemberében jogszerűnek mondta ki), a 2026 júliusi ítélet szerint viszont az adásvétel érvényben marad. A versenyzés eközben folyik. KOORDINÁTA: még hiányzik, de a pontos cím és irányítószám most már megvan hozzá.",
+    "forras": "Wassenaar önkormányzata – „Kennisgeving vestiging gemeentelijk voorkeursrecht Draf- en Renbaan Duindigt” (hivatalos hirdetmény, cím + kataszter) + NDR 2026-os versenynaptár + angol Wikipédia (1906, soha nem zárt be) + rechtspraak.nl 2026-07 és 2026-09 (tulajdonjogi helyzet)",
+    "operatorSite": "https://ndr.nl/",
+    "operatorName": "Nederlandse Draf- en Rensport (NDR)"
   },
   {
     "countryCode": "NLD",
