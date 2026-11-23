@@ -143,7 +143,51 @@ jobs:
               echo "> A gép nem lát, csak számol – ha két forrás egyetért, attól még"
               echo "> lehet, hogy mindkettő ugyanazt a rossz helyet találta meg."
             else
-              echo "Nem készült beilleszthető rekord – nézd meg a \`koordinatak.csv\`-t"
-              echo "az Artifacts szekcióban, hogy mi az akadály."
+              echo "Nem készült beilleszthető rekord – a jelölteket lásd lent."
             fi
           } >> $GITHUB_STEP_SUMMARY
+
+      - name: Jelöltek kiírása a futás oldalára
+        if: always()
+        run: |
+          # MIÉRT KELL EZ
+          # Az eredmény eddig KIZÁRÓLAG letölthető csomagként létezett. Aki
+          # nem tudja letölteni (mobilról, vagy mert a futtatókörnyezete nem
+          # éri el a csomagtárolót), annak a futás semmit nem mondott: még
+          # azt sem látta, HOVA tenné a gép a pályát. Ettől a munka
+          # megállt, pedig a számok megvoltak.
+          #
+          # Ezért a jelölteket a futás oldalára is kiírjuk. A csomag marad,
+          # ez csak hozzáadás – és szándékosan a TELJES sor megy ki, az
+          # állapottal együtt (KET_FORRAS_EGYEZIK, MEGERŐSÍTENDŐ, ...),
+          # mert a koordináta önmagában félrevezető: a "két forrás egyetért"
+          # és az "egy forrás talált valamit" két különböző dolog.
+          {
+            echo ""
+            echo "### Jelölt koordináták"
+            echo ""
+            if [ -f eredmeny/koordinatak.csv ]; then
+              echo '```'
+              head -200 eredmeny/koordinatak.csv
+              echo '```'
+              echo ""
+              echo "> Ezek JELÖLTEK, nem eredmények. Nyisd meg őket térképen,"
+              echo "> mielőtt bármelyiket beírnád: a gép nem lát, csak számol."
+            else
+              echo "Nem készült \`koordinatak.csv\` – a futás előbb elakadt."
+            fi
+            if [ -f eredmeny/beilleszthető_rekordok.js ]; then
+              echo ""
+              echo "### Kész rekordok"
+              echo ""
+              echo '```js'
+              head -120 eredmeny/beilleszthető_rekordok.js
+              echo '```'
+            fi
+          } >> $GITHUB_STEP_SUMMARY
+
+          # A naplóba is, mert a futás összegzése hosszú kimenetnél csonkul.
+          echo "=== koordinatak.csv ==="
+          [ -f eredmeny/koordinatak.csv ] && cat eredmeny/koordinatak.csv || echo "(nincs)"
+          echo "=== beilleszthető_rekordok.js ==="
+          [ -f eredmeny/beilleszthető_rekordok.js ] && cat eredmeny/beilleszthető_rekordok.js || echo "(nincs)"
