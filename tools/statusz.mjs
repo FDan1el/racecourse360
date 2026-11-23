@@ -826,6 +826,40 @@ async function futtat(iso, limit, honapok) {
         const h = honlapok.get(p.name);
         if (h && h.el) { csaladok.add('sajat-honlap'); forrasNevek.push('saját honlap'); }
 
+        /* A WIKIDATA MEGSZŰNÉSI DÁTUMÁT ELŐBB MEG KELL SZŰRNI.
+           ------------------------------------------------------------
+           A P576 még akkor is gyakran téves, ha formailag szabályos
+           dátum: a Wikidata közösségi szerkesztésű, és az egyeztetés
+           rossz entitásra is találhat. A 2026-11-23-i futás három ilyet
+           adott egyszerre:
+             Century Mile – "megszűnt 2012-07-22", pedig 2019-ben NYÍLT
+             Killeri      – "megszűnt 1974", ami az alapítás éve
+             Favorita     – "megszűnt 2017", miközben fut
+           Két józan szabállyal ezek kiszűrhetők.
+
+           1) Nem szűnhet meg a megnyitása előtt. Ha a megszűnés éve
+              nem későbbi az alapításénál, az adat hibás.
+           2) Aki tavaly futott, az nem szűnt meg tíz éve. Ha VAN
+              versenynyomunk, és az KÉSŐBBI a megszűnési dátumnál,
+              akkor a versenynyom az erősebb bizonyíték – az egy
+              konkrét esemény, a P576 meg egy állítás.
+
+           Ez nem söpri be a szőnyeg alá a jelzést: ami kiesik, az
+           bekerül a naplóba, csak nem lesz belőle "closed" javaslat. */
+        if (wdBezaras) {
+            const bezEv = Number(String(wdBezaras).slice(0, 4));
+            const alapEv = Number(p.founded) || null;
+            if (alapEv && bezEv <= alapEv) {
+                naplo.push(`  WIKIDATA ELDOBVA: ${p.name} – "megszűnt ${wdBezaras}", `
+                    + `de az alapítás éve ${alapEv}`);
+                wdBezaras = null;
+            } else if (legutobbi && legutobbi > new Date(wdBezaras)) {
+                naplo.push(`  WIKIDATA ELDOBVA: ${p.name} – "megszűnt ${wdBezaras}", `
+                    + `de van későbbi versenynyom (${legutobbi.toISOString().slice(0, 10)})`);
+                wdBezaras = null;
+            }
+        }
+
         /* --- JAVASLAT --- */
         let javaslat, szin, indok;
         if (wdBezaras) {

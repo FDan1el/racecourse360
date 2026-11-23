@@ -1,0 +1,12 @@
+
+# Státuszellenőrzés generált jelentései.
+# NE kerüljenek a repóba: a workflow az összes tools/statusz-jelentes*.csv
+# fájlt beolvassa az eltérések kigyűjtésekor, és egy régi, becommitolt
+# jelentés úgy keveredik a friss eredmények közé, mintha mostani lenne.
+# 2026-11-23-án pontosan ez történt: egy korábbi, csak ausztrál futás
+# jelentéséből hat sor jelent meg a friss Issue-ban, köztük egy olyan
+# hiba, amit időközben javítottunk.
+tools/statusz-jelentes*.csv
+tools/statusz-jelentes*.json
+tools/statusz-jelentes*.md
+tools/statusz-jelentes*.xlsx
