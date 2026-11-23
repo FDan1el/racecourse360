@@ -1,0 +1,164 @@
+name: Státuszellenőrzés
+
+# ============================================================
+#  MIT CSINÁL
+#  Végigmegy MINDEN ország pályáin, és a hivatalos
+#  versenynaptárakból megnézi, van-e friss versenynapjuk.
+#  Ha eltérést talál a tárolt státusztól, Issue-t nyit.
+#
+#  MIÉRT ITT FUT, ÉS NEM KÉZZEL
+#  A fejlesztői környezetnek nincs szabad kimenő hálózata –
+#  a szövetségi oldalakat csak a GitHub futtatója éri el.
+#  Ezért az ellenőrzés helye ez a workflow, nem a laptop.
+#
+#  MIT NEM CSINÁL
+#  Soha nem írja át az app.js-t. A státusz emberi döntés marad.
+#
+#  A LEGFONTOSABB SZABÁLY, AMIT A SZKRIPT BETART
+#  Ha egy országnál egyetlen versenynaptárat sem sikerült elérni
+#  (botvédelem, robots.txt tiltás, halott cím), akkor NEM javasol
+#  státuszváltozást. A bizonyíték hiánya nem a hiány bizonyítéka:
+#  korábban épp ettől minősült volna inaktívnak a Melton, ahol az
+#  A.G. Hunter Cupot futják.
+# ============================================================
+
+on:
+  schedule:
+    # Minden hónap 8-án 04:00 UTC. Nem 1-jén: akkor fut a havi
+    # adatellenőrzés, és nem érdemes egy napra tenni a kettőt.
+    - cron: '0 4 8 * *'
+  workflow_dispatch:
+    inputs:
+      orszag:
+        description: 'Országkód (üresen: MIND)'
+        required: false
+        default: ''
+      honapok:
+        description: 'Hány hónapra visszamenőleg keressen versenynapot?'
+        required: false
+        default: '12'
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  statusz:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+
+    steps:
+      - name: Repó letöltése
+        uses: actions/checkout@v4
+
+      - name: Node beállítása
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Ellenőrzés futtatása
+        continue-on-error: true
+        run: |
+          ORSZAG="${{ github.event.inputs.orszag }}"
+          [ -z "$ORSZAG" ] && ORSZAG="MIND"
+          HONAPOK="${{ github.event.inputs.honapok }}"
+          [ -z "$HONAPOK" ] && HONAPOK="12"
+          echo "Futtatás: --orszag $ORSZAG --honapok $HONAPOK"
+          node tools/statusz.mjs --orszag "$ORSZAG" --honapok "$HONAPOK" || true
+
+      - name: Jelentések megőrzése
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: statusz-${{ github.run_number }}
+          path: tools/statusz-jelentes*.csv
+          retention-days: 90
+
+      - name: Eltérések kigyűjtése
+        id: elteres
+        if: always()
+        run: |
+          # Minden országjelentésből kiszedjük azokat a sorokat, ahol a
+          # javaslat eltér a tárolt státusztól. A "nem ellenőrizhető"
+          # sorok NEM eltérések – ott a javaslat szándékosan azonos.
+          : > elteresek.txt
+          for f in tools/statusz-jelentes*.csv; do
+            [ -e "$f" ] || continue
+            # A CSV magyar fejlécű, pontosvesszős, és BOM-mal kezdődik –
+            # a BOM-ot le kell vágni, különben az első oszlopnév nem
+            # egyezik. Az oszlopok: Jelenlegi / Javasolt.
+            node -e '
+              const fs=require("fs");
+              const f=process.argv[1];
+              const sorok=fs.readFileSync(f,"utf8").replace(/^﻿/,"")
+                            .split("\n").filter(Boolean);
+              const fej=sorok.shift().split(";");
+              const iJ=fej.indexOf("Jelenlegi"), iA=fej.indexOf("Javasolt");
+              if(iJ<0||iA<0){ console.error("Ismeretlen fejléc: "+f); process.exit(0); }
+              for(const s of sorok){
+                const c=s.split(";");
+                if(c[iJ]&&c[iA]&&c[iJ]!==c[iA]) console.log(f.split("/").pop()+" | "+s);
+              }
+            ' "$f" >> elteresek.txt || true
+          done
+          DB=$(wc -l < elteresek.txt | tr -d ' ')
+          echo "Eltérés: $DB"
+          echo "db=$DB" >> $GITHUB_OUTPUT
+          {
+            echo 'reszletek<<VEGE'
+            head -60 elteresek.txt
+            echo 'VEGE'
+          } >> $GITHUB_OUTPUT
+
+      - name: Issue nyitása, ha van eltérés
+        if: always() && steps.elteres.outputs.db != '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const db = '${{ steps.elteres.outputs.db }}';
+            const reszletek = `${{ steps.elteres.outputs.reszletek }}`;
+            const datum = new Date().toLocaleDateString('hu-HU');
+            const body = [
+              `## Státuszellenőrzés – ${datum}`,
+              ``,
+              `A versenynaptárak alapján **${db} pályánál** tér el a javaslat a tárolt státusztól.`,
+              ``,
+              `### Mit jelent ez`,
+              `A szkript a hivatalos versenynaptárakból nézte meg, volt-e friss versenynap.`,
+              `Ahol egyetlen naptár sem volt elérhető, ott **nem** javasolt változást –`,
+              `azok a sorok nincsenek is ebben a listában.`,
+              ``,
+              `### Eltérések`,
+              ``,
+              '```',
+              reszletek,
+              '```',
+              ``,
+              `A teljes, országonkénti CSV a futás **Artifacts** szekciójában:`,
+              `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              ``,
+              `---`,
+              `> A szkript **nem módosította az app.js-t**. A státusz emberi döntés;`,
+              `> a szabályt a js/app.js \`statuszSzoveg()\` fölötti blokk írja le.`,
+            ].join('\n');
+            await github.rest.issues.create({
+              owner: context.repo.owner, repo: context.repo.repo,
+              title: `Státuszellenőrzés: ${db} eltérés (${datum})`,
+              body, labels: ['adatellenőrzés', 'automatikus'],
+            });
+
+      - name: Összegzés
+        if: always()
+        run: |
+          {
+            echo "## Státuszellenőrzés lefutott"
+            echo ""
+            echo "Eltérés a tárolt státusztól: **${{ steps.elteres.outputs.db }}**"
+            echo ""
+            echo "### Országok, ahol NEM volt elérhető versenynaptár"
+            echo ""
+            echo 'Ezeknél a futás nem mond semmit a pályákról – a forrás volt zárva.'
+            echo '```'
+            grep -l 'VERSENYNAPTÁR NEM VOLT ELÉRHETŐ' tools/statusz-jelentes*.md 2>/dev/null | sed 's#tools/statusz-jelentes-\?##; s#\.md##' || echo "(mind elérhető volt)"
+            echo '```'
+          } >> $GITHUB_STEP_SUMMARY

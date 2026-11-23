@@ -449,7 +449,7 @@ const trackDatabase = {
         { name: "Hipodrom Bravantice", slug: "hipodrom-bravantice", city: "Bravantice (Ostrava mellett)", lat: 49.7613, lng: 18.0921, founded: 2014, status: "active", length: 1000, direction: null, org: "Hipodrom Central a.s. (Jiří Svoboda)", ownSite: "https://www.dostihyostrava.cz/", operatorSite: "http://www.czetra.cz/", operatorName: "Česká Klusácká Asociace", note: "ELLENŐRZVE (2026, több forrás): AKTÍV, KIZÁRÓLAG ÜGETŐPÁLYA. 2014 áprilisában nyílt, a SVÉD SOLVALLA mintájára építve – pontos kanyarívekkel, 16 ló számára elegendő szélességgel két sorban. 40 hektár, 200 lóbox, 10 000 fős kapacitás, többfunkciós tribün kilátótoronnyal. 2026-ban TÖBB VERSENYNAPOT rendez, mint a prágai Velká Chuchle (kb. 10/év) – nemzetközi részvétellel (holland, osztrák, német, svéd, ukrán versenyzők). A pályán mért időket nemzetközileg elismerik, Franciaországot is beleértve. Kiemelt esemény: České klusácké derby (2026. augusztus 29.). Ingyenes belépés és parkolás; a futamokat YouTube-on streamelik" , nagyversenyek: ["České klusácké derby"] }
     ],
     SVK: [
-        { name: "Závodisko Bratislava – Starý háj (Petržalka)", slug: "zavodisko-bratislava-stary-haj-petrzalka", city: "Pozsony", lat: 48.1165, lng: 17.1216, founded: null, status: "inactive", length: 2800, direction: null, org: "Závodisko, š.p. Bratislava", ownSite: null, operatorSite: "https://www.harness.sk/", operatorName: "Trotting Slovakia", note: "STÁTUSZ: a hivatalos ügető-üzemeltetés 2012-ben leállt; azóta csak alkalmi, lelkesedők (pl. a Klusácka asociácia Slovenska / Trotting Slovakia) által szervezett emlék- és díjfutamok vannak (pl. Szlovák Ügető Derby, rendszertelen időközönként). A hagyomány 1953-ig nyúlik vissza (Csehszlovák Ügető Derby)" , nagyversenyek: ["Slovenské klusácke derby", "Dunajský pohár"] }
+        { name: "Závodisko Bratislava – Starý háj (Petržalka)", slug: "zavodisko-bratislava-stary-haj-petrzalka", city: "Pozsony", lat: 48.1165, lng: 17.1216, founded: null, status: "active", length: 2800, direction: null, org: "Závodisko, š.p. Bratislava", ownSite: null, operatorSite: "https://www.harness.sk/", operatorName: "Trotting Slovakia", note: "STÁTUSZ JAVÍTVA (2026-11): korábban inaktív volt, azzal az indokkal, hogy a rendszeres ügető-üzemeltetés 2012-ben leállt. A státuszszabály viszont a VERSENYNAPRA épül, nem az üzem jellegére – és a szlovák ügetősport története szerint a Slovenské klusácke derbyt 2026-ban IS itt futották (Indigi / Mikola Volf), ahogy a Dunajský pohárt is (Top Secret J / David Dobrovolný). A pálya 1973 óta a Derby állandó helyszíne. A RITKA ÜZEM TÉNY MARAD: a Derbyt 2009 és 2021 között, valamint 2024-ben nem rendezték meg, és 2026-ban mindössze EGYETLEN regisztrált ügető volt az országban – de az évi egy-két versenynap a szabály szerint aktív pálya, nem inaktív. Szervező és lóverseny-hatóság a Závodisko, š.p. (1974. 11. 15.), amely a törzskönyvet is vezeti. A hagyomány 1953-ig nyúlik vissza (Csehszlovák Ügető Derby). Forrás: a szlovák országtörténet (Závodisko-beszámolók, trotdb.info, TASR), 2026-11" , nagyversenyek: ["Slovenské klusácke derby", "Dunajský pohár"] }
     ],
     HUN: [
         { name: "Erzsébet királyné úti ügetőpálya", slug: "erzsebet-kiralyne-uti-ugetopalya", city: "Budapest", region: null, lat: 47.51959, lng: 19.09083, founded: 1905, status: "historical", length: null, width: null, finalStraight: null, direction: null, surface: null, org: "Magyar Ügetőverseny Egyesület", ownSite: null, operatorSite: null, operatorName: null, nagyversenyek: ["Magyar Ügető Derby"], note: "A MÁSODIK BUDAPESTI ÜGETŐPÁLYA, a Tattersall-pálya kinövése után épült a millenniumi kiállítás területén. MEGNYITÁS: 1905. május 25. HELYE: az Erzsébet királyné útja és a Mexikói út sarka – a vasarnap.hu szerint a mai kisföldalatti (M1) kocsiszínjének területén. A Millenáris Sporttelep (az 1896-os velodrom, Szabó József utca) ettől KÜLÖN létesítmény, nem azonos vele. DERBY-HELYSZÍN: 1906–1932. Utána a verseny visszakerült a Kerepesi útra. KOORDINÁTA – KÖZELÍTŐ, ELLENŐRZÉSRE VÁR: az M1 Mexikói úti végállomásának koordinátája (mapcarta), mert a források a pályát csak a kocsiszín területével azonosítják, pontos körvonalat nem adnak. A hiba nagyságrendje néhány száz méter. MEGSZŰNÉS ÉVE NINCS MEGERŐSÍTVE: a Derby 1932 után a Kerepesi útra költözött, de hogy a pálya maga mikor szűnt meg, azt egyik forrás sem mondja ki – ezért a jegyzetben marad, és nem írtam be kitalált évet. Forrás: ugeto.weebly.com történelmi áttekintés + vasarnap.hu (Eltűnt épületek nyomában, 2025-07-14) + a magyar országtörténet Derby-helyszínlistája, 2026-11" },
@@ -700,7 +700,7 @@ const trackDatabase = {
     ],
     BEL: [
         { name: "Hippodrome de Wallonie", slug: "hippodrome-de-wallonie", city: "Ghlin (Mons)", lat: 50.4801, lng: 3.9248, founded: 1999, status: "active", length: null, direction: null, org: "Hippodrome de Wallonie / Mons SA", ownSite: "https://hippodromedewallonie.be/", operatorSite: null, operatorName: null, note: "Belgium vezető ügetőpályája és Vallónia egyetlen versenypályája. 1999-ben alapította a Fédération Nationale du Trot és a Vallon Régió. Évi 55 versenynap: 40 ügető (kb. 360 futam) + 15 galopp. Itt versenyzett Bold Eagle, Timoko, Ready Cash és Love You is. Kiemelt futamok: Grand Prix de Wallonie, Grand Prix de la Toussaint. Nemzetközi patkolóiskola és lóversenyszakmai képzőközpont is működik a területén" , nagyversenyek: ["Grand Prix de Wallonie", "Grand Prix de la Toussaint", "Grote Winterprijs"] },
-        { name: "Hippodroom Kuurne", slug: "hippodroom-kuurne", city: "Kuurne", lat: 50.8599, lng: 3.2782, founded: null, status: "active", length: null, direction: null, org: "Fédération Belge des Courses Hippiques", ownSite: null, operatorSite: "https://www.trotting.be", operatorName: "Fédération Belge des Courses Hippiques", note: "Flandriai ügetőpálya Kortrijk közelében" },
+        { name: "Hippodroom Kuurne", slug: "hippodroom-kuurne", city: "Kuurne", lat: 50.8599, lng: 3.2782, founded: null, status: "inactive", length: null, direction: null, org: "Fédération Belge des Courses Hippiques", ownSite: null, operatorSite: "https://www.trotting.be", operatorName: "Fédération Belge des Courses Hippiques", note: "STÁTUSZ JAVÍTVA (2026-11): korábban aktív volt. A belga ügetősport története szerint Kuurne A 2025-ÖS IDÉNY UTÁN BEFEJEZTE A VERSENYRENDEZÉST. Megerősíti, hogy a Grote Winterprijs – amely 2002 és 2025 között itt futott – 2026-ban már Monsban került megrendezésre. A szabály szerint inactive és nem closed: a 2025-ös idényben még volt versenynapja, és a pálya létezik; a végleges megszűnésről nincs forrásunk. ELLENŐRZENDŐ 2027-ben: ha a 2026-os és 2027-es idényben sem lesz versenynap, a státusz unknown vagy closed lesz. Flandriai ügetőpálya Kortrijk közelében. Forrás: a belga országtörténet (UET 2025-ös adatok, Grote Winterprijs helyszínlistája), 2026-11" },
         { name: "Hippodroom Waregem", slug: "hippodroom-waregem", city: "Waregem", lat: 50.8853, lng: 3.4416, founded: null, status: "active", length: null, direction: null, org: "Hippodroom Waregem", ownSite: "http://www.hippodroomwaregem.be/", operatorSite: null, operatorName: null, note: "40 000 fős befogadóképesség; a Waregem Koerse (Great Flanders Steeple Chase) helyszíne. Vegyes profil: telivér és ügető egyaránt" },
         { name: "Hippodroom Tongeren (Jeker)", slug: "hippodroom-tongeren-jeker", city: "Tongeren", lat: 50.7687, lng: 5.4579, founded: null, status: "active", length: null, direction: null, org: "Fédération Belge des Courses Hippiques", ownSite: null, operatorSite: "https://www.trotting.be", operatorName: "Fédération Belge des Courses Hippiques", note: "Limburg tartomány ügetőpályája, a Jeker folyó mentén" }
     ],
@@ -1437,6 +1437,34 @@ function ui(kulcs) {
 /* A státuszfeliratok FÜGGVÉNNYEL készülnek, nem konstansként.
    Ha konstans lenne, a betöltéskori nyelven ragadna, és későbbi
    nyelvváltáskor magyarul maradna. */
+/* ============================================================
+   MIT JELENT AZ EGYES STÁTUSZ — a döntés szabálya
+   ------------------------------------------------------------
+   Ez a lista nem stílus kérdése, hanem az adatminőségé. Amíg nem
+   volt leírva, két jóhiszemű döntés mondhatott ellent egymásnak:
+   a pozsonyi Starý háj például „inaktív" volt azzal az indokkal,
+   hogy a rendszeres üzem 2012-ben leállt – miközben a szlovák
+   Derbyt 2026-ban is ott futották.
+
+   A szabály a VERSENYNAPRA épül, nem az üzem jellegére:
+
+     active      az elmúlt 12 hónapban volt versenynapja, VAGY
+                 szerepel a futó szezon hivatalos naptárában.
+                 Az sem számít, ha évente csak egyszer futnak rajta.
+     inactive    létező, nyilvántartott pálya, de az elmúlt 12
+                 hónapban nem volt versenynapja – három éven belül
+                 viszont igen.
+     unknown     szerepel valamelyik nyilvántartásban, de három éve
+                 vagy régebben nincs nyoma versenynapnak, és
+                 bezárásra utaló forrás sincs.
+     closed      dokumentáltan megszűnt rajta a versenyzés, forrással.
+     historical  már nem létező, kizárólag történeti forrásból ismert
+                 helyszín – a helyén ma más áll.
+
+   A tools/statusz.mjs ugyanezt a szabályt alkalmazza gépileg, és
+   SOHA nem javasol változást, ha egyetlen versenynaptárat sem ért el:
+   a bizonyíték hiánya nem a hiány bizonyítéka.
+   ============================================================ */
 function statuszSzoveg(kulcs) {
     const map = {
         active:   { szotar: 'stActive',   cls: 'st-active' },
