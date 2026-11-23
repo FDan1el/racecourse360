@@ -70,7 +70,17 @@ const SZEKCIOK = {
 const KIMENET = GYOKER;
 const BAZIS_URL = 'https://racecourse360.com';
 
-const NYELVEK = ['hu', 'en', 'de', 'fr', 'sv', 'es', 'it', 'ja', 'zh', 'ar'];
+/* AKTÍV nyelvek. A japán, kínai és arab átmenetileg kikapcsolva
+   (2026-11, tulajdonosi döntés). A FORDÍTÁSOK MEGMARADNAK a lenti
+   szótárakban – csak nem generálunk hozzájuk lapot, sitemapet és
+   hreflang sort. Visszakapcsolás: vedd vissza a kódokat ebbe a
+   listába, futtasd a --general módot, és kapcsold vissza a
+   nyelvgombokat az index.html-ben + az app.js AKTIV_NYELVEK
+   listájában. A sorrend számít: a hreflang és a nyelvváltó ezt
+   a sorrendet követi. */
+const NYELVEK = ['hu', 'en', 'de', 'fr', 'sv', 'es', 'it'];
+/* A kikapcsolt nyelvek, hogy a visszakapcsoláskor ne kelljen kitalálni:
+   'ja', 'zh', 'ar'. A szótáraik lentebb érintetlenül megvannak. */
 
 /* ============================================================
    PARTNERPROGRAM (affiliate)
@@ -248,6 +258,10 @@ function slugGyanus(eredeti, slug) {
 
 const MERFOLD_TABLA = {
     402:  '1/4 mile',
+    /* 3 furlong – a walesi Talsarn pálya mérete, a Wales & Border
+       pályajegyzék saját közlése szerint ("three furlong").
+       3 × 201,17 = 603 m. */
+    603:  '3 furlongs',
     805:  '1/2 mile',
     1006: '5/8 mile',
     /* 11/16 mérföld – ritka, de valós méret. A Century Downs (Alberta)
@@ -290,6 +304,7 @@ const SZOTAR = {
         city: "Település",
         helyiIdo: "Helyi idő",
         surface: "Pálya talaja",
+        nagyversenyek: "Kiemelt versenyek",
         celegyenes: "Célegyenes",
         sfGrass: "fű",
         sfSand: "homok",
@@ -315,6 +330,7 @@ const SZOTAR = {
         st_inactive: "Inaktív / felfüggesztve",
         st_unknown: "Ismeretlen – ellenőrzendő",
         st_closed: "Véglegesen bezárt",
+        st_historical: "Történelmi helyszín",
         desc: (n,v,o) => `${n} (${v}, ${o}) – ügetőpálya elhelyezkedése, alapadatai és státusza a Racecourse360 nemzetközi pályaadatbázisában.`,
         listDesc: (o,db) => `${o} ügetőpályái – ${db} dokumentált versenypálya elhelyezkedéssel, alapadatokkal és státusszal.`,
         races: "Versenyek",
@@ -334,6 +350,7 @@ const SZOTAR = {
         city: "Town",
         helyiIdo: "Local time",
         surface: "Track surface",
+        nagyversenyek: "Featured races",
         celegyenes: "Home straight",
         sfGrass: "turf",
         sfSand: "sand",
@@ -359,6 +376,7 @@ const SZOTAR = {
         st_inactive: "Inactive / suspended",
         st_unknown: "Unknown – to be verified",
         st_closed: "Permanently closed",
+        st_historical: "Historical venue",
         desc: (n,v,o) => `${n} (${v}, ${o}) – harness racing track location, key facts and status in the Racecourse360 international track database.`,
         listDesc: (o,db) => `Harness racing tracks in ${o} – ${db} documented racecourses with location, key facts and status.`,
         races: "Races",
@@ -378,6 +396,7 @@ const SZOTAR = {
         city: "Ort",
         helyiIdo: "Ortszeit",
         surface: "Bahnbelag",
+        nagyversenyek: "Ausgewählte Rennen",
         celegyenes: "Zielgerade",
         sfGrass: "Gras",
         sfSand: "Sand",
@@ -403,6 +422,7 @@ const SZOTAR = {
         st_inactive: "Inaktiv / ausgesetzt",
         st_unknown: "Unbekannt – zu prüfen",
         st_closed: "Dauerhaft geschlossen",
+        st_historical: "Historischer Austragungsort",
         desc: (n,v,o) => `${n} (${v}, ${o}) – Lage, Eckdaten und Status der Trabrennbahn in der internationalen Bahndatenbank Racecourse360.`,
         listDesc: (o,db) => `Trabrennbahnen in ${o} – ${db} dokumentierte Bahnen mit Lage, Eckdaten und Status.`,
         races: "Rennen",
@@ -422,6 +442,7 @@ const SZOTAR = {
         city: "Commune",
         helyiIdo: "Heure locale",
         surface: "Nature de la piste",
+        nagyversenyek: "Courses phares",
         celegyenes: "Ligne droite",
         sfGrass: "herbe",
         sfSand: "sable",
@@ -447,6 +468,7 @@ const SZOTAR = {
         st_inactive: "Inactif / suspendu",
         st_unknown: "Inconnu – à vérifier",
         st_closed: "Définitivement fermé",
+        st_historical: "Site historique",
         desc: (n,v,o) => `${n} (${v}, ${o}) – situation, données clés et statut de l'hippodrome de trot dans la base internationale Racecourse360.`,
         listDesc: (o,db) => `Hippodromes de trot en ${o} – ${db} pistes documentées avec situation, données clés et statut.`,
         races: "Courses",
@@ -466,6 +488,7 @@ const SZOTAR = {
         city: "Ort",
         helyiIdo: "Lokal tid",
         surface: "Banunderlag",
+        nagyversenyek: "Utvalda lopp",
         celegyenes: "Upplopp",
         sfGrass: "gräs",
         sfSand: "sand",
@@ -491,6 +514,7 @@ const SZOTAR = {
         st_inactive: "Inaktiv / pausad",
         st_unknown: "Okänd – behöver kontrolleras",
         st_closed: "Permanent stängd",
+        st_historical: "Historisk bana",
         desc: (n,v,o) => `${n} (${v}, ${o}) – travbanans läge, fakta och status i Racecourse360:s internationella bandatabas.`,
         listDesc: (o,db) => `Travbanor i ${o} – ${db} dokumenterade banor med läge, fakta och status.`,
         races: "Lopp",
@@ -510,6 +534,7 @@ const SZOTAR = {
         city: "Localidad",
         helyiIdo: "Hora local",
         surface: "Superficie",
+        nagyversenyek: "Carreras destacadas",
         celegyenes: "Recta final",
         sfGrass: "hierba",
         sfSand: "arena",
@@ -535,6 +560,7 @@ const SZOTAR = {
         st_inactive: "Inactivo / suspendido",
         st_unknown: "Desconocido – por verificar",
         st_closed: "Cerrado definitivamente",
+        st_historical: "Sede histórica",
         desc: (n,v,o) => `${n} (${v}, ${o}) – ubicación, datos clave y estado del hipódromo de trote en la base internacional Racecourse360.`,
         listDesc: (o,db) => `Hipódromos de trote en ${o} – ${db} pistas documentadas con ubicación, datos clave y estado.`,
         races: "Carreras",
@@ -554,6 +580,7 @@ const SZOTAR = {
         city: "Località",
         helyiIdo: "Ora locale",
         surface: "Fondo della pista",
+        nagyversenyek: "Corse di rilievo",
         celegyenes: "Rettilineo finale",
         sfGrass: "erba",
         sfSand: "sabbia",
@@ -579,6 +606,7 @@ const SZOTAR = {
         st_inactive: "Inattivo / sospeso",
         st_unknown: "Sconosciuto – da verificare",
         st_closed: "Chiuso definitivamente",
+        st_historical: "Sede storica",
         desc: (n,v,o) => `${n} (${v}, ${o}) – posizione, dati principali e stato dell'ippodromo del trotto nel database internazionale Racecourse360.`,
         listDesc: (o,db) => `Ippodromi del trotto in ${o} – ${db} piste documentate con posizione, dati principali e stato.`,
         races: "Corse",
@@ -598,6 +626,7 @@ const SZOTAR = {
         city: "所在地",
         helyiIdo: "現地時刻",
         surface: "走路面",
+        nagyversenyek: "注目の競走",
         celegyenes: "直線",
         sfGrass: "芝",
         sfSand: "砂",
@@ -623,6 +652,7 @@ const SZOTAR = {
         st_inactive: "休止中",
         st_unknown: "不明 – 要確認",
         st_closed: "閉鎖",
+        st_historical: "歴史的開催地",
         desc: (n,v,o) => `${n}（${v}、${o}）– 繋駕速歩競走場の所在地、基本データ、開催状況を Racecourse360 の国際競馬場データベースで。`,
         listDesc: (o,db) => `${o}の繋駕速歩競走場 – 所在地・基本データ・開催状況を掲載した${db}か所の競走場。`,
         races: "レース",
@@ -642,6 +672,7 @@ const SZOTAR = {
         city: "所在地",
         helyiIdo: "当地时间",
         surface: "赛道地面",
+        nagyversenyek: "重点赛事",
         celegyenes: "终点直道",
         sfGrass: "草地",
         sfSand: "沙地",
@@ -667,6 +698,7 @@ const SZOTAR = {
         st_inactive: "暂停运营",
         st_unknown: "未知 – 待核实",
         st_closed: "已永久关闭",
+        st_historical: "历史场地",
         desc: (n,v,o) => `${n}（${v}，${o}）– 轻驾车赛马场的位置、基本资料与运营状态，收录于 Racecourse360 国际赛马场数据库。`,
         listDesc: (o,db) => `${o}的轻驾车赛马场 – 共${db}处，附位置、基本资料与运营状态。`,
         races: "赛事",
@@ -686,6 +718,7 @@ const SZOTAR = {
         city: "البلدة",
         helyiIdo: "الوقت المحلي",
         surface: "أرضية المضمار",
+        nagyversenyek: "سباقات مميزة",
         celegyenes: "المستقيم الأخير",
         sfGrass: "عشب",
         sfSand: "رمل",
@@ -711,6 +744,7 @@ const SZOTAR = {
         st_inactive: "متوقف مؤقتًا",
         st_unknown: "غير معروف – قيد التحقق",
         st_closed: "مغلق نهائيًا",
+        st_historical: "موقع تاريخي",
         desc: (n,v,o) => `${n} (${v}، ${o}) – موقع مضمار سباق الهرولة وبياناته الأساسية وحالته في قاعدة بيانات Racecourse360 الدولية.`,
         listDesc: (o,db) => `مضامير سباق الهرولة في ${o} – ${db} مضمارًا موثقًا مع الموقع والبيانات الأساسية والحالة.`,
         races: "السباقات",
@@ -1396,7 +1430,7 @@ function palyaOldal({ nyelv, palya, iso, orszag, countryMeta, figyelmeztetesek, 
 
        Ugyanez a lista él az app.js-ben is (BOVITETT_ADATLAP) –
        ha egyik helyen bővíted, a másikat is frissítsd. */
-    const BOVITETT = ['FRA', 'AUS'];
+    const BOVITETT = ['FRA', 'AUS', 'ITA'];
 
     /* A talajérték az ADATBAN magyarul szerepel ("homok",
        "kőzúzalék") – ez a magyar nyelvű adatgyűjtés öröksége.
@@ -1422,10 +1456,25 @@ function palyaOldal({ nyelv, palya, iso, orszag, countryMeta, figyelmeztetesek, 
     }
 
     mezok.push([sz(nyelv, 'direction'), irany]);
+    /* NAGYVERSENYEK – tulajdonnevek, fordítás nélkül; a sor csak
+       ott jelenik meg, ahol van adat (nem írunk ki üres N/A-t). */
+    if (Array.isArray(palya.nagyversenyek) && palya.nagyversenyek.length) {
+        /* Versenyenként külön sor a cellában. A lista HTML-je itt
+           épül, ezért a cellát NYERSEN adjuk át – az egyes neveket
+           külön-külön escape-eljük, tehát a nyers átadás nem nyit
+           rést. Ez a hely alakul majd linkké. */
+        const versenyLista = palya.nagyversenyek
+            .map(v => `<span class="rc-verseny">${esc(v)}</span>`)
+            .join('');
+        mezok.push([sz(nyelv, 'nagyversenyek'), versenyLista, true]);
+    }
     mezok.push([sz(nyelv, 'status'), statusz]);
 
-    const sorok = mezok.map(([cimke, ertek]) =>
-        `      <tr><th>${esc(cimke)}</th><td>${esc(ertek ?? sz(nyelv, 'na'))}</td></tr>`
+    /* A harmadik elem (`nyers`) azt jelzi, hogy az érték MÁR
+       kész, escape-elt HTML – csak így lehet több soros cellát
+       építeni anélkül, hogy a többi mező escape-elése sérülne. */
+    const sorok = mezok.map(([cimke, ertek, nyers]) =>
+        `      <tr><th>${esc(cimke)}</th><td>${nyers ? ertek : esc(ertek ?? sz(nyelv, 'na'))}</td></tr>`
     ).join('\n');
 
     const honlap = palya.ownSite
@@ -1456,11 +1505,21 @@ function palyaOldal({ nyelv, palya, iso, orszag, countryMeta, figyelmeztetesek, 
             addressLocality: palya.city ?? undefined,
             addressCountry: iso
         },
-        geo: {
-            '@type': 'GeoCoordinates',
-            latitude: palya.lat,
-            longitude: palya.lng
-        },
+        /* A geo blokk CSAK akkor kerül be, ha tényleg van koordináta:
+           hiányzó értéknél a "latitude": null érvénytelen strukturált adat.
+           A feltételes szétterítés azért van itt, az address és az url
+           KÖZÖTT, hogy a kulcssorrend ne változzon a korábbi kiadáshoz
+           képest – különben mind a 6000+ meglévő oldal diffje elmozdul,
+           pedig a tartalom azonos. */
+        ...((Number.isFinite(palya.lat) && Number.isFinite(palya.lng))
+            ? {
+                geo: {
+                    '@type': 'GeoCoordinates',
+                    latitude: palya.lat,
+                    longitude: palya.lng
+                }
+            }
+            : {}),
         url: `${BAZIS_URL}${kanonikus}`
     };
     if (palya.founded) jsonld.foundingDate = String(palya.founded);

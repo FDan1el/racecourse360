@@ -361,7 +361,15 @@ a[href^="mailto:"]:hover { color: var(--accent-strong); text-decoration: underli
   flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
   background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
   color: #94a3b8; font-size: 0.95rem; cursor: pointer; transition: all 0.2s ease;
+  /* A gomb korábban betűkaraktert tartalmazott, és a tartalmát a
+     szövegsor alapvonala pozicionálta – ettől csúszott el nagyobb
+     képernyőn. A flex-középre igazítás a rajzolt ikont mindig
+     pontosan a kör közepére teszi, mérettől függetlenül. */
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0; line-height: 1;
 }
+.info-icon { width: 17px; height: 17px; display: block; }
+@media (max-width: 768px) { .info-icon { width: 19px; height: 19px; } }
 #legalInfoBtn:hover { color: var(--accent); border-color: var(--accent); background: rgba(var(--accent-rgb), 0.1); }
 
 /* Szűrőgombok emoji/felirat része - mobilon csak az emoji marad */
@@ -423,11 +431,34 @@ a[href^="mailto:"]:hover { color: var(--accent-strong); text-decoration: underli
 .track-marker {
   width: 16px; height: 16px; border-radius: 50%;
   border: 2px solid #0f172a;
+  position: relative;            /* a csillag ehhez igazodik */
+}
+/* Nagyverseny helyszíne. A csillag a pötty FÖLÉ kerül, nem helyette:
+   a pötty színe a státuszt mutatja, a csillag a rangot – két
+   különböző dimenzió, amit nem szabad egymásba olvasztani.
+   A sötét körvonal azért kell, hogy világos térképen is látszódjon. */
+.track-marker.nagyverseny::after {
+  content: "\2605";
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -54%);
+  font-size: 17px; line-height: 1;
+  color: #facc15;
+  text-shadow: 0 0 2px #0f172a, 0 0 4px #0f172a, 0 0 9px rgba(250,204,21,.85);
+  pointer-events: none;
 }
 .track-marker.active { background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,0.8); }
 .track-marker.inactive { background: #d97706; box-shadow: 0 0 8px rgba(217,119,6,0.8); }
 .track-marker.unknown { background: #fde047; box-shadow: 0 0 10px rgba(253,224,71,0.95); }
 .track-marker.closed { background: #ef4444; box-shadow: 0 0 8px rgba(239,68,68,0.8); }
+/* Történelmi helyszín: semleges szürke. A piros „bezárt” a friss
+   veszteséget jelzi, a szürke a múltat – ezért nem ugyanaz a szín. */
+/* Kiemelt versenyek: egy verseny egy sorban, hogy a későbbi
+   linkesítés után is olvasható maradjon a felsorolás. */
+.popup-nagyverseny { display: block; margin-top: 2px; }
+.popup-verseny { display: block; padding-left: 2px; }
+
+.track-marker.historical { background: #9ca3af; box-shadow: 0 0 8px rgba(156,163,175,0.75); }
 
 /* ============ EGYEDI LEAFLET POPUP STÍLUS ============ */
 .leaflet-popup-content-wrapper {
@@ -511,6 +542,7 @@ a[href^="mailto:"]:hover { color: var(--accent-strong); text-decoration: underli
 .popup-status.inactive { background: #d97706; box-shadow: 0 0 6px rgba(217,119,6,0.7); }
 .popup-status.unknown { background: #fde047; box-shadow: 0 0 7px rgba(253,224,71,0.9); }
 .popup-status.closed { background: #ef4444; box-shadow: 0 0 6px rgba(239,68,68,0.7); }
+.popup-status.historical { background: #9ca3af; box-shadow: 0 0 6px rgba(156,163,175,0.7); }
 .popup-status-text { font-size: 0.7rem; color: #c9b8a8; font-weight: 600; }
 .popup-name {
   font-weight: 700; color: #ffffff; font-size: 1rem; letter-spacing: 0.2px;
@@ -978,6 +1010,8 @@ a[href^="mailto:"]:hover { color: var(--accent-strong); text-decoration: underli
 .st-unknown { color: #fde047; }
 .st-closed .tp-dot { background: #ef4444; }
 .st-closed { color: #ef4444; }
+.st-historical .tp-dot { background: #9ca3af; }
+.st-historical { color: #9ca3af; }
 
 @media (max-width: 768px), (max-height: 520px) {
   #tracksPanel { width: 100%; max-width: 100%; }
@@ -1523,4 +1557,14 @@ body.van-reklam #dayNightBtn { transform: translateY(calc(-50% - var(--reklam-ma
 
 [dir="rtl"] .popup-idojaras { margin-left: 0; margin-right: auto; }
 
-
+/* ============================================================
+   ÁTMENETILEG REJTETT SZAKÁGVÁLASZTÓ (2026-11)
+   ------------------------------------------------------------
+   Amíg nincs galopp-adatunk, a látogató egyből az ügető
+   térképére érkezik, és nem kell választania. A gombok HTML-je
+   megmarad az index.html-ben – csak nem látszik.
+   VISSZAKAPCSOLÁS: töröld ezt a szabályt, és állítsd a
+   js/app.js SZAKAGVALASZTO kapcsolóját true-ra. A kettő
+   összetartozik: a kapcsoló dönti el az indulóállapotot is.
+   ============================================================ */
+.filter-btn { display: none !important; }

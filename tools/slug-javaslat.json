@@ -1977,6 +1977,13 @@
       "region": null,
       "slug": "ippodromo-cesare-fiaschi",
       "mar_veglegesitve": true
+    },
+    {
+      "name": "Ippodromo di Tor di Valle",
+      "city": "Roma",
+      "region": "Lazio",
+      "slug": "ippodromo-di-tor-di-valle",
+      "mar_veglegesitve": true
     }
   ],
   "FIN": [
@@ -2380,6 +2387,20 @@
       "city": "Budapest",
       "region": null,
       "slug": "kincsem-park",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Kerepesi úti ügetőpálya (Tattersall)",
+      "city": "Budapest",
+      "region": null,
+      "slug": "kerepesi-uti-ugetopalya",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Erzsébet királyné úti ügetőpálya",
+      "city": "Budapest",
+      "region": null,
+      "slug": "erzsebet-kiralyne-uti-ugetopalya",
       "mar_veglegesitve": true
     }
   ],
@@ -3152,6 +3173,27 @@
       "region": "WA",
       "slug": "kellerberrin",
       "mar_veglegesitve": true
+    },
+    {
+      "name": "Harold Park Paceway",
+      "city": "Forest Lodge (Sydney), NSW",
+      "region": "NSW",
+      "slug": "harold-park-paceway",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Moonee Valley Racecourse (ügetőpálya)",
+      "city": "Moonee Ponds (Melbourne), VIC",
+      "region": "VIC",
+      "slug": "moonee-valley-racecourse-ugeto",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Gold Coast Parklands",
+      "city": "Southport (Gold Coast), QLD",
+      "region": "QLD",
+      "slug": "gold-coast-parklands",
+      "mar_veglegesitve": true
     }
   ],
   "NZL": [
@@ -3436,73 +3478,10 @@
   ],
   "GBR": [
     {
-      "name": "Boughrood",
-      "city": "Boughrood",
+      "name": "York Raceway",
+      "city": "Nun Monkton (York)",
       "region": null,
-      "slug": "boughrood",
-      "mar_veglegesitve": true
-    },
-    {
-      "name": "Eardisley",
-      "city": "Eardisley",
-      "region": null,
-      "slug": "eardisley",
-      "mar_veglegesitve": true
-    },
-    {
-      "name": "Ivington",
-      "city": "Ivington",
-      "region": null,
-      "slug": "ivington",
-      "mar_veglegesitve": true
-    },
-    {
-      "name": "Kilnsey",
-      "city": "Kilnsey",
-      "region": null,
-      "slug": "kilnsey",
-      "mar_veglegesitve": true
-    },
-    {
-      "name": "Lampeter",
-      "city": "Lampeter",
-      "region": null,
-      "slug": "lampeter",
-      "mar_veglegesitve": true
-    },
-    {
-      "name": "Pikehall",
-      "city": "Pikehall",
-      "region": null,
-      "slug": "pikehall",
-      "mar_veglegesitve": true
-    },
-    {
-      "name": "Talgarreg",
-      "city": "Talgarreg",
-      "region": null,
-      "slug": "talgarreg",
-      "mar_veglegesitve": true
-    },
-    {
-      "name": "Tregaron",
-      "city": "Tregaron",
-      "region": null,
-      "slug": "tregaron",
-      "mar_veglegesitve": true
-    },
-    {
-      "name": "Wolsingham",
-      "city": "Wolsingham",
-      "region": null,
-      "slug": "wolsingham",
-      "mar_veglegesitve": true
-    },
-    {
-      "name": "Wolverhampton Racecourse",
-      "city": "Wolverhampton",
-      "region": null,
-      "slug": "wolverhampton-racecourse",
+      "slug": "york-raceway",
       "mar_veglegesitve": true
     },
     {
@@ -3513,10 +3492,129 @@
       "mar_veglegesitve": true
     },
     {
-      "name": "Corbiewood Stadium (Haugh Field)",
-      "city": "Bannockburn (Stirling), Skócia",
+      "name": "Haugh Field",
+      "city": "Whins of Milton (Stirling), Skócia",
       "region": null,
-      "slug": "corbiewood-stadium-haugh-field",
+      "slug": "haugh-field",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Amman Valley",
+      "city": "Tairgwaith (Ammanford), Wales",
+      "region": null,
+      "slug": "amman-valley",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Appleby",
+      "city": "Appleby-in-Westmorland",
+      "region": null,
+      "slug": "appleby",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Wolsingham",
+      "city": "Wolsingham",
+      "region": null,
+      "slug": "wolsingham",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Ivington",
+      "city": "Ivington",
+      "region": null,
+      "slug": "ivington",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Tregaron",
+      "city": "Tregaron",
+      "region": null,
+      "slug": "tregaron",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Almeley",
+      "city": "Almeley",
+      "region": null,
+      "slug": "almeley",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Presteigne",
+      "city": "Presteigne",
+      "region": null,
+      "slug": "presteigne",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Boughrood",
+      "city": "Boughrood",
+      "region": null,
+      "slug": "boughrood",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Lampeter",
+      "city": "Lampeter",
+      "region": null,
+      "slug": "lampeter",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Talgarreg",
+      "city": "Talgarreg",
+      "region": null,
+      "slug": "talgarreg",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Kilnsey",
+      "city": "Kilnsey",
+      "region": null,
+      "slug": "kilnsey",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Hellifield",
+      "city": "Hellifield",
+      "region": null,
+      "slug": "hellifield",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Longnor",
+      "city": "Longnor (Staffordshire)",
+      "region": null,
+      "slug": "longnor",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Stanhope",
+      "city": "Stanhope (County Durham)",
+      "region": null,
+      "slug": "stanhope",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Cilmery",
+      "city": "Cilmery (Builth Wells)",
+      "region": null,
+      "slug": "cilmery",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Eardisley",
+      "city": "Eardisley",
+      "region": null,
+      "slug": "eardisley",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Pikehall",
+      "city": "Pikehall",
+      "region": null,
+      "slug": "pikehall",
       "mar_veglegesitve": true
     },
     {
@@ -3524,6 +3622,167 @@
       "city": "Musselburgh, Skócia",
       "region": null,
       "slug": "musselburgh-racecourse",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Wolverhampton Racecourse",
+      "city": "Wolverhampton",
+      "region": null,
+      "slug": "wolverhampton-racecourse",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Corbiewood Stadium",
+      "city": "Bannockburn (Stirling), Skócia",
+      "region": null,
+      "slug": "corbiewood-stadium-haugh-field",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Aberystwyth",
+      "city": "Aberystwyth",
+      "region": null,
+      "slug": "aberystwyth",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Beulah Show",
+      "city": "Beulah (Powys)",
+      "region": null,
+      "slug": "beulah-show",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Bwlch Y Groes",
+      "city": "Bwlch-y-Groes (Pembrokeshire)",
+      "region": null,
+      "slug": "bwlch-y-groes",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Caersws",
+      "city": "Caersws (Powys)",
+      "region": null,
+      "slug": "caersws",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Cothi Bridge",
+      "city": "Cothi Bridge (Carmarthenshire)",
+      "region": null,
+      "slug": "cothi-bridge",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Evenjobb",
+      "city": "Evenjobb (Powys)",
+      "region": null,
+      "slug": "evenjobb",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Hundred House Show",
+      "city": "Hundred House (Builth Wells)",
+      "region": null,
+      "slug": "hundred-house-show",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Llandewi Brefi",
+      "city": "Llanddewi Brefi (Ceredigion)",
+      "region": null,
+      "slug": "llandewi-brefi",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Llandyfaelog",
+      "city": "Llandyfaelog (Carmarthenshire)",
+      "region": null,
+      "slug": "llandyfaelog",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Llanigon Show",
+      "city": "Llanigon (Hay-on-Wye)",
+      "region": null,
+      "slug": "llanigon-show",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Ludlow",
+      "city": "Ludlow (Shropshire)",
+      "region": null,
+      "slug": "ludlow",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Newbridge",
+      "city": "Newbridge-on-Wye (Powys)",
+      "region": null,
+      "slug": "newbridge",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Penybont",
+      "city": "Penybont (Powys)",
+      "region": null,
+      "slug": "penybont",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Sennybridge",
+      "city": "Sennybridge (Powys)",
+      "region": null,
+      "slug": "sennybridge",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Synod Inn",
+      "city": "Synod Inn (Ceredigion)",
+      "region": null,
+      "slug": "synod-inn",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Knighton",
+      "city": "Knighton (Powys)",
+      "region": null,
+      "slug": "knighton",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Talsarn",
+      "city": "Talsarn (Ceredigion)",
+      "region": null,
+      "slug": "talsarn",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Royal Welsh Show",
+      "city": "Llanelwedd (Builth Wells)",
+      "region": null,
+      "slug": "royal-welsh-show",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "New Radnor",
+      "city": "New Radnor (Powys)",
+      "region": null,
+      "slug": "new-radnor",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Kinnerton",
+      "city": "Kinnerton (Powys)",
+      "region": null,
+      "slug": "kinnerton",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Llangunllo",
+      "city": "Llangunllo (Powys)",
+      "region": null,
+      "slug": "llangunllo",
       "mar_veglegesitve": true
     }
   ],
@@ -3651,8 +3910,8 @@
       "mar_veglegesitve": true
     },
     {
-      "name": "Hipodrom Ig (Iška vas)",
-      "city": "Ig",
+      "name": "Hipodrom Vrbljene",
+      "city": "Vrbljene (Ig)",
       "region": null,
       "slug": "hipodrom-ig-iska-vas",
       "mar_veglegesitve": true
@@ -3717,6 +3976,115 @@
       "city": "Omszk",
       "region": null,
       "slug": "omskij-ippodrom",
+      "mar_veglegesitve": true
+    }
+  ],
+  "LVA": [
+    {
+      "name": "Pušmucovas skrejceļš",
+      "city": "Pušmucova (Ludzas novads)",
+      "region": null,
+      "slug": "pusmucovas-skrejcels",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Robežnieku skrejceļš",
+      "city": "Robežnieki (Krāslavas novads)",
+      "region": null,
+      "slug": "robeznieku-skrejcels",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Beķeru skrejceļš",
+      "city": "Velēna (Lizuma pagasts, Gulbenes novads)",
+      "region": null,
+      "slug": "bekeru-skrejcels",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Dubļovas skrejceļš",
+      "city": "Dubļova (Baltinavas pagasts, Balvu novads)",
+      "region": null,
+      "slug": "dublovas-skrejcels",
+      "mar_veglegesitve": true
+    }
+  ],
+  "ARG": [
+    {
+      "name": "Hipódromo Dr. Hernán Ayerza",
+      "city": "Hurlingham (Buenos Aires)",
+      "region": "Buenos Aires",
+      "slug": "hipodromo-dr-hernan-ayerza",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Hipódromo de Navarro",
+      "city": "Navarro (Buenos Aires)",
+      "region": "Buenos Aires",
+      "slug": "hipodromo-de-navarro",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Hipódromo de Chivilcoy",
+      "city": "Chivilcoy (Buenos Aires)",
+      "region": "Buenos Aires",
+      "slug": "hipodromo-de-chivilcoy",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Hipódromo Julio Rodríguez",
+      "city": "Pehuajó (Buenos Aires)",
+      "region": "Buenos Aires",
+      "slug": "hipodromo-julio-rodriguez",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Hipódromo de Lincoln",
+      "city": "Lincoln (Buenos Aires)",
+      "region": "Buenos Aires",
+      "slug": "hipodromo-de-lincoln",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Hipódromo de Pilar",
+      "city": "Pilar (Córdoba)",
+      "region": "Córdoba",
+      "slug": "hipodromo-de-pilar-cordoba",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Hipódromo de la Asociación Devotense de Trote",
+      "city": "Devoto (Córdoba)",
+      "region": "Córdoba",
+      "slug": "hipodromo-asociacion-devotense-de-trote",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Club Hípico Varillense",
+      "city": "Las Varillas (Córdoba)",
+      "region": "Córdoba",
+      "slug": "club-hipico-varillense",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Hipódromo de Villa María",
+      "city": "Villa María (Córdoba)",
+      "region": "Córdoba",
+      "slug": "hipodromo-de-villa-maria",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Hipódromo de Trote Club Alianza",
+      "city": "Arteaga (Santa Fe)",
+      "region": "Santa Fe",
+      "slug": "hipodromo-de-trote-club-alianza",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Hipódromo de Cintra",
+      "city": "Cintra (Córdoba)",
+      "region": "Córdoba",
+      "slug": "hipodromo-de-cintra",
       "mar_veglegesitve": true
     }
   ]

@@ -260,6 +260,7 @@
   <url><loc>https://racecourse360.com/de/tracks/france/hippodrome-de-la-hardt/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/france/hippodrome-de-viseo/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/italy/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/italy/ippodromo-di-tor-di-valle/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/italy/ippodromo-mori/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/italy/ippodromo-di-agnano/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/italy/ippodromo-snai-san-siro-trotto/</loc></url>
@@ -286,6 +287,7 @@
   <url><loc>https://racecourse360.com/de/tracks/italy/ippodromo-cirigliano/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/italy/ippodromo-san-marone/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/italy/ippodromo-cesare-fiaschi/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/italy/ippodromo-del-candiano/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/finland/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/finland/metsamaki-racetrack/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/finland/haapajarven-ravirata/</loc></url>
@@ -347,9 +349,12 @@
   <url><loc>https://racecourse360.com/de/tracks/slovakia/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/slovakia/zavodisko-bratislava-stary-haj-petrzalka/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/hungary/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/hungary/erzsebet-kiralyne-uti-ugetopalya/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/hungary/kerepesi-uti-ugetopalya/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/hungary/kincsem-park/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/estonia/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/estonia/tallinna-hipodroom/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/estonia/tuula-hipodroom/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/united-states/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/united-states/batavia-downs/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/united-states/buffalo-raceway/</loc></url>
@@ -419,6 +424,9 @@
   <url><loc>https://racecourse360.com/de/tracks/canada/woodstock-connell-park/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/canada/st-john-s-racing-entertainment-centre/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/australia/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/australia/harold-park-paceway/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/australia/moonee-valley-racecourse-ugeto/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/australia/gold-coast-parklands/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/australia/melton-entertainment-park-tabcorp-park/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/australia/club-menangle-menangle-park-paceway/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/australia/albion-park-raceway/</loc></url>
@@ -557,9 +565,19 @@
   <url><loc>https://racecourse360.com/de/tracks/germany/trabrennbahn-monchengladbach/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/germany/trabrennbahn-bahrenfeld/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/germany/trabrennbahn-straubing/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/germany/trabrennbahn-dieburg/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/germany/rennbahn-im-drensteinfurter-erlfeld/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/germany/trabrennbahn-bedburg-hau/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/germany/jaderennbahn-hooksiel/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/germany/trabrennbahn-hopfenmeile/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/germany/trabrennbahn-dinslaken/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/germany/rennbahn-saarbruecken-guedingen/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/austria/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/austria/trabrennbahn-krieau/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/austria/welser-trabrennbahn/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/austria/trabrennbahn-baden/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/austria/magna-racino-ebreichsdorf/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/austria/trabrennbahn-edelhof/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/netherlands/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/netherlands/victoria-park-wolvega/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/netherlands/alkmaar-zeturf-arena/</loc></url>
@@ -575,24 +593,60 @@
   <url><loc>https://racecourse360.com/de/tracks/belgium/hippodroom-waregem/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/belgium/hippodroom-tongeren-jeker/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/great-britain/</loc></url>
-  <url><loc>https://racecourse360.com/de/tracks/great-britain/boughrood/</loc></url>
-  <url><loc>https://racecourse360.com/de/tracks/great-britain/eardisley/</loc></url>
-  <url><loc>https://racecourse360.com/de/tracks/great-britain/ivington/</loc></url>
-  <url><loc>https://racecourse360.com/de/tracks/great-britain/kilnsey/</loc></url>
-  <url><loc>https://racecourse360.com/de/tracks/great-britain/lampeter/</loc></url>
-  <url><loc>https://racecourse360.com/de/tracks/great-britain/pikehall/</loc></url>
-  <url><loc>https://racecourse360.com/de/tracks/great-britain/talgarreg/</loc></url>
-  <url><loc>https://racecourse360.com/de/tracks/great-britain/tregaron/</loc></url>
-  <url><loc>https://racecourse360.com/de/tracks/great-britain/wolsingham/</loc></url>
-  <url><loc>https://racecourse360.com/de/tracks/great-britain/wolverhampton-racecourse/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/york-raceway/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/great-britain/tir-prince-raceway/</loc></url>
-  <url><loc>https://racecourse360.com/de/tracks/great-britain/corbiewood-stadium-haugh-field/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/haugh-field/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/amman-valley/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/appleby/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/wolsingham/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/ivington/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/tregaron/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/almeley/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/presteigne/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/boughrood/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/lampeter/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/talgarreg/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/kilnsey/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/hellifield/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/longnor/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/stanhope/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/cilmery/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/eardisley/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/pikehall/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/great-britain/musselburgh-racecourse/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/wolverhampton-racecourse/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/corbiewood-stadium-haugh-field/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/aberystwyth/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/beulah-show/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/bwlch-y-groes/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/caersws/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/cothi-bridge/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/evenjobb/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/hundred-house-show/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/llandewi-brefi/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/llandyfaelog/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/llanigon-show/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/ludlow/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/newbridge/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/penybont/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/sennybridge/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/synod-inn/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/knighton/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/talsarn/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/royal-welsh-show/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/new-radnor/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/kinnerton/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/great-britain/llangunllo/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/ireland/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/ireland/portmarnock-raceway/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/ireland/annaghmore-raceway/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/lithuania/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/lithuania/lazdijai-hippodrome-bukta/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/latvia/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/latvia/pusmucovas-skrejcels/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/latvia/robeznieku-skrejcels/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/latvia/bekeru-skrejcels/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/latvia/dublovas-skrejcels/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/malta/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/malta/ta-xhajma-racetrack/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/malta/marsa-racetrack-malta-equidrome/</loc></url>
@@ -622,4 +676,16 @@
   <url><loc>https://racecourse360.com/de/tracks/russia/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/russia/centralnyj-moskovskij-ippodrom/</loc></url>
   <url><loc>https://racecourse360.com/de/tracks/russia/omskij-ippodrom/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/argentina/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/argentina/hipodromo-dr-hernan-ayerza/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/argentina/hipodromo-de-navarro/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/argentina/hipodromo-de-chivilcoy/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/argentina/hipodromo-julio-rodriguez/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/argentina/hipodromo-de-lincoln/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/argentina/hipodromo-de-pilar-cordoba/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/argentina/hipodromo-asociacion-devotense-de-trote/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/argentina/club-hipico-varillense/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/argentina/hipodromo-de-villa-maria/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/argentina/hipodromo-de-trote-club-alianza/</loc></url>
+  <url><loc>https://racecourse360.com/de/tracks/argentina/hipodromo-de-cintra/</loc></url>
 </urlset>

@@ -88,6 +88,87 @@ function haviNaptarak(honapok) {
     return ki;
 }
 
+/* ============================================================
+   BIZONYÍTÓ FORRÁSOK — a legfontosabb szabály ebben a fájlban
+   ------------------------------------------------------------
+   Csak ezek a források bizonyítanak VERSENYNAPOT. Egy enciklopédia
+   vagy egy térkép megmondhatja, hogy a pálya LÉTEZIK, és azt is,
+   hogy MEGSZŰNT – de azt nem, hogy mikor futottak rajta utoljára.
+
+   Ez nem elméleti kérdés. A 2026 augusztusi AUS-futás azért
+   javasolta a Melton Entertainment Parkot inaktívnak, mert a
+   szövetségi naptárat botvédelem blokkolta, így az egyetlen
+   megtalált dátum egy Wikipédia-szövegben szereplő 2011-es évszám
+   volt – azt pedig a szkript „utolsó versenynyomnak" vette. Közben
+   a Melton az A.G. Hunter Cup és a Great Southern Star otthona.
+
+   Ezért: a `legutobbi` dátumot KIZÁRÓLAG bizonyító forrás állíthatja
+   be, és ha egyetlen bizonyító forrás sem volt elérhető, a szkript
+   NEM javasol státuszt, hanem azt írja: nem ellenőrizhető.
+   ============================================================ */
+const BIZONYITO = new Set(['szovetseg', 'allami', 'fogadas']);
+
+/** Országonkénti KÖZVETLEN versenynaptár, ahol ismerjük a címét.
+    Ez a legjobb jelzés: itt a versenynapok dátummal állnak. */
+const NAPTARAK = {
+    GBR: (ev) => [{ nev: 'BHRC versenynaptár', csalad: 'szovetseg', tipus: 'lista',
+                    url: `https://v2.bhrc.org.uk/${ev}-fixtures` },
+                  { nev: 'Wales & Border naptár', csalad: 'allami', tipus: 'lista',
+                    url: 'https://www.welsh-trotting.co.uk/fixtures.php' }],
+    FRA: () => [{ nev: 'LeTrot naptár', csalad: 'szovetseg', tipus: 'lista',
+                  url: 'https://www.letrot.com/fr/courses/calendrier' }],
+    SWE: () => [{ nev: 'Svensk Travsport naptár', csalad: 'szovetseg', tipus: 'lista',
+                  url: 'https://www.travsport.se/tavling/tavlingskalender/' }],
+    NOR: () => [{ nev: 'DNT terminliste', csalad: 'szovetseg', tipus: 'lista',
+                  url: 'https://www.travsport.no/sport/terminliste/' }],
+    FIN: () => [{ nev: 'Hippos ravikalenteri', csalad: 'szovetseg', tipus: 'lista',
+                  url: 'https://www.hippos.fi/ravit/ravikalenteri/' }],
+    ITA: () => [{ nev: 'TrottoWeb naptár', csalad: 'szovetseg', tipus: 'lista',
+                  url: 'https://www.trottoweb.com/' }],
+    USA: () => [{ nev: 'USTA versenynaptár', csalad: 'szovetseg', tipus: 'lista',
+                  url: 'https://www.ustrotting.com/racing/' }],
+    CAN: () => [{ nev: 'Standardbred Canada naptár', csalad: 'szovetseg', tipus: 'lista',
+                  url: 'https://standardbredcanada.ca/racing/entries' }],
+    NZL: () => [{ nev: 'HRNZ versenynaptár', csalad: 'szovetseg', tipus: 'lista',
+                  url: 'https://www.hrnz.co.nz/racing/calendar' }],
+    ARG: () => [{ nev: 'F.A.T. versenynaptár', csalad: 'szovetseg', tipus: 'lista',
+                  url: 'https://trote.com.ar/calendario/' }]
+};
+
+/** Wikidata országazonosítók – a megszűnési dátum fő forrása. */
+const WIKIDATA_ORSZAG = {
+    AUS: 'Q408', USA: 'Q30',  CAN: 'Q16',  FRA: 'Q142', DEU: 'Q183',
+    ITA: 'Q38',  SWE: 'Q34',  NOR: 'Q20',  FIN: 'Q33',  DNK: 'Q35',
+    NLD: 'Q55',  BEL: 'Q31',  ESP: 'Q29',  GBR: 'Q145', IRL: 'Q27',
+    AUT: 'Q40',  CHE: 'Q39',  POL: 'Q36',  CZE: 'Q213', SVK: 'Q214',
+    HUN: 'Q28',  SVN: 'Q215', SRB: 'Q403', ROU: 'Q218', RUS: 'Q159',
+    UKR: 'Q212', EST: 'Q191', LVA: 'Q211', LTU: 'Q37',  MLT: 'Q233',
+    NZL: 'Q664', ARG: 'Q414'
+};
+
+/** A szövetségi forrásokat MAGÁBÓL AZ ADATBÁZISBÓL vesszük.
+    ------------------------------------------------------------
+    Minden rekordban ott az `operatorSite` (a szövetség vagy az
+    üzemeltető) és sok helyen az `ownSite`. Ha ezekből építjük a
+    forráslistát, nem keletkezik egy MÁSODIK, kézzel karbantartott
+    címjegyzék, ami elkerülhetetlenül elcsúszna az adatbázistól.
+    Egy új ország felvétele így azonnal ellenőrizhető is lesz. */
+function adatbolSzarmazoForrasok(palyak) {
+    const latott = new Set();
+    const ki = [];
+    for (const p of palyak) {
+        for (const [url, csalad, cimke] of [
+            [p.operatorSite, 'szovetseg', 'üzemeltető/szövetség'],
+            [p.ownSite, 'sajat-honlap', 'pálya honlapja']
+        ]) {
+            if (!url || latott.has(url)) continue;
+            latott.add(url);
+            ki.push({ nev: `${cimke}: ${url}`, csalad, tipus: 'lista', url });
+        }
+    }
+    return ki;
+}
+
 const FORRASOK = {
     AUS: (honapok) => [
         /* --- 1. SZÖVETSÉG --- */
@@ -385,11 +466,21 @@ async function futtat(iso, limit, honapok) {
     const trackDatabase = adatBeolvas();
     const palyak = trackDatabase[iso];
     if (!palyak) throw new Error(`Ismeretlen országkód: ${iso}`);
-    if (!FORRASOK[iso]) {
-        throw new Error(`Nincs forráslista ehhez: ${iso}. Vedd fel a FORRASOK objektumba.`);
-    }
-
-    const forrasok = FORRASOK[iso](honapok);
+    /* FORRÁSLISTA
+       Kézi lista, ha van (AUS); egyébként a közvetlen naptár (ha
+       ismerjük) + az adatbázisból származó szövetségi és pálya-
+       honlapok + a mindig elérhető enciklopédia és térkép. Így
+       MINDEN ország ellenőrizhető, nem csak az, amihez valaki
+       külön listát írt. */
+    const ev = new Date().getFullYear();
+    const forrasok = FORRASOK[iso]
+        ? FORRASOK[iso](honapok)
+        : [
+            ...(NAPTARAK[iso] ? NAPTARAK[iso](ev) : []),
+            ...adatbolSzarmazoForrasok(palyak),
+            { nev: 'Wikidata', csalad: 'enciklopedia', tipus: 'sparql',
+              orszagQ: WIKIDATA_ORSZAG[iso] || null }
+        ].filter(f => f.tipus !== 'sparql' || f.orszagQ);
     const naplo = [];
     console.log(`\n${iso}: ${palyak.length} pálya · ${forrasok.length} forrás · ${honapok} hónap\n`);
     console.log('Források letöltése (lassan, a szerverek kímélése miatt)…');
@@ -397,6 +488,23 @@ async function futtat(iso, limit, honapok) {
     const listak = [];
     let wikidata = null, osm = null;
 
+    /* HELYI PRÓBA – a döntési logika tesztelése hálózat nélkül.
+       ------------------------------------------------------------
+       A szabályokat (mi számít versenynapnak, mikor NEM szabad
+       javaslatot adni) csak így lehet bizonyítani: élő lekéréssel a
+       teszt attól függene, hogy épp mit ad vissza egy idegen szerver.
+       A fájl formátuma:
+         { "listak": [ { "nev", "csalad", "szoveg", "datum"? } ],
+           "wikidata": [ { "nev", "bezaras"? } ] }           */
+    if (process.env.STATUSZ_HELYI) {
+        const h = JSON.parse(fs.readFileSync(process.env.STATUSZ_HELYI, 'utf8'));
+        for (const f of (h.listak || [])) {
+            listak.push({ ...f, datum: f.datum ? new Date(f.datum) : null });
+        }
+        wikidata = h.wikidata || null;
+        osm = h.osm || null;
+        console.log(`HELYI PRÓBA: ${listak.length} forrás a ${process.env.STATUSZ_HELYI} fájlból`);
+    } else
     for (const f of forrasok) {
         if (f.tipus === 'sparql') {
             await var_(SZUNET_MP);
@@ -455,6 +563,14 @@ async function futtat(iso, limit, honapok) {
     /* --- Kiértékelés --- */
     const most = new Date();
     const hatar = new Date(most.getTime() - GYANUS_HONAP * 30.44 * 86400000);
+    /* Sikerült-e EGYÁLTALÁN versenynaptárhoz jutni? Ettől függ, hogy a
+       „nincs találat" jelent-e bármit. */
+    const bizonyitoElert = listak.some(f => BIZONYITO.has(f.csalad));
+    if (!bizonyitoElert) {
+        console.log('\nFIGYELEM: egyetlen versenynaptár sem volt elérhető.');
+        console.log('A szkript ezért NEM javasol státuszváltozást – a hiányzás');
+        console.log('ebben az esetben a forrásról szól, nem a pályáról.\n');
+    }
     const eredmenyek = [];
     const vizsgalt = limit ? palyak.slice(0, limit) : palyak;
 
@@ -469,14 +585,32 @@ async function futtat(iso, limit, honapok) {
         for (const f of listak) {
             let talalt = false;
             for (const k of kulcsok) {
-                if (!f.szoveg.toLowerCase().includes(k)) continue;
+                /* A KULCSOT ÉS A SZÖVEGET UGYANÚGY KELL NORMALIZÁLNI.
+                   A norm() a szóközöket is kiszedi ("club menangle" ->
+                   "clubmenangle"), ezért a nyers szövegben keresve a
+                   TÖBBSZAVAS pályanevek sosem találtak – néma hiba volt,
+                   ami minden ilyen pályát "bizonyíték nélkülinek"
+                   mutatott. A normalizált szöveget forrásonként egyszer
+                   számoljuk ki, és eltesszük. */
+                if (f._norm === undefined) f._norm = norm(f.szoveg);
+                if (!f._norm.includes(k)) continue;
                 talalt = true;
-                /* Havi naptárnál a HÓNAP maga a dátum – megbízhatóbb,
-                   mint a szövegből kibányászott érték. */
-                if (f.datum && (!legutobbi || f.datum > legutobbi)) legutobbi = f.datum;
-                for (const d of datumokKornyezetbol(f.szoveg, k)) {
-                    if (d <= most && (!legutobbi || d > legutobbi)) legutobbi = d;
+                /* VERSENYNAPOT CSAK BIZONYÍTÓ FORRÁS ÁLLÍTHAT.
+                   Egy enciklopédiacikkben vagy egy térképleírásban
+                   talált évszám nem versenynap – ha annak vennénk,
+                   egy 2011-es életrajzi dátumtól inaktívvá
+                   minősítenénk egy működő pályát. */
+                if (BIZONYITO.has(f.csalad)) {
+                    /* Havi naptárnál a HÓNAP maga a dátum – megbízhatóbb,
+                       mint a szövegből kibányászott érték. */
+                    if (f.datum && (!legutobbi || f.datum > legutobbi)) legutobbi = f.datum;
+                    for (const d of datumokKornyezetbol(f.szoveg, k)) {
+                        if (d <= most && (!legutobbi || d > legutobbi)) legutobbi = d;
+                    }
                 }
+                /* A bezárásra utaló szöveget MINDEN forrásból figyeljük:
+                   a megszűnést épp az enciklopédiák és a sajtó írják meg,
+                   a szövetségi naptár ritkán. */
                 const b = bezarasJel(f.szoveg, k);
                 if (b && !bezaras) bezaras = { forras: f.nev, jel: b };
             }
@@ -520,13 +654,23 @@ async function futtat(iso, limit, honapok) {
         } else if (legutobbi) {
             const ho = Math.round((most - legutobbi) / (30.44 * 86400000));
             javaslat = 'inactive'; szin = 'sárga';
-            indok = `utolsó nyom ${ho} hónapja (${legutobbi.toISOString().slice(0, 10)})`;
+            indok = `utolsó versenynap ${ho} hónapja (${legutobbi.toISOString().slice(0, 10)})`;
+        } else if (!bizonyitoElert) {
+            /* NINCS BIZONYÍTÉK ≠ A BIZONYÍTÉK HIÁNYA.
+               Ha egyetlen versenynaptárat sem sikerült elérni (botvédelem,
+               robots.txt tiltás, halott cím), akkor erről a pályáról
+               egyszerűen NEM TUDUNK semmit. Ilyenkor a meglévő státusz
+               marad, és a jelentés azt írja: nem ellenőrizhető. Ez a
+               szabály akadályozza meg, hogy működő pályákat minősítsünk
+               le pusztán azért, mert a szövetség oldala zárva van. */
+            javaslat = p.status || 'active'; szin = 'szürke';
+            indok = 'NEM ELLENŐRIZHETŐ – egyetlen versenynaptár sem volt elérhető';
         } else if (h && h.el === false) {
             javaslat = 'unknown'; szin = 'sárga';
-            indok = `nincs versenynyom, és a saját honlap sem él (${h.ok})`;
+            indok = `nincs versenynyom az elért naptárakban, és a saját honlap sem él (${h.ok})`;
         } else if (csaladok.size >= 2) {
             javaslat = 'unknown'; szin = 'sárga';
-            indok = `${csaladok.size} forráscsalád említi, de versenydátum nélkül`;
+            indok = `${csaladok.size} forráscsalád említi, de egyik naptárban sincs versenynapja`;
         } else {
             javaslat = 'unknown'; szin = 'sárga';
             indok = 'nincs elég bizonyíték – kézi ellenőrzés kell';
@@ -547,15 +691,19 @@ async function futtat(iso, limit, honapok) {
         ...(wikidata ? ['Wikidata'] : []),
         ...(osm ? ['OpenStreetMap'] : [])
     ];
-    return { iso, honapok, eredmenyek, hasznaltForrasok, naplo };
+    return { iso, honapok, eredmenyek, hasznaltForrasok, naplo, bizonyitoElert };
 }
 
 /* ============================================================
    JELENTÉS
    ============================================================ */
 
-function jelentestIr(adat) {
-    const { iso, eredmenyek, hasznaltForrasok, honapok } = adat;
+/* A MIND módnál országonként külön fájl kell, különben az utolsó
+   ország felülírná az összes korábbit. Egy ország futtatásánál marad
+   a megszokott, utótag nélküli név. */
+function jelentestIr(adat, utotag = '') {
+    const nev = (kit) => `statusz-jelentes${utotag ? '-' + utotag : ''}.${kit}`;
+    const { iso, eredmenyek, hasznaltForrasok, honapok, bizonyitoElert } = adat;
     const elteres = eredmenyek.filter(e => e.javaslat !== e.jelenlegi);
     const csaladSzam = new Set(eredmenyek.flatMap(e => e.csaladok)).size;
 
@@ -565,6 +713,17 @@ function jelentestIr(adat) {
            `vizsgált időszak: ${honapok} hónap\n`);
     s.push(`Pálya: **${eredmenyek.length}** · Elérhető forrás: **${hasznaltForrasok.length}** · ` +
            `Forráscsalád: **${csaladSzam}**\n`);
+
+    /* A jelentés LEGFONTOSABB sora. Ha nem jutottunk versenynaptárhoz,
+       akkor az egész futás csak annyit mond, hogy nem tudtuk megnézni –
+       és ezt nem szabad eltemetni a találatok közé. */
+    s.push(bizonyitoElert
+        ? `\n> Versenynaptár elérve: **igen**. A „nincs versenynap" megállapítás ezért érdemi.\n`
+        : `\n> ## ⚠ VERSENYNAPTÁR NEM VOLT ELÉRHETŐ\n` +
+          `> Egyetlen szövetségi, állami vagy fogadási forrást sem sikerült letölteni\n` +
+          `> (botvédelem, robots.txt tiltás vagy halott cím). Ebben a futásban a\n` +
+          `> „nincs találat" a FORRÁSRÓL szól, nem a pályáról, ezért a szkript\n` +
+          `> egyetlen státuszváltozást sem javasol. A meglévő adat marad.\n`);
 
     s.push(`\n## Ez JAVASLAT, nem döntés\n`);
     s.push(`A hiányzás nem bizonyítja a bezárást: egy pálya kimaradhat idényen kívül,`);
@@ -595,8 +754,8 @@ function jelentestIr(adat) {
                `${e.legutobbi || '—'} | ${e.csaladok.length} | ${e.indok} |`);
     }
 
-    fs.writeFileSync(path.join(__dirname, 'statusz-jelentes.md'), s.join('\n'), 'utf8');
-    fs.writeFileSync(path.join(__dirname, 'statusz-jelentes.json'),
+    fs.writeFileSync(path.join(__dirname, nev('md')), s.join('\n'), 'utf8');
+    fs.writeFileSync(path.join(__dirname, nev('json')),
         JSON.stringify(adat, null, 2), 'utf8');
 
     /* CSV — táblázatkezelőben nyitható, szűrhető, rendezhető.
@@ -621,7 +780,7 @@ function jelentestIr(adat) {
             e.sajatHonlap, e.indok, ''
         ]));
     }
-    fs.writeFileSync(path.join(__dirname, 'statusz-jelentes.csv'), csv.join('\n'), 'utf8');
+    fs.writeFileSync(path.join(__dirname, nev('csv')), csv.join('\n'), 'utf8');
 }
 
 /* ============================================================ */
@@ -636,8 +795,34 @@ async function main() {
 
     if (!iso) {
         console.error('Használat: node tools/statusz.mjs --orszag AUS [--limit 5] [--honapok 12]');
-        console.error('Elérhető: ' + Object.keys(FORRASOK).join(', '));
+        console.error('            node tools/statusz.mjs --orszag MIND');
+        console.error('Minden országkód működik: amihez nincs kézi forráslista, ahhoz');
+        console.error('a szkript az adatbázis operatorSite/ownSite címeiből építi.');
         process.exit(1);
+    }
+
+    /* MIND: végigmegy az adatbázis összes országán, és országonként
+       külön jelentést ír. Lassú (forrásonként szünetet tartunk), ezért
+       a GitHub Actions havi futásához való, nem kézi használatra. */
+    if (iso === 'MIND') {
+        const db = adatBeolvas();
+        const osszes = [];
+        for (const kod of Object.keys(db)) {
+            try {
+                const a = await futtat(kod, limit, honapok);
+                jelentestIr(a, kod);
+                osszes.push(a);
+            } catch (e) {
+                console.error(`  ${kod}: KIHAGYVA – ${e.message}`);
+            }
+        }
+        const nelkul = osszes.filter(a => !a.bizonyitoElert).map(a => a.iso);
+        console.log(`\nLefutott: ${osszes.length} ország.`);
+        console.log(nelkul.length
+            ? `Versenynaptár NEM volt elérhető: ${nelkul.join(', ')}`
+            : 'Minden országhoz volt elérhető versenynaptár.');
+        console.log('A szkript NEM módosította az adatbázist.');
+        return;
     }
 
     const adat = await futtat(iso, limit, honapok);
