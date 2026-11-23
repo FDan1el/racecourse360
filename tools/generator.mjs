@@ -70,7 +70,17 @@ const SZEKCIOK = {
 const KIMENET = GYOKER;
 const BAZIS_URL = 'https://racecourse360.com';
 
-const NYELVEK = ['hu', 'en', 'de', 'fr', 'sv', 'es', 'it', 'ja', 'zh', 'ar'];
+/* AKTÍV nyelvek. A japán, kínai és arab átmenetileg kikapcsolva
+   (2026-11, tulajdonosi döntés). A FORDÍTÁSOK MEGMARADNAK a lenti
+   szótárakban – csak nem generálunk hozzájuk lapot, sitemapet és
+   hreflang sort. Visszakapcsolás: vedd vissza a kódokat ebbe a
+   listába, futtasd a --general módot, és kapcsold vissza a
+   nyelvgombokat az index.html-ben + az app.js AKTIV_NYELVEK
+   listájában. A sorrend számít: a hreflang és a nyelvváltó ezt
+   a sorrendet követi. */
+const NYELVEK = ['hu', 'en', 'de', 'fr', 'sv', 'es', 'it'];
+/* A kikapcsolt nyelvek, hogy a visszakapcsoláskor ne kelljen kitalálni:
+   'ja', 'zh', 'ar'. A szótáraik lentebb érintetlenül megvannak. */
 
 /* ============================================================
    PARTNERPROGRAM (affiliate)

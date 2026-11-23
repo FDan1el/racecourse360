@@ -361,7 +361,15 @@ a[href^="mailto:"]:hover { color: var(--accent-strong); text-decoration: underli
   flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
   background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
   color: #94a3b8; font-size: 0.95rem; cursor: pointer; transition: all 0.2s ease;
+  /* A gomb korábban betűkaraktert tartalmazott, és a tartalmát a
+     szövegsor alapvonala pozicionálta – ettől csúszott el nagyobb
+     képernyőn. A flex-középre igazítás a rajzolt ikont mindig
+     pontosan a kör közepére teszi, mérettől függetlenül. */
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0; line-height: 1;
 }
+.info-icon { width: 17px; height: 17px; display: block; }
+@media (max-width: 768px) { .info-icon { width: 19px; height: 19px; } }
 #legalInfoBtn:hover { color: var(--accent); border-color: var(--accent); background: rgba(var(--accent-rgb), 0.1); }
 
 /* Szűrőgombok emoji/felirat része - mobilon csak az emoji marad */
@@ -1549,4 +1557,14 @@ body.van-reklam #dayNightBtn { transform: translateY(calc(-50% - var(--reklam-ma
 
 [dir="rtl"] .popup-idojaras { margin-left: 0; margin-right: auto; }
 
-
+/* ============================================================
+   ÁTMENETILEG REJTETT SZAKÁGVÁLASZTÓ (2026-11)
+   ------------------------------------------------------------
+   Amíg nincs galopp-adatunk, a látogató egyből az ügető
+   térképére érkezik, és nem kell választania. A gombok HTML-je
+   megmarad az index.html-ben – csak nem látszik.
+   VISSZAKAPCSOLÁS: töröld ezt a szabályt, és állítsd a
+   js/app.js SZAKAGVALASZTO kapcsolóját true-ra. A kettő
+   összetartozik: a kapcsoló dönti el az indulóállapotot is.
+   ============================================================ */
+.filter-btn { display: none !important; }

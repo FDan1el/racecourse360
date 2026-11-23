@@ -1489,7 +1489,30 @@ function statuszSzoveg(kulcs) {
 // ================================================================
 const DATA_ISO_CODES = Object.keys(trackDatabase); // ["SWE", "FRA"]
 
-let currentFilter = 'all';
+/* ============================================================
+   ÁTMENETI KAPCSOLÓK — a galopp szakág indulásáig (2026-11)
+   ------------------------------------------------------------
+   Tulajdonosi döntés: ezek a funkciók most nem kellenek, de NEM
+   törlendők. Mindegyik egyetlen sorral hozható vissza.
+   ============================================================ */
+
+/* Szakágválasztó. false esetén nincs galopp/ügető gomb (a CSS
+   rejti el), és a látogató egyből az ügető térképére érkezik. */
+const SZAKAGVALASZTO = false;
+
+/* Pályaképek az előugró ablakban. Jelenleg három svéd rekordban
+   van kép (Solvalla, Färjestad, Tingsrydtravet) – az adat marad,
+   csak nem jelenítjük meg. */
+const KEPEK_LATSZANAK = false;
+
+/* Aktív nyelvek. A japán, kínai és arab szótárak megmaradnak, de
+   nem kínáljuk fel őket, és a generátor sem készít hozzájuk lapot
+   (tools/generator.mjs -> NYELVEK, ugyanezzel a listával). */
+const AKTIV_NYELVEK = ['hu', 'en', 'de', 'fr', 'sv', 'es', 'it'];
+
+/* A currentFilter alapértéke: szakágválasztó nélkül rögtön ügető,
+   különben 'all', ami azt jelenti, hogy még nincs választás. */
+let currentFilter = SZAKAGVALASZTO ? 'all' : 'trot';
 
 /**
  * Van-e ténylegesen kiválasztott szakág?
@@ -2975,7 +2998,9 @@ function buildPopupHtml(t, meta, orszagKod) {
     // --- Kép: a teljes doboz csak akkor létezik, ha van megerősített kép ---
     const img = t.image;
     let imageBlock = '';
-    if (img && img.verified && img.url) {
+    /* KEPEK_LATSZANAK = false esetén a doboz meg sem épül – így nem
+       indul felesleges képletöltés sem a Wikimedia felé. */
+    if (KEPEK_LATSZANAK && img && img.verified && img.url) {
         // A Commons fájloldal URL-jéből előállítjuk a közvetlen kép-URL-t.
         // Special:FilePath = stabil, dokumentált végpont, width paraméterrel.
         const fajlNev = img.url.split('/wiki/File:')[1] || img.url.split('/wiki/Fájl:')[1];
@@ -3179,13 +3204,16 @@ function setFilter(type, btn) {
 
     // Kapcsoló (toggle) viselkedés: ha ugyanarra az already aktív gombra
     // kattintasz, visszaáll az alapállapotra (mindkét szakág, saját színén)
+    // A btn hiányozhat: a függvényt kódból is hívjuk (statikus oldalról
+    // érkezés), és a gombok most rejtettek. Ezért minden DOM-művelet
+    // feltételes – a szűrő állapota gomb nélkül is helyes marad.
     if (currentFilter === type) {
         currentFilter = 'all';
-        btn.classList.remove('active');
+        if (btn) btn.classList.remove('active');
     } else {
         currentFilter = type;
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+        if (btn) btn.classList.add('active');
     }
     if (world) {
         world.polygonStrokeColor(d => polygonStroke(d));
@@ -3611,6 +3639,15 @@ const COUNTRY_TO_LANG = {
     SA: 'ar', AE: 'ar', EG: 'ar', QA: 'ar'
 };
 
+/* Az ország->nyelv táblában benne maradnak a kikapcsolt nyelvek is
+   (JP, CN, SA...), különben a visszakapcsoláskor újra fel kellene
+   építeni. Ez a szűrő gondoskodik róla, hogy addig ne válasszunk
+   olyan nyelvet, amihez nincs is lapunk – a látogató ilyenkor az
+   angolt kapja. */
+function nyelvHaAktiv(kod) {
+    return AKTIV_NYELVEK.includes(kod) ? kod : 'en';
+}
+
 async function detectAndSetLanguage() {
     /* ÉRKEZÉS A NYELVI GYÖKÉRRŐL  (/hu/, /en/ … → /?lang=xx)
        ------------------------------------------------------------
@@ -3627,7 +3664,12 @@ async function detectAndSetLanguage() {
     // A támogatott nyelvek listáját a szótárból vesszük, nem külön
     // felsorolásból: így egy új nyelv felvételekor nincs második
     // hely, amit frissíteni kellene (és elfelejteni lehetne).
-    if (kertNyelv && Object.prototype.hasOwnProperty.call(ADATLAP_SZOTAR, kertNyelv)) {
+    /* A szótár a KIKAPCSOLT nyelveket is tartalmazza (szándékosan:
+       lásd AKTIV_NYELVEK). Ezért a szótárbeli létezés mellett az
+       aktív listát is nézni kell, különben egy régi /ja/ könyvjelző
+       japánra állítaná a felületet, amihez már nincs oldalunk. */
+    if (kertNyelv && Object.prototype.hasOwnProperty.call(ADATLAP_SZOTAR, kertNyelv)
+        && AKTIV_NYELVEK.includes(kertNyelv)) {
         window.history.replaceState({}, '', window.location.pathname);
         setLanguage(kertNyelv, null, true);
         return;
@@ -3639,7 +3681,9 @@ async function detectAndSetLanguage() {
     if (manual) {
         // A látogató korábban már kézzel választott nyelvet - azt használjuk,
         // nem írjuk felül automatikus felismeréssel.
-        setLanguage(manual, null, false);
+        // A szűrő arra kell, hogy aki korábban japánt/kínait/arabot
+        // választott, ne egy most már nem létező nyelven kapja a lapot.
+        setLanguage(nyelvHaAktiv(manual), null, false);
         return;
     }
 
@@ -3654,7 +3698,7 @@ async function detectAndSetLanguage() {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const data = await res.json();
         if (data && data.success !== false && data.country_code) {
-            const langCode = COUNTRY_TO_LANG[data.country_code] || 'en';
+            const langCode = nyelvHaAktiv(COUNTRY_TO_LANG[data.country_code] || 'en');
             setLanguage(langCode, null, false);
         }
     } catch (e) {

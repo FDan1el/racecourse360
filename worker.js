@@ -301,6 +301,39 @@ export default {
             });
         }
 
+        /* ---- 2/b) KIKAPCSOLT NYELVEK ÁTIRÁNYÍTÁSA ----
+           A japán, kínai és arab nyelvet 2026-11-ben kivettük (a
+           galopp szakág indulásáig). A hozzájuk tartozó ~1900
+           statikus oldal törlődött, és aki régi találatról vagy
+           könyvjelzőről érkezik, 404-et kapna.
+
+           Ehelyett 301-gyel az ANGOL párjára visszük: ugyanaz a
+           pálya, ugyanaz a tartalom, csak más nyelven. A 301 azt
+           is megmondja a keresőmotoroknak, hogy a régi címet
+           felejtsék el és az újat vegyék át – ez megőrzi azt a
+           kevés linkértéket, ami összegyűlt.
+
+           VISSZAKAPCSOLÁS: a nyelvek visszahozásakor ezt a blokkot
+           törölni KELL, különben a friss /ja/ oldalak is azonnal
+           angolra ugranának. */
+        const KIKAPCSOLT_NYELVEK = ['ja', 'zh', 'ar'];
+        const nyelviElotag = url.pathname.match(/^\/([a-z]{2})(\/|$)/);
+        if (nyelviElotag && KIKAPCSOLT_NYELVEK.includes(nyelviElotag[1])) {
+            const cel = new URL(url);
+            cel.pathname = '/en' + url.pathname.slice(3);
+            return Response.redirect(cel.toString(), 301);
+        }
+        // A sitemapjaik is eltűntek – ezeknél nincs mire átirányítani.
+        if (/^\/sitemap-(ja|zh|ar)\.xml$/.test(url.pathname)) {
+            return new Response('Not found', {
+                status: 410,   // Gone: véglegesen megszűnt, ne kérdezd újra
+                headers: {
+                    'Content-Type': 'text/plain; charset=utf-8',
+                    'X-Robots-Tag': 'noindex, nofollow',
+                },
+            });
+        }
+
         // ---- 3) JELSZAVAS VÉDELEM ----
         const jelszo = env.SITE_PASSWORD;
 
