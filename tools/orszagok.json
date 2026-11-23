@@ -494,5 +494,21 @@
       "zh": "拉脱维亚",
       "ar": "لاتفيا"
     }
+  },
+  "ARG": {
+    "slug": "argentina",
+    "units": "metric",
+    "nev": {
+      "hu": "Argentína",
+      "en": "Argentina",
+      "de": "Argentinien",
+      "fr": "Argentine",
+      "sv": "Argentina",
+      "es": "Argentina",
+      "it": "Argentina",
+      "ja": "アルゼンチン",
+      "zh": "阿根廷",
+      "ar": "الأرجنتين"
+    }
   }
 }
