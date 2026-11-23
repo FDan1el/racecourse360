@@ -294,6 +294,7 @@ const SZOTAR = {
         city: "Település",
         helyiIdo: "Helyi idő",
         surface: "Pálya talaja",
+        nagyversenyek: "Nagyversenyek",
         celegyenes: "Célegyenes",
         sfGrass: "fű",
         sfSand: "homok",
@@ -338,6 +339,7 @@ const SZOTAR = {
         city: "Town",
         helyiIdo: "Local time",
         surface: "Track surface",
+        nagyversenyek: "Major races",
         celegyenes: "Home straight",
         sfGrass: "turf",
         sfSand: "sand",
@@ -382,6 +384,7 @@ const SZOTAR = {
         city: "Ort",
         helyiIdo: "Ortszeit",
         surface: "Bahnbelag",
+        nagyversenyek: "Große Rennen",
         celegyenes: "Zielgerade",
         sfGrass: "Gras",
         sfSand: "Sand",
@@ -426,6 +429,7 @@ const SZOTAR = {
         city: "Commune",
         helyiIdo: "Heure locale",
         surface: "Nature de la piste",
+        nagyversenyek: "Grandes courses",
         celegyenes: "Ligne droite",
         sfGrass: "herbe",
         sfSand: "sable",
@@ -470,6 +474,7 @@ const SZOTAR = {
         city: "Ort",
         helyiIdo: "Lokal tid",
         surface: "Banunderlag",
+        nagyversenyek: "Storlopp",
         celegyenes: "Upplopp",
         sfGrass: "gräs",
         sfSand: "sand",
@@ -514,6 +519,7 @@ const SZOTAR = {
         city: "Localidad",
         helyiIdo: "Hora local",
         surface: "Superficie",
+        nagyversenyek: "Grandes carreras",
         celegyenes: "Recta final",
         sfGrass: "hierba",
         sfSand: "arena",
@@ -558,6 +564,7 @@ const SZOTAR = {
         city: "Località",
         helyiIdo: "Ora locale",
         surface: "Fondo della pista",
+        nagyversenyek: "Grandi corse",
         celegyenes: "Rettilineo finale",
         sfGrass: "erba",
         sfSand: "sabbia",
@@ -602,6 +609,7 @@ const SZOTAR = {
         city: "所在地",
         helyiIdo: "現地時刻",
         surface: "走路面",
+        nagyversenyek: "主要競走",
         celegyenes: "直線",
         sfGrass: "芝",
         sfSand: "砂",
@@ -646,6 +654,7 @@ const SZOTAR = {
         city: "所在地",
         helyiIdo: "当地时间",
         surface: "赛道地面",
+        nagyversenyek: "重要赛事",
         celegyenes: "终点直道",
         sfGrass: "草地",
         sfSand: "沙地",
@@ -690,6 +699,7 @@ const SZOTAR = {
         city: "البلدة",
         helyiIdo: "الوقت المحلي",
         surface: "أرضية المضمار",
+        nagyversenyek: "السباقات الكبرى",
         celegyenes: "المستقيم الأخير",
         sfGrass: "عشب",
         sfSand: "رمل",
@@ -1426,6 +1436,11 @@ function palyaOldal({ nyelv, palya, iso, orszag, countryMeta, figyelmeztetesek, 
     }
 
     mezok.push([sz(nyelv, 'direction'), irany]);
+    /* NAGYVERSENYEK – tulajdonnevek, fordítás nélkül; a sor csak
+       ott jelenik meg, ahol van adat (nem írunk ki üres N/A-t). */
+    if (Array.isArray(palya.nagyversenyek) && palya.nagyversenyek.length) {
+        mezok.push([sz(nyelv, 'nagyversenyek'), palya.nagyversenyek.join(' · ')]);
+    }
     mezok.push([sz(nyelv, 'status'), statusz]);
 
     const sorok = mezok.map(([cimke, ertek]) =>

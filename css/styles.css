@@ -423,6 +423,21 @@ a[href^="mailto:"]:hover { color: var(--accent-strong); text-decoration: underli
 .track-marker {
   width: 16px; height: 16px; border-radius: 50%;
   border: 2px solid #0f172a;
+  position: relative;            /* a csillag ehhez igazodik */
+}
+/* Nagyverseny helyszíne. A csillag a pötty FÖLÉ kerül, nem helyette:
+   a pötty színe a státuszt mutatja, a csillag a rangot – két
+   különböző dimenzió, amit nem szabad egymásba olvasztani.
+   A sötét körvonal azért kell, hogy világos térképen is látszódjon. */
+.track-marker.nagyverseny::after {
+  content: "\2605";
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -54%);
+  font-size: 17px; line-height: 1;
+  color: #facc15;
+  text-shadow: 0 0 2px #0f172a, 0 0 4px #0f172a, 0 0 9px rgba(250,204,21,.85);
+  pointer-events: none;
 }
 .track-marker.active { background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,0.8); }
 .track-marker.inactive { background: #d97706; box-shadow: 0 0 8px rgba(217,119,6,0.8); }
