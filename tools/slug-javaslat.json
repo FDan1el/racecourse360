@@ -1977,6 +1977,13 @@
       "region": null,
       "slug": "ippodromo-cesare-fiaschi",
       "mar_veglegesitve": true
+    },
+    {
+      "name": "Ippodromo di Tor di Valle",
+      "city": "Roma",
+      "region": "Lazio",
+      "slug": "ippodromo-di-tor-di-valle",
+      "mar_veglegesitve": true
     }
   ],
   "FIN": [
@@ -2380,6 +2387,20 @@
       "city": "Budapest",
       "region": null,
       "slug": "kincsem-park",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Kerepesi úti ügetőpálya (Tattersall)",
+      "city": "Budapest",
+      "region": null,
+      "slug": "kerepesi-uti-ugetopalya",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Erzsébet királyné úti ügetőpálya",
+      "city": "Budapest",
+      "region": null,
+      "slug": "erzsebet-kiralyne-uti-ugetopalya",
       "mar_veglegesitve": true
     }
   ],

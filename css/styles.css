@@ -443,6 +443,9 @@ a[href^="mailto:"]:hover { color: var(--accent-strong); text-decoration: underli
 .track-marker.inactive { background: #d97706; box-shadow: 0 0 8px rgba(217,119,6,0.8); }
 .track-marker.unknown { background: #fde047; box-shadow: 0 0 10px rgba(253,224,71,0.95); }
 .track-marker.closed { background: #ef4444; box-shadow: 0 0 8px rgba(239,68,68,0.8); }
+/* Történelmi helyszín: semleges szürke. A piros „bezárt” a friss
+   veszteséget jelzi, a szürke a múltat – ezért nem ugyanaz a szín. */
+.track-marker.historical { background: #9ca3af; box-shadow: 0 0 8px rgba(156,163,175,0.75); }
 
 /* ============ EGYEDI LEAFLET POPUP STÍLUS ============ */
 .leaflet-popup-content-wrapper {
@@ -526,6 +529,7 @@ a[href^="mailto:"]:hover { color: var(--accent-strong); text-decoration: underli
 .popup-status.inactive { background: #d97706; box-shadow: 0 0 6px rgba(217,119,6,0.7); }
 .popup-status.unknown { background: #fde047; box-shadow: 0 0 7px rgba(253,224,71,0.9); }
 .popup-status.closed { background: #ef4444; box-shadow: 0 0 6px rgba(239,68,68,0.7); }
+.popup-status.historical { background: #9ca3af; box-shadow: 0 0 6px rgba(156,163,175,0.7); }
 .popup-status-text { font-size: 0.7rem; color: #c9b8a8; font-weight: 600; }
 .popup-name {
   font-weight: 700; color: #ffffff; font-size: 1rem; letter-spacing: 0.2px;
@@ -993,6 +997,8 @@ a[href^="mailto:"]:hover { color: var(--accent-strong); text-decoration: underli
 .st-unknown { color: #fde047; }
 .st-closed .tp-dot { background: #ef4444; }
 .st-closed { color: #ef4444; }
+.st-historical .tp-dot { background: #9ca3af; }
+.st-historical { color: #9ca3af; }
 
 @media (max-width: 768px), (max-height: 520px) {
   #tracksPanel { width: 100%; max-width: 100%; }
