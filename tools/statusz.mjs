@@ -319,11 +319,39 @@ SELECT ?palya ?palyaLabel ?nyitas ?bezaras WHERE {
         const v = await keres(url, { json: true });
         if (!v.ok) { naplo.push(`  HIBA ${v.status}: Wikidata`); return null; }
         const j = await v.json();
-        const sorok = (j.results?.bindings || []).map(b => ({
-            nev: b.palyaLabel?.value || '',
-            nyitas: b.nyitas?.value?.slice(0, 10) || null,
-            bezaras: b.bezaras?.value?.slice(0, 10) || null
-        })).filter(x => x.nev);
+        /* A P571/P576 értéke ELVILEG dátum, GYAKORLATBAN bármi lehet:
+           a Wikidata közösségi szerkesztésű, és egy rossz helyre írt
+           URL vagy szöveg is bekerül. A slice(0,10) ezt nem szűri ki,
+           csak megcsonkítja – így lett a Club Menangle "megszűnési
+           dátuma" a 2026-11-23-i futásban "http://ww", és ettől az
+           ausztrál ügetősport egyik fő pályája (az Inter Dominion
+           helyszíne) PIROS, "closed" javaslatot kapott.
+
+           Ezért csak azt fogadjuk el, ami tényleg ÉÉÉÉ-HH-NN alakú és
+           értelmes évszám. Ami nem az, azt eldobjuk: inkább ne tudjunk
+           a bezárásról, mint hogy egy működő pályát zárjunk be egy
+           elgépelés miatt. */
+        const datum = (v) => {
+            const d = (v || '').slice(0, 10);
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return null;
+            const ev = Number(d.slice(0, 4));
+            if (ev < 1700 || ev > new Date().getFullYear() + 1) return null;
+            return d;
+        };
+        let eldobott = 0;
+        const sorok = (j.results?.bindings || []).map(b => {
+            const nyers = b.bezaras?.value;
+            const bezaras = datum(nyers);
+            if (nyers && !bezaras) eldobott++;
+            return {
+                nev: b.palyaLabel?.value || '',
+                nyitas: datum(b.nyitas?.value),
+                bezaras
+            };
+        }).filter(x => x.nev);
+        if (eldobott) {
+            naplo.push(`  FIGYELEM: ${eldobott} Wikidata-dátum eldobva (nem ÉÉÉÉ-HH-NN alakú)`);
+        }
         naplo.push(`  OK (${sorok.length} tétel): Wikidata`);
         return sorok;
     } catch (e) {

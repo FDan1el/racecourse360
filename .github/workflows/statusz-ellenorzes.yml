@@ -71,17 +71,38 @@ jobs:
         if: always()
         with:
           name: statusz-${{ github.run_number }}
-          path: tools/statusz-jelentes*.csv
+          path: |
+            tools/statusz-jelentes*.csv
+            tools/statusz-jelentes*.md
+            elteresek.txt
+            bizonytalanok.txt
           retention-days: 90
 
       - name: Eltérések kigyűjtése
         id: elteres
         if: always()
         run: |
-          # Minden országjelentésből kiszedjük azokat a sorokat, ahol a
-          # javaslat eltér a tárolt státusztól. A "nem ellenőrizhető"
-          # sorok NEM eltérések – ott a javaslat szándékosan azonos.
+          # ==========================================================
+          #  MI SZÁMÍT ELTÉRÉSNEK, ÉS MI NEM
+          # ----------------------------------------------------------
+          #  A szkript háromféle javaslatot adhat:
+          #    konkrét státusz (active / inactive / closed)
+          #        -> ez VERDIKT. Ha eltér a tárolttól, az eltérés.
+          #    "unknown"
+          #        -> ez NEM VERDIKT, hanem az, hogy nem sikerült
+          #           elég bizonyítékot találni. Tehát NEM eltérés.
+          #    a tárolt státusz változatlanul (nem ellenőrizhető)
+          #        -> szintén nem eltérés, mert azonos.
+          #
+          #  EZ A JAVÍTÁS LÉNYEGE. A 2026-11-23-i első teljes futás
+          #  538 "eltérést" jelentett a 655 rekordból – 82%-ot. Ebből
+          #  97% "unknown" volt, vagyis "nem tudom". A két VALÓDI
+          #  jelzés elveszett az 500+ soros zajban, pedig pont azokért
+          #  fut ez az egész. Egy riasztás, ami mindenre riaszt,
+          #  ugyanannyit ér, mint amelyik semmire.
+          # ==========================================================
           : > elteresek.txt
+          : > bizonytalanok.txt
           for f in tools/statusz-jelentes*.csv; do
             [ -e "$f" ] || continue
             # A CSV magyar fejlécű, pontosvesszős, és BOM-mal kezdődik –
@@ -89,21 +110,29 @@ jobs:
             # egyezik. Az oszlopok: Jelenlegi / Javasolt.
             node -e '
               const fs=require("fs");
-              const f=process.argv[1];
+              const f=process.argv[1], nev=f.split("/").pop();
               const sorok=fs.readFileSync(f,"utf8").replace(/^﻿/,"")
                             .split("\n").filter(Boolean);
               const fej=sorok.shift().split(";");
               const iJ=fej.indexOf("Jelenlegi"), iA=fej.indexOf("Javasolt");
               if(iJ<0||iA<0){ console.error("Ismeretlen fejléc: "+f); process.exit(0); }
+              const ki=[], bizonytalan=[];
               for(const s of sorok){
                 const c=s.split(";");
-                if(c[iJ]&&c[iA]&&c[iJ]!==c[iA]) console.log(f.split("/").pop()+" | "+s);
+                if(!c[iJ]||!c[iA]) continue;
+                const javaslat=c[iA].replace(/^"|"$/g,"").trim();
+                if(javaslat==="unknown"){ bizonytalan.push(nev+" | "+s); continue; }
+                if(c[iJ]!==c[iA]) ki.push(nev+" | "+s);
               }
-            ' "$f" >> elteresek.txt || true
+              fs.writeFileSync(process.argv[2], ki.join("\n")+(ki.length?"\n":""), {flag:"a"});
+              fs.writeFileSync(process.argv[3], bizonytalan.join("\n")+(bizonytalan.length?"\n":""), {flag:"a"});
+            ' "$f" elteresek.txt bizonytalanok.txt || true
           done
-          DB=$(wc -l < elteresek.txt | tr -d ' ')
-          echo "Eltérés: $DB"
+          DB=$(grep -c . elteresek.txt || true);      DB=${DB:-0}
+          BIZ=$(grep -c . bizonytalanok.txt || true); BIZ=${BIZ:-0}
+          echo "Eltérés: $DB   Bizonytalan (unknown): $BIZ"
           echo "db=$DB" >> $GITHUB_OUTPUT
+          echo "biz=$BIZ" >> $GITHUB_OUTPUT
           {
             echo 'reszletek<<VEGE'
             head -60 elteresek.txt
@@ -116,6 +145,7 @@ jobs:
         with:
           script: |
             const db = '${{ steps.elteres.outputs.db }}';
+            const biz = '${{ steps.elteres.outputs.biz }}';
             const reszletek = `${{ steps.elteres.outputs.reszletek }}`;
             const datum = new Date().toLocaleDateString('hu-HU');
             const body = [
@@ -127,6 +157,11 @@ jobs:
               `A szkript a hivatalos versenynaptárakból nézte meg, volt-e friss versenynap.`,
               `Ahol egyetlen naptár sem volt elérhető, ott **nem** javasolt változást –`,
               `azok a sorok nincsenek is ebben a listában.`,
+              ``,
+              `**${biz} pályánál a javaslat \`unknown\` lett.** Ez NEM eltérés, és`,
+              `szándékosan nincs a lenti listában: azt jelenti, hogy nem sikerült elég`,
+              `bizonyítékot találni, nem azt, hogy a tárolt státusz rossz. Ezek a sorok`,
+              `a \`bizonytalanok.txt\` fájlban vannak, az Artifacts szekcióban.`,
               ``,
               `### Eltérések`,
               ``,
