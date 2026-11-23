@@ -3173,6 +3173,27 @@
       "region": "WA",
       "slug": "kellerberrin",
       "mar_veglegesitve": true
+    },
+    {
+      "name": "Harold Park Paceway",
+      "city": "Forest Lodge (Sydney), NSW",
+      "region": "NSW",
+      "slug": "harold-park-paceway",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Moonee Valley Racecourse (ügetőpálya)",
+      "city": "Moonee Ponds (Melbourne), VIC",
+      "region": "VIC",
+      "slug": "moonee-valley-racecourse-ugeto",
+      "mar_veglegesitve": true
+    },
+    {
+      "name": "Gold Coast Parklands",
+      "city": "Southport (Gold Coast), QLD",
+      "region": "QLD",
+      "slug": "gold-coast-parklands",
+      "mar_veglegesitve": true
     }
   ],
   "NZL": [
