@@ -116,21 +116,45 @@ const NAPTARAK = {
                   { nev: 'Wales & Border naptár', csalad: 'allami', tipus: 'lista',
                     url: 'https://www.welsh-trotting.co.uk/fixtures.php' }],
     FRA: () => [{ nev: 'LeTrot naptár', csalad: 'szovetseg', tipus: 'lista',
-                  url: 'https://www.letrot.com/fr/courses/calendrier' }],
+                  url: 'https://www.letrot.com/fr/courses/calendrier' },
+                /* A PMU a francia fogadási monopólium: amelyik pályán
+                   fogadható futam van, az biztosan működik. A fogadási
+                   adat azért erős, mert a pontatlanságnak itt pénzügyi
+                   következménye van. */
+                { nev: 'PMU programme', csalad: 'fogadas', tipus: 'lista',
+                  url: 'https://www.pmu.fr/turf/programme' }],
     SWE: () => [{ nev: 'Svensk Travsport naptár', csalad: 'szovetseg', tipus: 'lista',
                   url: 'https://www.travsport.se/tavling/tavlingskalender/' }],
     NOR: () => [{ nev: 'DNT terminliste', csalad: 'szovetseg', tipus: 'lista',
-                  url: 'https://www.travsport.no/sport/terminliste/' }],
+                  url: 'https://www.travsport.no/sport/terminliste/' },
+                { nev: 'Norsk Rikstoto', csalad: 'fogadas', tipus: 'lista',
+                  url: 'https://www.rikstoto.no/Resultater' }],
     FIN: () => [{ nev: 'Hippos ravikalenteri', csalad: 'szovetseg', tipus: 'lista',
-                  url: 'https://www.hippos.fi/ravit/ravikalenteri/' }],
+                  url: 'https://www.hippos.fi/ravit/ravikalenteri/' },
+                { nev: 'Veikkaus Toto', csalad: 'fogadas', tipus: 'lista',
+                  url: 'https://www.veikkaus.fi/fi/toto' }],
     ITA: () => [{ nev: 'TrottoWeb naptár', csalad: 'szovetseg', tipus: 'lista',
                   url: 'https://www.trottoweb.com/' }],
     USA: () => [{ nev: 'USTA versenynaptár', csalad: 'szovetseg', tipus: 'lista',
-                  url: 'https://www.ustrotting.com/racing/' }],
-    CAN: () => [{ nev: 'Standardbred Canada naptár', csalad: 'szovetseg', tipus: 'lista',
-                  url: 'https://standardbredcanada.ca/racing/entries' }],
+                  url: 'https://www.ustrotting.com/racing/' },
+                /* A TrackMaster használatáról 2026 novemberében született
+                   döntés a pályastátusz ellenőrzésére. */
+                { nev: 'TrackMaster', csalad: 'fogadas', tipus: 'lista',
+                  url: 'https://www.trackmaster.com/' },
+                { nev: 'OffTrackBetting – ügető', csalad: 'fogadas', tipus: 'lista',
+                  url: 'https://www.offtrackbetting.com/harness_racing.html' }],
+    CAN: () => [/* A korábbi /racing/entries cím 404-et adott (2026-11-23-i
+                   futás). Ezek a kategórialapok élnek. */
+                { nev: 'Standardbred Canada versenynaptár', csalad: 'szovetseg', tipus: 'lista',
+                  url: 'https://standardbredcanada.ca/category/news/racing-calendar' },
+                { nev: 'Standardbred Canada élő versenyrend', csalad: 'szovetseg', tipus: 'lista',
+                  url: 'https://standardbredcanada.ca/category/news/live-racing-schedule' },
+                { nev: 'OffTrackBetting – ügető', csalad: 'fogadas', tipus: 'lista',
+                  url: 'https://www.offtrackbetting.com/harness_racing.html' }],
     NZL: () => [{ nev: 'HRNZ versenynaptár', csalad: 'szovetseg', tipus: 'lista',
-                  url: 'https://www.hrnz.co.nz/racing/calendar' }],
+                  url: 'https://www.hrnz.co.nz/racing/calendar' },
+                { nev: 'TAB NZ versenyrend', csalad: 'fogadas', tipus: 'lista',
+                  url: 'https://www.tab.co.nz/racing' }],
     ARG: () => [{ nev: 'F.A.T. versenynaptár', csalad: 'szovetseg', tipus: 'lista',
                   url: 'https://trote.com.ar/calendario/' }]
 };
@@ -223,9 +247,44 @@ async function robotsEngedi(url) {
     if (!robotsGyorsitotar.has(kulcs)) {
         try {
             const v = await keres(kulcs + '/robots.txt');
-            robotsGyorsitotar.set(kulcs,
-                v.ok ? robotsErtelmez(await v.text()) : { hiba: true, tiltott: [] });
+            if (v.ok) {
+                robotsGyorsitotar.set(kulcs, robotsErtelmez(await v.text()));
+            } else if (v.status === 404 || v.status === 410) {
+                /* NINCS ROBOTS.TXT ≠ TILTÁS.
+                   ------------------------------------------------------
+                   A 404 (és minden 4xx) azt jelenti, hogy a kiszolgálón
+                   NINCS robots.txt. A robotkizárási szabvány (RFC 9309,
+                   2.3.1.3) erre az esetre kimondja, hogy a letöltő
+                   bármely erőforrást elérhet – vagyis a hiányzó
+                   robots.txt SZABAD utat jelent, nem tiltást.
+
+                   EZ A JAVÍTÁS LÉNYEGE. A korábbi kód minden nem-200
+                   választ "nem érhető el"-ként kezelt, és kihagyta a
+                   forrást. Emiatt a 2026-11-23-i futásban gyakorlatilag
+                   MINDEN nagy szövetségi versenynaptár kimaradt – a HRA,
+                   az USTA, a Hippos, a DNT, a TrottoWeb –, és innen jött
+                   az, hogy 661 rekordból 544 lett "unknown". A naptárak
+                   végig be voltak állítva; csak nem olvastuk őket.
+
+                   Amit ez NEM old fel: ahol a robots.txt LÉTEZIK és tilt,
+                   ott továbbra is tiltunk. A Svensk Travsport "teljes
+                   tiltás" bejegyzése például érvényben marad.
+
+                   SZÁNDÉKOSAN SZŰKEBB, MINT A SZABVÁNY: az RFC minden
+                   4xx-re szabad utat mond, mi viszont csak a 404-re és a
+                   410-re. A 401 és a 403 ugyanis nem azt jelenti, hogy
+                   nincs robots.txt, hanem hogy a kiszolgáló AKTÍVAN
+                   elutasít minket – azt szabad útként értelmezni
+                   szembemenne a projekt alapelvével. A 429 (túl sok
+                   kérés) szintén nem engedély. */
+                robotsGyorsitotar.set(kulcs, { hiba: false, tiltott: [] });
+            } else {
+                /* 5xx vagy egyéb: a kiszolgáló hibázott, nem tudjuk, mit
+                   enged. Itt az óvatos olvasat a helyes – kihagyjuk. */
+                robotsGyorsitotar.set(kulcs, { hiba: true, tiltott: [] });
+            }
         } catch (e) {
+            // Hálózati hiba: nem tudjuk, mit enged. Óvatosan kihagyjuk.
             robotsGyorsitotar.set(kulcs, { hiba: true, tiltott: [] });
         }
     }
