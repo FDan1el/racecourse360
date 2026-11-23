@@ -106,7 +106,28 @@ function haviNaptarak(honapok) {
    be, és ha egyetlen bizonyító forrás sem volt elérhető, a szkript
    NEM javasol státuszt, hanem azt írja: nem ellenőrizhető.
    ============================================================ */
-const BIZONYITO = new Set(['szovetseg', 'allami', 'fogadas']);
+/* A PÁLYA SAJÁT HONLAPJA IS BIZONYÍTÓ FORRÁS (2026-11-23).
+   ------------------------------------------------------------
+   Tulajdonosi döntés: hivatalos forrás a szövetségi oldal, a
+   fogadóoldal, a hivatalos versenynaptár ÉS a pálya vagy az
+   üzemeltető saját oldala. A kód ezzel eddig ellentmondásban volt:
+   a 'sajat-honlap' családból nem fogadott el versenynapot.
+
+   Mennyit számít: a 2026-11-23-i futásban Finnországban 30 pálya
+   saját honlapjából 23 ÉLT, és egyikük sem számított – ezért lett
+   mind a 37 finn rekord "unknown". Ugyanez a helyzet több más
+   országban is.
+
+   Miért nem veszélyes: a dátumot továbbra is csak a PÁLYANÉV
+   KÖZVETLEN KÖRNYEZETÉBŐL vesszük, a legkésőbbi találatot, és egy
+   másik pálya neve lezárja az ablakot. Egy régi évszám a saját
+   honlapon legfeljebb "inaktív" javaslatot szül – ami egy tényleg
+   elhagyott pályánál helyes –, nem pedig hamis "aktívat".
+
+   Ami változatlan: az enciklopédia és a térkép NEM bizonyító. A
+   Melton-eset tanulsága megmarad: egy Wikipédia-szövegben talált
+   2011-es évszám nem versenynap. */
+const BIZONYITO = new Set(['szovetseg', 'allami', 'fogadas', 'sajat-honlap']);
 
 /** Országonkénti KÖZVETLEN versenynaptár, ahol ismerjük a címét.
     Ez a legjobb jelzés: itt a versenynapok dátummal állnak. */
@@ -305,15 +326,21 @@ async function robotsEngedi(url) {
             } else {
                 /* 5xx vagy egyéb: a kiszolgáló hibázott, nem tudjuk, mit
                    enged. Itt az óvatos olvasat a helyes – kihagyjuk. */
-                robotsGyorsitotar.set(kulcs, { hiba: true, tiltott: [] });
+                robotsGyorsitotar.set(kulcs, { hiba: true, tiltott: [], kod: v.status });
             }
         } catch (e) {
             // Hálózati hiba: nem tudjuk, mit enged. Óvatosan kihagyjuk.
-            robotsGyorsitotar.set(kulcs, { hiba: true, tiltott: [] });
+            robotsGyorsitotar.set(kulcs, { hiba: true, tiltott: [], kod: e.name === 'AbortError' ? 'időtúllépés' : 'hálózati hiba' });
         }
     }
     const r = robotsGyorsitotar.get(kulcs);
-    if (r.hiba) return { engedi: false, ok: 'robots.txt nem érhető el' };
+    /* A KÓDOT IS KIÍRJUK. Enélkül a "nem érhető el" egy kalap alá veszi
+       a 403-at (botvédelem, a site tényleg nem akar minket), az 5xx-et
+       (átmeneti hiba, érdemes újrapróbálni) és az időtúllépést (lassú
+       szerver). A három különböző teendőt jelent, de a napló eddig nem
+       tett köztük különbséget – így nem lehetett eldönteni, melyik
+       forrásnál van értelme dolgozni. */
+    if (r.hiba) return { engedi: false, ok: `robots.txt nem érhető el (${r.kod ?? '?'})` };
     const ut = u.pathname;
     for (const tilt of r.tiltott) {
         if (tilt === '/') return { engedi: false, ok: 'teljes tiltás' };
