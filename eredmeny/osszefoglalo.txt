@@ -1,0 +1,15 @@
+=== RACECOURSE360 – ELLENŐRZÉSI ÖSSZEFOGLALÓ ===
+Készült: 2026. 11. 23. 18:31:20
+Vizsgált pályák: 655
+
+-- Talált eltérések --
+
+Nem létező domain (kitalált cím): 0
+Nincs Wikidata-találat (kézi munka kell): 655
+
+KÖVETKEZŐ LÉPÉS:
+  Nyisd meg az eredmeny/elteresek.csv fájlt Excelben.
+  Fentről lefelé haladj: a SÚLYOS ELTÉRÉS sorok vannak elöl.
+
+FIGYELEM: ez a szkript SEMMIT nem írt át az app.js-ben.
+Minden változtatás emberi döntés marad.
