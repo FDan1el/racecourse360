@@ -115,7 +115,18 @@ jobs:
             # Ezért a nyelvi mappákat és a sitemapeket kell hozzáadni.
             # A -A kapcsoló a TÖRLÉSEKET is követi: ha egy pálya
             # kikerül az adatbázisból, az oldala is eltűnik a repóból.
-            git add -A hu en de fr sv es it ja zh ar
+            # A nyelvek listája VÁLTOZIK (2026-11-ben a ja/zh/ar
+            # kikerült), és egy fix felsorolás a már nem létező
+            # mappán "pathspec did not match any files" hibával
+            # megállítja a futást. Ezért csak azt adjuk hozzá, ami
+            # tényleg ott van – a listában viszont benne hagyjuk a
+            # kikapcsoltakat is, hogy a visszakapcsoláskor és a
+            # TÖRLÉSÜK követéséhez se kelljen ehhez a fájlhoz nyúlni.
+            for d in hu en de fr sv es it ja zh ar; do
+              if [ -e "$d" ] || git ls-files --error-unmatch "$d" >/dev/null 2>&1; then
+                git add -A "$d"
+              fi
+            done
             git add -A sitemap.xml sitemap-*.xml
           fi
 
