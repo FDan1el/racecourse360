@@ -156,7 +156,31 @@ const NAPTARAK = {
                 { nev: 'TAB NZ versenyrend', csalad: 'fogadas', tipus: 'lista',
                   url: 'https://www.tab.co.nz/racing' }],
     ARG: () => [{ nev: 'F.A.T. versenynaptár', csalad: 'szovetseg', tipus: 'lista',
-                  url: 'https://trote.com.ar/calendario/' }]
+                  url: 'https://trote.com.ar/calendario/' }],
+
+    /* NÉMETORSZÁG — a HVT (Hauptverband für Traberzucht) PÁLYÁNKÉNTI
+       versenynaptárat ad, ami a legjobb fajta forrás: nem egy közös
+       listából kell kibogarászni a pályanevet, hanem minden pályának
+       saját dátumlapja van.
+         /tracks/<kod>              – a pálya adatlapja
+         /<kod>/renntermine/<ev>    – az adott év versenynapjai
+       A kódok, amiket eddig láttam: hb = Hamburg-Bahrenfeld,
+       md = München-Daglfing, bm = Berlin-Mariendorf, bk.
+       Az adatbázisból amúgy is bejön a hvtonline.de gyökere, de az
+       csak a kezdőlap – ezek a lapok tartalmazzák a tényleges
+       versenynapokat. */
+    DEU: (ev) => [
+        { nev: 'HVT kiemelt versenyek', csalad: 'szovetseg', tipus: 'lista',
+          url: 'https://www.hvtonline.de/zgsrennen/' },
+        ...['hb', 'md', 'bm', 'bk'].map((kod) => ({
+            nev: `HVT renntermine ${kod} ${ev}`, csalad: 'szovetseg', tipus: 'lista',
+            url: `https://www.hvtonline.de/${kod}/renntermine/${ev}`
+        })),
+        ...['hb', 'md', 'bm', 'bk'].map((kod) => ({
+            nev: `HVT pálya ${kod}`, csalad: 'szovetseg', tipus: 'lista',
+            url: `https://www.hvtonline.de/tracks/${kod}`
+        }))
+    ]
 };
 
 /** Wikidata országazonosítók – a megszűnési dátum fő forrása. */
