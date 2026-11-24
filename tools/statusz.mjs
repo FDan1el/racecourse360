@@ -156,6 +156,15 @@ const NAPTARAK = {
                   url: 'https://www.veikkaus.fi/fi/toto' }],
     ITA: () => [{ nev: 'TrottoWeb naptár', csalad: 'szovetseg', tipus: 'lista',
                   url: 'https://www.trottoweb.com/' }],
+    /* A cseh szövetség (Česká klusácká asociace) saját oldala. Régi
+       felépítésű .htm oldalak, de olvashatók, és a terminlista a teljes
+       évet helyszínnel adja – ez az egyetlen hely, ahol a cseh ügetőnapok
+       GALOPPTÓL ELVÁLASZTVA szerepelnek. (A chuchlearena.cz naptára a két
+       szakágat összemossa, abból ügetőnapot számolni félrevezető.) */
+    CZE: () => [{ nev: 'ČKA terminlista', csalad: 'szovetseg', tipus: 'lista',
+                  url: 'https://www.czetra.cz/sterminy.htm' },
+                { nev: 'ČKA propozíciók', csalad: 'szovetseg', tipus: 'lista',
+                  url: 'https://www.czetra.cz/spropozice.htm' }],
     USA: () => [{ nev: 'USTA versenynaptár', csalad: 'szovetseg', tipus: 'lista',
                   url: 'https://www.ustrotting.com/racing/' },
                 /* A TrackMaster használatáról 2026 novemberében született
