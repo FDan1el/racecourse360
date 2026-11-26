@@ -7569,5 +7569,26 @@
     "status": "duplicate",
     "note": "Wikidata leírás: horse_racing / track | Nevesített olasz ippodromo – ellenőrizendő.. Koordináta forrása: OpenStreetMap (Nominatim) + GeoNames (10288438). Pálya forrása: Overpass/OSM OSM-way-102217742 (felfedező mód, 2026-08-01). A koordináta (43.3377, 13.6771) alapján a Marche régióban, Civitanova Marche közelében – a település megerősítése szükséges. | KIVÉVE AZ ÉLŐ ADATBÁZISBÓL (2026-11-26): EZ A REKORD AZ \"IPPODROMO SAN MARONE\" DUPLIKÁTUMA, nem önálló pálya. A két rekord tárolt koordinátája 45 METERRE van egymástól. A \"Mori (Trentino)\" város hibás volt: Mori egy Civitanova Marche-i helynév, a Google Places az ippodromo címét 62012 Mori, Province of Macerata-ként adja, és a 62012 Civitanova Marche postakódja; Mori TN-ben csak velodrom van. A hivatalos ASSI/UNIRE adatlap szerint a pálya neve Ippodromo - San Marone, Via Asola 24, 62012 Civitanova Marche. A sajtó a tulajdonos Mori családról hol Moriként, hol San Maroneként nevezi. A rekord nincs törölve: ha mégis kiderül, hogy két külön pálya, egy sorral visszatehető.",
     "forras": "MASAF 2026-os ippodromo-besorolási dekrétum + hivatalos 2026-os ügető versenynaptár + ASSI/UNIRE ippodromo-adatlap + Google Places, 2026-11-26"
+  },
+  {
+    "countryCode": "FIN",
+    "countryCode2": "fi",
+    "name": "Metsämäki racetrack",
+    "city": "Turku",
+    "address": null,
+    "postalCode": null,
+    "org": null,
+    "ownSite": null,
+    "operatorSite": null,
+    "operatorName": null,
+    "length": null,
+    "direction": "left",
+    "founded": 1978,
+    "lat": 60.495,
+    "lng": 22.346944444444443,
+    "slug": "metsamaki-racetrack",
+    "status": "duplicate",
+    "note": "Wikidata leírás: harness racing venue in Turku, Finland. Koordináta forrása: Wikidata Q111133483 + GeoNames (12657774). Pálya forrása: Wikidata Q111133483 (felfedező mód, 2026-08-01). A Wikidata leírása szerint harness racing venue in Turku – a turkui ügetőpálya. | KIVÉVE AZ ÉLŐ ADATBÁZISBÓL (2026-11-26): EZ A REKORD A \"METSÄMÄEN RAVIRATA\" DUPLIKÁTUMA. Ugyanaz a város (Turku), ugyanaz az alapítási év (1978), és a két koordináta kb. 250 METERRE van egymástól. Ez a rekord Wikidata-felfedezésből származott, a megtartott viszont a pálya üzemeltetőjét (Turun Hippos ry) és saját honlapját is tartalmazza, és a finn nevet használja, mint a többi 43 finn rekord. A rekord nincs törölve: ha mégis két külön pálya, egy sorral visszatehető.",
+    "forras": "Suomen Hippos hivatalos pályalistája (19 állandó + 25 nyári pálya), 2026-11-26"
   }
 ]
