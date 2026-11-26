@@ -7548,5 +7548,26 @@
     "status": "unknown",
     "note": "A WALES & BORDER TÖRZSLISTÁJÁBAN NEM SZEREPEL, az eredménylista viszont 2024. június 15-i versenynapot mutat itt. 2025-ben és 2026-ban nincs versenynapja, ezért a státusz unknown. KOORDINÁTA: a falu középpontja (OS SO211713 átszámítva) – a pálya pontos helye ellenőrzésre vár. HOSSZ és TALAJ: nincs rá forrás. IRÁNY: nincs rá forrás – a BHRC szabálykönyve nem nyilvános gépi olvasásra, és egyetlen pályaleírás sem közli. Forrás: Wales & Border Counties (Wales and Border Harness Racing Ltd, welsh-trotting.co.uk) pályajegyzéke – ez TÖRZSLISTA (26 pálya), NEM a 2026-os szezon naptára; az aktivitást a 2024-2026-os eredménylisták alapján állapítottam meg, 2026-10 | LEVÉVE AZ ÉLŐ TÉRKÉPRŐL (2026-11-24, tulajdonosi döntés): a pálya pontos helye BEAZONOSÍTHATATLAN maradt. A tárolt koordináta faluközéppont, irányítószám-középpont vagy becslés – vagyis a jelölő nem a pályát mutatta, hanem a települést, és ez félrevezetőbb, mint ha nem látszana. Sem a geokódoló pipeline, sem a Google Places, sem a műholdkép nem adta meg a tényleges helyet: a brit ügető nagyrészt falusi mezőkön és farmokon megy, amikről nincs nyilvános bejegyzés. A REKORD NINCS TÖRÖLVE: minden adata megmaradt itt, a koordinátával, a slug-gal és a teljes történeti jegyzettel együtt. Ha a pontos hely előkerül, egy sorral visszatehető az élő adatbázisba.",
     "forras": "BHRC 2026-os versenynaptár + Wales & Border jegyzék; a koordináta kézi ellenőrzése 2026-11-24-én nem vezetett eredményre"
+  },
+  {
+    "countryCode": "ITA",
+    "countryCode2": "it",
+    "name": "Ippodromo Mori",
+    "city": "Mori (Trentino)",
+    "address": null,
+    "postalCode": null,
+    "org": null,
+    "ownSite": null,
+    "operatorSite": null,
+    "operatorName": null,
+    "length": null,
+    "direction": "left",
+    "founded": null,
+    "lat": 43.337709,
+    "lng": 13.6771285,
+    "slug": "ippodromo-mori",
+    "status": "duplicate",
+    "note": "Wikidata leírás: horse_racing / track | Nevesített olasz ippodromo – ellenőrizendő.. Koordináta forrása: OpenStreetMap (Nominatim) + GeoNames (10288438). Pálya forrása: Overpass/OSM OSM-way-102217742 (felfedező mód, 2026-08-01). A koordináta (43.3377, 13.6771) alapján a Marche régióban, Civitanova Marche közelében – a település megerősítése szükséges. | KIVÉVE AZ ÉLŐ ADATBÁZISBÓL (2026-11-26): EZ A REKORD AZ \"IPPODROMO SAN MARONE\" DUPLIKÁTUMA, nem önálló pálya. A két rekord tárolt koordinátája 45 METERRE van egymástól. A \"Mori (Trentino)\" város hibás volt: Mori egy Civitanova Marche-i helynév, a Google Places az ippodromo címét 62012 Mori, Province of Macerata-ként adja, és a 62012 Civitanova Marche postakódja; Mori TN-ben csak velodrom van. A hivatalos ASSI/UNIRE adatlap szerint a pálya neve Ippodromo - San Marone, Via Asola 24, 62012 Civitanova Marche. A sajtó a tulajdonos Mori családról hol Moriként, hol San Maroneként nevezi. A rekord nincs törölve: ha mégis kiderül, hogy két külön pálya, egy sorral visszatehető.",
+    "forras": "MASAF 2026-os ippodromo-besorolási dekrétum + hivatalos 2026-os ügető versenynaptár + ASSI/UNIRE ippodromo-adatlap + Google Places, 2026-11-26"
   }
 ]
