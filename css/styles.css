@@ -431,26 +431,76 @@ a[href^="mailto:"]:hover { color: var(--accent-strong); text-decoration: underli
 .track-marker {
   width: 16px; height: 16px; border-radius: 50%;
   border: 2px solid #0f172a;
-  position: relative;            /* a csillag ehhez igazodik */
+  position: relative;            /* az arany perem ehhez igazodik */
+
+  /* GÖMBHATÁS — 16 pixelen ez a legnagyobb minőségi ugrás.
+     ------------------------------------------------------------
+     A lapos kitöltés helyett halvány fénypont a bal felső
+     negyedben: a pötty gyöngynek látszik, nem festékfoltnak.
+     A fénypont FEHÉR és áttetsző, ezért minden státuszszínnel
+     működik – nem kell státuszonként külön gradienst írni.
+
+     FIGYELEM: a státuszszabályok ezért `background-color`-t
+     használnak, nem `background`-ot. A `background` rövidítés
+     ugyanis törölné ezt a background-image-et, és a gömbhatás
+     csendben eltűnne. */
+  background-image:
+    radial-gradient(circle at 32% 28%,
+      rgba(255,255,255,.55) 0%,
+      rgba(255,255,255,.16) 40%,
+      rgba(255,255,255,0) 64%);
+  background-repeat: no-repeat;
 }
-/* Nagyverseny helyszíne. A csillag a pötty FÖLÉ kerül, nem helyette:
-   a pötty színe a státuszt mutatja, a csillag a rangot – két
-   különböző dimenzió, amit nem szabad egymásba olvasztani.
-   A sötét körvonal azért kell, hogy világos térképen is látszódjon. */
+
+/* NAGYVERSENY HELYSZÍNE — ARANY PEREM A KÖR KÖRÜL.
+   ------------------------------------------------------------
+   Korábban egy ★ karakter (U+2605) ült a pötty fölött. A perem
+   három okból jobb:
+
+   1. A PÖTTY SZÍNE SZABADON LÁTSZIK. A csillag eltakarta a kör
+      közepét, vagyis épp a státuszt – azt az információt, amiért
+      a pötty színes. A perem kívül fut, nem fed le semmit. A két
+      dimenzió (státusz és rang) így tényleg külön marad.
+   2. NEM BETŰTÍPUS-FÜGGŐ. A ★ glifát minden platform máshogy
+      rajzolja, és egyes rendszereken emodzsiként, színesen jelent
+      meg – ugyanaz a jelölő máshogy nézett ki gépenként. A CSS-kör
+      felbontásfüggetlen és mindenhol azonos.
+   3. ÉLES MARAD. A glifa 17 pixelen elmosódott; a perem egész
+      pixeles méretekkel dolgozik, ezért 1x és 2x kijelzőn is
+      pontos.
+
+   A perem KÉT SÖTÉT HAJSZÁLVONAL között fut (kívül és belül is),
+   mert világos térképen a puszta arany elveszne a háttérben. */
 .track-marker.nagyverseny::after {
-  content: "\2605";
+  content: "";
   position: absolute;
   left: 50%; top: 50%;
-  transform: translate(-50%, -54%);
-  font-size: 17px; line-height: 1;
-  color: #facc15;
-  text-shadow: 0 0 2px #0f172a, 0 0 4px #0f172a, 0 0 9px rgba(250,204,21,.85);
+  /* 20 px = a 16 px-es pötty + 2-2 px arany: a perem KÖZVETLENÜL a
+     körre ül, nem lebeg körülötte. Rés nélkül egyetlen tárgynak
+     látszik, nem céltáblának. */
+  width: 20px; height: 20px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 2px solid #f2cb62;
+  /* Belül nem kell sötét hajszálvonal: azt a pötty saját 2 px-es
+     sötét kerete adja. Kívül viszont kell, különben világos
+     térképen az arany elveszne a háttérben. */
+  box-shadow:
+    0 0 0 1px rgba(10, 14, 25, .7),           /* hajszálvonal kívül */
+    0 0 6px 1px rgba(242, 203, 98, .4);       /* lágy arany fény */
   pointer-events: none;
 }
-.track-marker.active { background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,0.8); }
-.track-marker.inactive { background: #d97706; box-shadow: 0 0 8px rgba(217,119,6,0.8); }
-.track-marker.unknown { background: #fde047; box-shadow: 0 0 10px rgba(253,224,71,0.95); }
-.track-marker.closed { background: #ef4444; box-shadow: 0 0 8px rgba(239,68,68,0.8); }
+
+/* STÁTUSZSZÍNEK.
+   A fény korábban egyetlen nagy, 8–10 pixeles halo volt. Sűrű
+   jelölőmezőben ezek összefolytak, ezért most két részre van
+   bontva: egy 1 pixeles sötét vetett árnyék, ami elemeli a
+   jelölőt a térképről, és egy szűkebb, halványabb színes fény.
+   Így a pöttyök egymás mellett is külön maradnak. */
+.track-marker.active   { background-color: #22c55e; box-shadow: 0 1px 2px rgba(0,0,0,.45), 0 0 6px rgba(34,197,94,.55); }
+.track-marker.inactive { background-color: #d97706; box-shadow: 0 1px 2px rgba(0,0,0,.45), 0 0 6px rgba(217,119,6,.55); }
+.track-marker.unknown  { background-color: #fde047; box-shadow: 0 1px 2px rgba(0,0,0,.45), 0 0 7px rgba(253,224,71,.6); }
+.track-marker.closed   { background-color: #ef4444; box-shadow: 0 1px 2px rgba(0,0,0,.45), 0 0 6px rgba(239,68,68,.55); }
 /* Történelmi helyszín: semleges szürke. A piros „bezárt” a friss
    veszteséget jelzi, a szürke a múltat – ezért nem ugyanaz a szín. */
 /* Kiemelt versenyek: egy verseny egy sorban, hogy a későbbi
@@ -458,7 +508,20 @@ a[href^="mailto:"]:hover { color: var(--accent-strong); text-decoration: underli
 .popup-nagyverseny { display: block; margin-top: 2px; }
 .popup-verseny { display: block; padding-left: 2px; }
 
-.track-marker.historical { background: #9ca3af; box-shadow: 0 0 8px rgba(156,163,175,0.75); }
+.track-marker.historical { background-color: #9ca3af; box-shadow: 0 1px 2px rgba(0,0,0,.45), 0 0 6px rgba(156,163,175,.5); }
+
+/* A PEREMES JELÖLŐNÉL ELHAGYJUK A SZÍNES FÉNYT.
+   ------------------------------------------------------------
+   Ez a szabály SZÁNDÉKOSAN a státuszszínek UTÁN áll, mert
+   felülírja a box-shadow-jukat – azonos specificitásnál a
+   sorrend dönt.
+
+   Miért: a státuszfény kiült a pötty és az arany perem közötti
+   résbe, és világos térképen piszkos szürke glóriának látszott
+   ott, ahol tiszta résnek kellene lennie. A kiemelést úgyis a
+   perem adja, nála erősebb jelzés a fény nem kell. Marad az
+   1 pixeles vetett árnyék, ami elemeli a jelölőt a térképről. */
+.track-marker.nagyverseny { box-shadow: 0 1px 2px rgba(0, 0, 0, .4); }
 
 /* ============ EGYEDI LEAFLET POPUP STÍLUS ============ */
 .leaflet-popup-content-wrapper {

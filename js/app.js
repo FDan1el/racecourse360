@@ -2389,14 +2389,20 @@ function renderMarkers(iso) {
            megdönti - ezért itt szűrünk, nem a hibát kezeljük utólag. */
         if (!Number.isFinite(t.lat) || !Number.isFinite(t.lng)) return;
         const statusClass = t.status || 'active';
-        /* NAGYVERSENY HELYSZÍNE: a státuszpötty FÖLÉ kerül egy
-           arany csillag. Nem helyettesíti a pöttyöt, mert a
-           státusz színe (aktív / inaktív / bezárt) ugyanúgy kell –
-           a csillag egy MÁSIK dimenzió, nem állapot. */
-        const csillagos = Array.isArray(t.nagyversenyek) && t.nagyversenyek.length > 0;
+        /* NAGYVERSENY HELYSZÍNE: a státuszpötty KÖRÉ kerül egy arany
+           perem (lásd .track-marker.nagyverseny::after a CSS-ben).
+           Nem helyettesíti a pöttyöt, és nem is fedi le: a státusz
+           színe (aktív / időszakos / bezárt) ugyanúgy kell – a rang
+           egy MÁSIK dimenzió, nem állapot. Korábban itt arany
+           csillag volt, de az eltakarta a kör közepét, vagyis épp a
+           státuszt, és betűtípustól függően máshogy jelent meg. */
+        const kiemelt = Array.isArray(t.nagyversenyek) && t.nagyversenyek.length > 0;
         const icon = L.divIcon({
             className: '',
-            html: `<div class="track-marker ${statusClass}${csillagos ? ' nagyverseny' : ''}"></div>`,
+            html: `<div class="track-marker ${statusClass}${kiemelt ? ' nagyverseny' : ''}"></div>`,
+            /* A 16 px a PÖTTY mérete; az arany perem ezen túlnyúlik,
+               de a horgonypont a pötty közepe marad, ezért a jelölő
+               továbbra is pontosan a koordinátán áll. */
             iconSize: [16, 16]
         });
         const marker = L.marker([t.lat, t.lng], { icon }).addTo(markerLayerGroup);
