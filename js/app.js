@@ -831,7 +831,7 @@ const trackDatabase = {
         { name: "Hipódromo do Carvalho", slug: "hipodromo-do-carvalho", city: "Carvalho (Celorico de Basto)", lat: 41.385081, lng: -8.07966, founded: null, status: "active", length: null, direction: "left", org: "Liga Portuguesa de Trote e Galope (LPTG)", ownSite: null, operatorSite: "https://www.ligacavaloscorrida.pt/", operatorName: "Liga Portuguesa de Trote e Galope (LPTG)", note: "A BAJNOKSÁG NYITÓ- ÉS ZÁRÓHELYSZÍNE: a 2026-os szezon első fordulója (03-08) és a tizennyolcadik, utolsó fordulója (11-08) is itt ment, összesen 4 fordulóval. A zárónapra 73 lovat neveztek. A pálya a Liga Portuguesa de Trote e Galope (LPTG) nemzeti bajnokságának helyszíne. A portugál rendszer VEGYES: egy versenynapon ügető (trote atrelado), galopp (galope) és garranos futamok is mennek – a 2026-os záró fordulóban hét futamból három volt kocsis ügető. A 2026-os szezon 18 kiírt fordulóból 16-ot futott le hat helyszínen. A Google Places \"Hipódromo Municipal de Celorico de Basto\" néven hozza, race_course típussal – a két megnevezés ugyanaz a helyszín, ezért egy rekordot vezetünk." },
         { name: "Hipódromo Municipal da Maia", slug: "hipodromo-municipal-da-maia", city: "Silva Escura (Maia)", lat: 41.259654, lng: -8.582575, founded: null, status: "active", length: null, direction: "left", org: "Liga Portuguesa de Trote e Galope (LPTG)", ownSite: null, operatorSite: "https://www.ligacavaloscorrida.pt/", operatorName: "Liga Portuguesa de Trote e Galope (LPTG)", note: "Porto melletti pálya, a 2026-os bajnokságban 3 fordulóval. A pálya a Liga Portuguesa de Trote e Galope (LPTG) nemzeti bajnokságának helyszíne. A portugál rendszer VEGYES: egy versenynapon ügető (trote atrelado), galopp (galope) és garranos futamok is mennek – a 2026-os záró fordulóban hét futamból három volt kocsis ügető. A 2026-os szezon 18 kiírt fordulóból 16-ot futott le hat helyszínen. Címe Rua de Amaro Correia e Sá 318, 4475-143 Silva Escura. A Google Places \"Centro Equestre da Maia / Hipódromo Municipal da Maia\" néven hozza: a létesítmény lovasközpontként és versenypályaként is működik." },
         { name: "Hipódromo de Ponte da Barca", slug: "hipodromo-de-ponte-da-barca", city: "Vila Nova de Muía (Ponte da Barca)", lat: 41.813651, lng: -8.400813, founded: null, status: "active", length: null, direction: "left", org: "Liga Portuguesa de Trote e Galope (LPTG)", ownSite: null, operatorSite: "https://www.ligacavaloscorrida.pt/", operatorName: "Liga Portuguesa de Trote e Galope (LPTG)", note: "A LIMA FOLYÓ PARTJÁN fekvő önkormányzati pálya, a 2026-os bajnokságban 2 fordulóval. A pálya a Liga Portuguesa de Trote e Galope (LPTG) nemzeti bajnokságának helyszíne. A portugál rendszer VEGYES: egy versenynapon ügető (trote atrelado), galopp (galope) és garranos futamok is mennek – a 2026-os záró fordulóban hét futamból három volt kocsis ügető. A 2026-os szezon 18 kiírt fordulóból 16-ot futott le hat helyszínen. A 2025-ös itteni fordulón 70 ló indult kilenc mangában. A helyszíni visszajelzések szerint a megközelítő út szűk és kevés a parkolóhely." },
-        { name: "Hipódromo Municipal de Santo Tirso", slug: "hipodromo-municipal-de-santo-tirso", city: "Santo Tirso", lat: 41.347797, lng: -8.472793, founded: null, status: "unknown", length: null, direction: "left", org: "Liga Portuguesa de Trote e Galope (LPTG)", ownSite: null, operatorSite: "https://www.ligacavaloscorrida.pt/", operatorName: "Liga Portuguesa de Trote e Galope (LPTG)", note: "ÉVI EGY VERSENYNAP, EZÉRT SÁRGA (tulajdonosi küszöb, 2026-11-27: évi két versenynap alatt a pálya unknown státuszt kap). A 2026-os bajnokság negyedik fordulója ment itt, április 26-án – a 3. Grande Prémio de Santo Tirso. A pálya a Liga Portuguesa de Trote e Galope (LPTG) nemzeti bajnokságának helyszíne. A portugál rendszer VEGYES: egy versenynapon ügető (trote atrelado), galopp (galope) és garranos futamok is mennek – a 2026-os záró fordulóban hét futamból három volt kocsis ügető. A 2026-os szezon 18 kiírt fordulóból 16-ot futott le hat helyszínen. HELYSZÍN: a futamok az Escola Profissional Agrícola Conde de São Bento nevű mezőgazdasági szakiskola Quinta de Fora nevű birtokán mennek, az Ave folyó mellett. A tárolt pont a Google Places \"Pista de corrida de cavalos\" nevű bejegyzése, kb. 430 méterre az iskola főbejáratától (Largo Abade Pedrosa) – a bejegyzés neve szó szerint lóversenypályát jelent, és az értékelése név szerint említi a Grande Prémiót. FENNTARTÁS: a bejegyzés típusa scenic_spot, nem race_course." }
+        { name: "Hipódromo Municipal de Santo Tirso", slug: "hipodromo-municipal-de-santo-tirso", city: "Santo Tirso", lat: 41.347797, lng: -8.472793, founded: null, status: "inactive", length: null, direction: "left", org: "Liga Portuguesa de Trote e Galope (LPTG)", ownSite: null, operatorSite: "https://www.ligacavaloscorrida.pt/", operatorName: "Liga Portuguesa de Trote e Galope (LPTG)", note: "ÉVI EGY VERSENYNAP, EZÉRT IDŐSZAKOS – NARANCS (tulajdonosi döntés, 2026-11-27). A küszöb évi két versenynap, az alatt a pálya nem aktív. A státusz NEM unknown, hanem inactive: a sárga azt jelenti, hogy nem tudjuk, fut-e, a narancs azt, hogy tudjuk, hogy fut, csak nem érdemi mennyiségben. Itt a versenynap bizonyított, csak kevés. A 2026-os bajnokság negyedik fordulója ment itt, április 26-án – a 3. Grande Prémio de Santo Tirso. A pálya a Liga Portuguesa de Trote e Galope (LPTG) nemzeti bajnokságának helyszíne. A portugál rendszer VEGYES: egy versenynapon ügető (trote atrelado), galopp (galope) és garranos futamok is mennek – a 2026-os záró fordulóban hét futamból három volt kocsis ügető. A 2026-os szezon 18 kiírt fordulóból 16-ot futott le hat helyszínen. HELYSZÍN: a futamok az Escola Profissional Agrícola Conde de São Bento nevű mezőgazdasági szakiskola Quinta de Fora nevű birtokán mennek, az Ave folyó mellett. A tárolt pont a Google Places \"Pista de corrida de cavalos\" nevű bejegyzése, kb. 430 méterre az iskola főbejáratától (Largo Abade Pedrosa) – a bejegyzés neve szó szerint lóversenypályát jelent, és az értékelése név szerint említi a Grande Prémiót. FENNTARTÁS: a bejegyzés típusa scenic_spot, nem race_course." }
     ]
 };
 
@@ -1464,14 +1464,19 @@ function ui(kulcs) {
    A szabály a VERSENYNAPRA épül, nem az üzem jellegére:
 
      active      az elmúlt 12 hónapban volt versenynapja, VAGY
-                 szerepel a futó szezon hivatalos naptárában.
-                 Az sem számít, ha évente csak egyszer futnak rajta.
-     inactive    létező, nyilvántartott pálya, de az elmúlt 12
-                 hónapban nem volt versenynapja – három éven belül
-                 viszont igen.
-     unknown     szerepel valamelyik nyilvántartásban, de három éve
-                 vagy régebben nincs nyoma versenynapnak, és
-                 bezárásra utaló forrás sincs.
+                 szerepel a futó szezon hivatalos naptárában,
+                 ÉS évente legalább két versenynapja van.
+     inactive    HÁROM ESET GYŰJTŐJE – a közös bennük, hogy a pálya
+                 létezik, de nem fut rendesen:
+                 (a) felfüggesztve: az elmúlt 12 hónapban nem volt
+                     versenynapja, három éven belül viszont igen;
+                 (b) IDŐSZAKOS: fut, de évente kettőnél kevesebb
+                     versenynappal – vagyis van verseny, csak nem
+                     érdemi mennyiségben;
+                 (c) szezonális pálya, ami a szezonján kívül áll.
+     unknown     NEM TUDJUK. Szerepel valamelyik nyilvántartásban,
+                 de három éve vagy régebben nincs nyoma
+                 versenynapnak, és bezárásra utaló forrás sincs.
      closed      dokumentáltan megszűnt rajta a versenyzés, forrással,
                  ÉS a megszűnés 2010-ben vagy azután történt.
      historical  a versenyzés 2010 ELŐTT szűnt meg rajta.
@@ -1483,10 +1488,19 @@ function ui(kulcs) {
    2010 utáni; egy 1953-ban megszűnt pálya historical, akkor is, ha a
    területe ma is beazonosítható.
 
+   A SÁRGA ÉS A NARANCS KÜLÖNBSÉGE (tulajdonosi döntés, 2026-11-27):
+   "A narancs lehet időszakos is, ami jobban lefedi a problémát."
+   Vagyis a két szín két ELTÉRŐ dolgot mond, és nem keverhetők:
+     narancs = TUDJUK, hogy fut, de nem érdemben (vagy épp áll)
+     sárga   = NEM TUDJUK, fut-e egyáltalán
+   Egy évi egy versenynapos pálya tehát NARANCS, nem sárga: a
+   versenynapja bizonyított, csak kevés. Sárgát csak akkor adunk,
+   ha a bizonyíték maga hiányzik.
+
    A megjelenítés ehhez illeszkedik:
      zöld   #22c55e  active
-     sárga  #fde047  unknown      (bizonytalan)
-     narancs #d97706 inactive     (felfüggesztett)
+     sárga  #fde047  unknown      (nem tudjuk)
+     narancs #d97706 inactive     (időszakos vagy felfüggesztett)
      piros  #ef4444  closed       (2010-tól megszűnt)
      szürke #9ca3af  historical   (2010 előtt megszűnt)
 
