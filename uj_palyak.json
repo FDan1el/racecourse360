@@ -3789,8 +3789,8 @@
     "length": 1000,
     "direction": null,
     "founded": 1909,
-    "note": "Vegyes ügető + galopp versenynapok. Az alapítási év és a hossz MÉG NEM megerősített.",
-    "forras": "Liga Portuguesa de Trote e Galope versenyjegyzőkönyvek"
+    "note": "Vegyes ügető + galopp versenynapok. Az alapítási év és a hossz MÉG NEM megerősített. | ELLENŐRZVE ÉS MARAD A GYŰJTŐLISTÁN (2026-11-27): a LPTG hivatalos 2026-os bajnoksági naptárában NEM SZEREPEL, és a Google Places sem talál versenypályát Póvoa de Varzimban – csak a városi stadiont, a sportcsarnokot, a Póvoa Arenát (az egykori bikaviadal-aréna helyén) és a városi parkot. A hat 2026-os portugál helyszín: Ponte de Lima, Carvalho (Celorico de Basto), Maia, Ponte da Barca, Rio Frio, Santo Tirso.",
+    "forras": "Liga Portuguesa de Trote e Galope hivatalos 2026-os bajnoksági naptára (ligacavaloscorrida.pt) + Google Places, 2026-11-27"
   },
   {
     "countryCode": "PRT",
@@ -3806,8 +3806,8 @@
     "length": 1000,
     "direction": null,
     "founded": 1995,
-    "note": "Vegyes ügető + galopp versenynapok. Az alapítási év és a hossz MÉG NEM megerősített.",
-    "forras": "Liga Portuguesa de Trote e Galope versenyjegyzőkönyvek"
+    "note": "Vegyes ügető + galopp versenynapok. Az alapítási év és a hossz MÉG NEM megerősített. | VAN 2026-OS VERSENYNAPJA, DE A KOORDINÁTA NEM ERŐSÍTHETŐ MEG, EZÉRT MARAD A GYŰJTŐLISTÁN (2026-11-27). A LPTG hivatalos naptára szerint a 16. forduló ment itt, 2026-10-10-én, és itt futott a Taça de Portugal is. A Google Places viszont csak a Pinhal Novó-i \"Polo Equestre de Rio Frio\" nevű lovasközpontot adja (38.673143 / -8.858605), ami lovasoktatással és bértartással foglalkozik – nem igazolható, hogy ez a versenypálya. Tulajdonosi szabály szerint hivatalos jegyzékbeli szereplés nem jelent mappolható helyet, ezért becsült ponttal nem megy fel. VISSZAHOZÁS: ha a pálya pontos helye előkerül, egy sorral élesbe tehető – és évi egy versenynappal a küszöb szerint unknown (sárga) státuszt kap.",
+    "forras": "Liga Portuguesa de Trote e Galope hivatalos 2026-os bajnoksági naptára (ligacavaloscorrida.pt) + Google Places, 2026-11-27"
   },
   {
     "countryCode": "PRT",
@@ -3823,8 +3823,8 @@
     "length": 800,
     "direction": null,
     "founded": 1985,
-    "note": "Vegyes ügető + galopp versenynapok. Az alapítási év és a hossz MÉG NEM megerősített.",
-    "forras": "Liga Portuguesa de Trote e Galope versenyjegyzőkönyvek"
+    "note": "Vegyes ügető + galopp versenynapok. Az alapítási év és a hossz MÉG NEM megerősített. | ELLENŐRZVE ÉS MARAD A GYŰJTŐLISTÁN (2026-11-27): a LPTG hivatalos 2026-os bajnoksági naptárában NEM SZEREPEL. A coimbrai Mata Nacional do Choupalban van lovas létesítmény (Centro Equestre de Coimbra), de az lovasiskola, nem versenypálya, és 2026-ban nem rendezett bajnoki fordulót.",
+    "forras": "Liga Portuguesa de Trote e Galope hivatalos 2026-os bajnoksági naptára (ligacavaloscorrida.pt) + Google Places, 2026-11-27"
   },
   {
     "countryCode": "LVA",
@@ -6588,8 +6588,8 @@
     "direction": "left",
     "founded": 1909,
     "surface": "Homok / Alluviális talaj",
-    "note": "A racecourse360.docx táblázatából. AZ ADATOK MEGERŐSÍTETLENEK – a docx bizonyítottan tartalmaz hibát (kitalált URL-ek, az egyesület alapítása a pálya megnyitása helyett). Ellenőrizendő a --fill és a --javaslatok móddal.",
-    "forras": "racecourse360.docx (saját táblázat) – megerősítetlen"
+    "note": "A racecourse360.docx táblázatából. AZ ADATOK MEGERŐSÍTETLENEK – a docx bizonyítottan tartalmaz hibát (kitalált URL-ek, az egyesület alapítása a pálya megnyitása helyett). Ellenőrizendő a --fill és a --javaslatok móddal. | ELLENŐRZVE ÉS MARAD A GYŰJTŐLISTÁN (2026-11-27): ugyanaz, mint a másik Póvoa de Varzim-tétel – a LPTG 2026-os naptárában nem szerepel, és versenypálya sem azonosítható a településen. Ez a bejegyzés egyúttal a megerősítetlen racecourse360.docx-ból jön, ami bizonyítottan tartalmaz kitalált URL-eket.",
+    "forras": "Liga Portuguesa de Trote e Galope hivatalos 2026-os bajnoksági naptára (ligacavaloscorrida.pt) + Google Places, 2026-11-27"
   },
   {
     "countryCode": "CAN",

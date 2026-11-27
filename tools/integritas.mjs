@@ -42,6 +42,10 @@ const BBOX = {
     RUS: [41.1, 77.0, 19.0, 180.0], USA: [18.9, 71.5, -179.2, -66.9],
     CAN: [41.6, 83.2, -141.1, -52.6], AUS: [-43.7, -9.1, 112.9, 153.7],
     NZL: [-47.3, -34.0, 166.3, 178.6], ARG: [-55.1, -21.7, -73.6, -53.6],
+    /* PORTUGÁLIA: a téglalap az Azori-szigeteket és Madeirát is tartalmazza,
+       mert azok is Portugália – ugyanaz a logika, mint a francia tengerentúli
+       megyéknél. Ügetőpálya ma csak a szárazföldön van. */
+    PRT: [30.0, 42.2, -31.3, -6.2],
 };
 
 const JO_STATUS = new Set(['active', 'inactive', 'unknown', 'closed', 'historical']);
