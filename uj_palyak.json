@@ -7590,5 +7590,26 @@
     "status": "duplicate",
     "note": "Wikidata leírás: harness racing venue in Turku, Finland. Koordináta forrása: Wikidata Q111133483 + GeoNames (12657774). Pálya forrása: Wikidata Q111133483 (felfedező mód, 2026-08-01). A Wikidata leírása szerint harness racing venue in Turku – a turkui ügetőpálya. | KIVÉVE AZ ÉLŐ ADATBÁZISBÓL (2026-11-26): EZ A REKORD A \"METSÄMÄEN RAVIRATA\" DUPLIKÁTUMA. Ugyanaz a város (Turku), ugyanaz az alapítási év (1978), és a két koordináta kb. 250 METERRE van egymástól. Ez a rekord Wikidata-felfedezésből származott, a megtartott viszont a pálya üzemeltetőjét (Turun Hippos ry) és saját honlapját is tartalmazza, és a finn nevet használja, mint a többi 43 finn rekord. A rekord nincs törölve: ha mégis két külön pálya, egy sorral visszatehető.",
     "forras": "Suomen Hippos hivatalos pályalistája (19 állandó + 25 nyári pálya), 2026-11-26"
+  },
+  {
+    "countryCode": "HRV",
+    "countryCode2": "hr",
+    "name": "Kasački klub Diamant",
+    "city": "Šeovica (Lipik)",
+    "address": "Lipička 3, Šeovica, 34551 Lipik",
+    "postalCode": "34551",
+    "org": "Kasački klub Diamant",
+    "ownSite": "https://kkdiamant.hr/",
+    "operatorSite": null,
+    "operatorName": "Hrvatski kasački savez",
+    "length": null,
+    "direction": null,
+    "founded": null,
+    "lat": 45.405852,
+    "lng": 17.192658,
+    "slug": "kasacki-klub-diamant",
+    "status": "unknown",
+    "note": "HORVÁTORSZÁG – AZ EGYETLEN MEGTALÁLT ÜGETŐHELYSZÍN, DE NEM MEGY ÉLESBE (2026-11-27). Amit a kutatás BIZONYÍT: Horvátországban van szervezett ügető. A horvát Agrárminisztérium 2026-2030-as nemzeti programja név szerint említi a HRVATSKI KASAČKI SAVEZ-t, támogatott fajtaként a HRVATSKI KASAČ-ot, és évi 64 000 eurót különít el kasačke utrke-re, versenyenként legfeljebb 22 000 eurót, kimondottan UET-szabályok szerint futtatva. A kifizető ügynökség (APPRRR) leírása szerint a támogatás VERSENYENKÉNT jár, és a kedvezményezett a nemzeti szövetség vagy annak tagklubja. AMI NINCS MEG: A HELYSZÍN. Sem a program, sem a végrehajtási szabályzat, sem az ügynökség NEM JELÖL KI PÁLYÁT. A program három füves hipodromot nevez meg (Zagreb, Sinj, Polača), de mindhármat SÍK GALOPPRA; a horvát galoppszövetség szerint a zágrábi hipodrom ügetőre is alkalmas, de nem állítja, hogy rendeznek ott ilyet. EZ A REKORD: Lipik város hivatalos sportegyesületi nyilvántartásában szereplő kasački klub, Lidija Bašnec elnökletével, kb. 30 lóval. A város turisztikai leírása szerint van saját kis trkalištéjük és hipodromuk – de a leírás szerint ez EDZÉSRE és a haladó lovasok számára szolgál, versenynapról nincs adat. A város szerint a klub nemzeti ÉS NEMZETKÖZI versenyeken indul, ami arra utal, hogy a horvát ügetők jó része külföldön (Szerbia, Szlovénia) fut. MIÉRT NEM ÉLES: a saját szabályunk szerint hivatalos versenynap nélkül nem teszünk pályát a térképre, és egy edzőpálya versenypályaként megjelenítve félrevezetőbb, mint ha nem látszana – ugyanaz a döntés, mint a beazonosíthatatlan brit helyszíneknél. VISSZAHOZÁS: ha előkerül egy konkrét horvát versenynap helyszínnel, ez a rekord egy sorral élesbe tehető, és Horvátország felkerül a térképre. KÖVETKEZŐ LÉPÉS: a klub saját honlapja (kkdiamant.hr) nem volt lekérhető, azt érdemes kézzel átnézni; valamint a szlovén ügetőszövetség fórumának \"Sinj 20.9\" című szála, ami háromszori próbálkozásra sem nyílt meg, de a címe sinji ügetőversenyre utal.",
+    "forras": "Horvát Agrárminisztérium, Nacionalni program poticanja razvoja toplokrvnih pasmina konja u RH 2026.-2030. + APPRRR (kifizető ügynökség) intézkedésleírás + Lipik város hivatalos egyesületi nyilvántartása + Lipik turisztikai közösség + crogallop.com.hr (horvát galoppszövetség), 2026-11-27"
   }
 ]
